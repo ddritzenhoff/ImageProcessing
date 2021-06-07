@@ -1,5 +1,5 @@
 package cs3500.imageProcessing.model;
 
-public interface ITransform {
+public interface ITransformation {
   public IPixelImage apply(String id);
 }

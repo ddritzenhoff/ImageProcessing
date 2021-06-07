@@ -5,5 +5,5 @@ public interface IModel {
   void removeImage(String id, IPixelImage image);
   void replaceImage(String id, IPixelImage image);
 
-  IPixelImage applyTransformation(ITransform transform);
+  IPixelImage applyTransformation(ITransformation transform);
 }
