@@ -13,6 +13,6 @@ public class Questions {
   /*
   - TODO:
     - It seems like we should return a new image after processing it. (maybe even keeping the old image)
-    - if you have a map, consider coming up with an id generator. 
+    - if you have a map, consider coming up with an id generator.
    */
 }
