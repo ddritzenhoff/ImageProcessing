@@ -20,4 +20,9 @@ public class Pixel implements IPixel {
     this.b = b;
   }
 
+  @Override
+  public String toString() {
+    return   "\n" + r + "\n" + g + "\n" + b  ;
+  }
+
 }

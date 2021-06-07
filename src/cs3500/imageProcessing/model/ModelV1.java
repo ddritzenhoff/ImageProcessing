@@ -5,37 +5,37 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ModelV1 implements IModel{
-  protected final Map<String, IImage> images;
+  protected final Map<String, IPixelImage> images;
 
   public ModelV1() {
     this.images = new HashMap<>();
   }
 
   @Override
-  public void addImage(String id, IImage image) {
+  public void addImage(String id, IPixelImage image) {
     Objects.requireNonNull(id);
     Objects.requireNonNull(image);
 
     // TODO: QUESTION: stuff here.
     if (images.containsKey(id)) {
-      throw new IllegalStateException("")
+      throw new IllegalStateException("");
     }
 
     images.putIfAbsent(id, image);
   }
 
   @Override
-  public void removeImage(String id, IImage image) {
+  public void removeImage(String id, IPixelImage image) {
 
   }
 
   @Override
-  public void replaceImage(String id, IImage image) {
+  public void replaceImage(String id, IPixelImage image) {
 
   }
 
   @Override
-  public IImage applyTransformation(ITransform transform) {
+  public IPixelImage applyTransformation(ITransform transform) {
     return null;
   }
 }

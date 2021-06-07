@@ -2,16 +2,16 @@ package cs3500.imageProcessing.model;
 
 public class Filter implements ITransform{
 
-  protected final IImage oldImage;
+  protected final IPixelImage oldImage;
 
-  public Filter(IImage oldImage) {
+  public Filter(IPixelImage oldImage) {
     this.oldImage = oldImage;
   }
 
   @Override
-  public IImage apply(String id) {
+  public IPixelImage apply(String id) {
 
-    IImage newImage = null;
+    IPixelImage newImage = null;
     // Do stuff
     return newImage;
   }

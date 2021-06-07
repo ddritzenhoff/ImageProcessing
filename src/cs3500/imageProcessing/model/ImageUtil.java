@@ -23,14 +23,14 @@ public class ImageUtil {
         sc = new Scanner(new FileInputStream(filename));
     }
     catch (FileNotFoundException e) {
-        System.out.println("File "+filename+ " not found!");
+        System.out.println("File " + filename + " not found!");
         return;
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
         String s = sc.nextLine();
-        if (s.charAt(0)!='#') {
+        if (s.charAt(0) != '#') {
             builder.append(s+System.lineSeparator());
         }
     }
@@ -45,14 +45,14 @@ public class ImageUtil {
         System.out.println("Invalid PPM file: plain RAW file should begin with P3");
     }
     int width = sc.nextInt();
-    System.out.println("Width of image: "+width);
+    System.out.println("Width of image: " + width);
     int height = sc.nextInt();
-    System.out.println("Height of image: "+height);
+    System.out.println("Height of image: " + height);
     int maxValue = sc.nextInt();
-    System.out.println("Maximum value of a color in this file (usually 256): "+maxValue);
+    System.out.println("Maximum value of a color in this file (usually 256): " + maxValue);
     
-    for (int i=0;i<height;i++) {
-        for (int j=0;j<width;j++) {
+    for (int i = 0; i < height; i++ ) {
+        for (int j = 0; j < width; j++) {
             int r = sc.nextInt();
             int g = sc.nextInt();
             int b = sc.nextInt();
@@ -69,7 +69,7 @@ public class ImageUtil {
           filename = args[0];
       }
       else {
-          filename = "sample.ppm";
+          filename = "src/Koala.ppm";
       }
       
       ImageUtil.readPPM(filename);
