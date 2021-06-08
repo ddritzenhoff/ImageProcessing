@@ -15,32 +15,17 @@ public class PixelImage implements IPixelImage {
   protected final int imageWidth;
   protected final int imageHeight;
   protected final int maxValue;
-  private final List<IPixel> pixelRow;
   protected final List<List<IPixel>> pixelImage;
   protected final String fileName;
 
-
   public PixelImage(int imageWidth, int imageHeight, int maxValue,
-      List<IPixel> pixelRow,
       List<List<IPixel>> pixelImage, String fileName) {
     this.imageWidth = imageWidth;
     this.imageHeight = imageHeight;
     this.maxValue = maxValue;
-    this.pixelRow = pixelRow;
     this.pixelImage = pixelImage;
     this.fileName = fileName;
   }
-
-//  PixelImage() {
-//    //this.fileName = "";
-//    this.pixelImage = pixelImage;
-//  }
-
-//  PixelImage(List<List<IPixel>> pixelImage, String fileName) {
-//    this.fileName = fileName;
-//    this.pixelImage = pixelImage;
-//  }
-
 
   @Override
   public void render(String type) {
@@ -57,14 +42,16 @@ public class PixelImage implements IPixelImage {
     DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
 
     try {
-      outStream.writeBytes("P3\n" + "# Created by GIMP version 2.10.20 PNM plug-in" + "\n" + imageWidth + " " + imageHeight  + "\n" + maxValue );
+      outStream.writeBytes(
+          "P3\n" + "# Created by GIMP version 2.10.20 PNM plug-in" + "\n" + imageWidth + " "
+              + imageHeight + "\n" + maxValue);
 //      outStream.writeUTF("\nP3");
 //      outStream.writeUTF("\n# Created by Ben and Dom "  );
     } catch (IOException e) {
       e.printStackTrace();
     }
-    for (List<IPixel> lop : pixelImage ) {
-      for (IPixel pixel : lop ) {
+    for (List<IPixel> lop : pixelImage) {
+      for (IPixel pixel : lop) {
         try {
           value = pixel.toString();
           outStream.writeBytes(value);
@@ -85,13 +72,12 @@ public class PixelImage implements IPixelImage {
   }
 
 
-  public static void main(String []args) {
+  public static void main(String[] args) {
     String filename2;
 
-    if (args.length>0) {
+    if (args.length > 0) {
       filename2 = args[0];
-    }
-    else {
+    } else {
       filename2 = "src/Koala.ppm";
     }
 

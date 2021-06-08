@@ -30,7 +30,6 @@ public class ImageUtil {
     int imageWidth;
     int imageHeight;
     int maxValue;
-    List<IPixel> pixelRow = new ArrayList<>();
     List<List<IPixel>> pixelImage;
 
     Scanner sc = requireFileExists(fileName);
@@ -82,7 +81,7 @@ public class ImageUtil {
       pixelImage.add(tempPixelRow);
     }
 
-    return new PixelImage(imageWidth, imageHeight, maxValue, pixelRow, pixelImage, fileName);
+    return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
   }
 
   //demo main
