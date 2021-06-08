@@ -33,7 +33,7 @@ public class Blur implements ITransformation {
 
       }
     }
-    return new PixelImage(pixelRows);
+    return new PixelImage(pixelRows,id); //TODO: added a field for ID
   }
 
   // TODO: you could add this as a value within the IPixel

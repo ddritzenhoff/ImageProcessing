@@ -27,12 +27,12 @@ public class PixelImage implements IPixelImage {
     this.fileName = fileName;
   }
 
-  public PixelImage(List<List<IPixel>> pixelImage) {
+  public PixelImage(List<List<IPixel>> pixelImage, String newFileName) {
   this.pixelImage = pixelImage;
   this.imageHeight = getNumRows();
   this.imageWidth = getNumPixelsInRow();
   this.maxValue = 255; // TODO: question: is this correct?
-  this.fileName = "tempFileName.ppm";
+  this.fileName = newFileName;
   }
 
   @Override
@@ -41,9 +41,14 @@ public class PixelImage implements IPixelImage {
     String value = "";
     FileOutputStream fos = null;
     try {
-      System.out.println(this.fileName);
-      String newFileName = "Edited" + "koala" + "." + type;
-      fos = new FileOutputStream(newFileName);
+//      System.out.println(this.fileName);
+      String newFileName = fileName;
+      if (newFileName.contains("src/files/")){
+        newFileName =  fileName.substring(10);
+      }
+      System.out.println(newFileName);
+        String newTitle = "Edited" + newFileName + "." + type;
+      fos = new FileOutputStream(newTitle);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -126,13 +131,20 @@ public class PixelImage implements IPixelImage {
 //    testImage2.render("jpg");
 //    testImage2.render("ppm");
 //    testImage2.render("png");
+    testImage2.render("ppm");
 
     IPixelImage rect = new Checkerboard(50, 10).returnPixelImage();
-    rect.render(".ppm");
+    rect.render("ppm");
     // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
     //testImage.render();
 
-    // testImage.render();
+     Blur test = new Blur(testImage2);
+     test.apply("k").render("ppm");
+
+     Greyscale testGreyscale = new Greyscale(rect);
+     testGreyscale.apply("koalaTestGreyscale").render("png");
+
+   // testImage.render();
   }
 
 }

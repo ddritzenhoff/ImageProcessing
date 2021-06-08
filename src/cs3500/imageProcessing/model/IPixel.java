@@ -6,5 +6,6 @@ public interface IPixel {
   int getB();
 
   void scaleChannels(double scalar);
+  void scaleRGB(double r, double g , double b);
 
 }

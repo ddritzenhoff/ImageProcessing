@@ -40,6 +40,14 @@ public class Pixel implements IPixel {
   }
 
   @Override
+  public void scaleRGB(double r, double g, double b) {
+    this.r = (int)(this.r * r + this.g*g + this.b*b );
+    this.g = (int)(this.r * r + this.g*g + this.b*b );
+    this.b = (int)(this.r * r + this.g*g + this.b*b );
+  }
+
+
+  @Override
   public String toString() {
     return   "\n" + r + "\n" + g + "\n" + b  ;
   }
