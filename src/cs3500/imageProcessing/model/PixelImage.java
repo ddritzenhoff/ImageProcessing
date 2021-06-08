@@ -27,6 +27,10 @@ public class PixelImage implements IPixelImage {
     this.fileName = fileName;
   }
 
+//  public PixelImage(List<List<IPixel>> pixelImage) {
+//  this.pixelImage = pixelImage;
+//  }
+
   @Override
   public void render(String type) {
     //currently returns a string render.
@@ -83,10 +87,44 @@ public class PixelImage implements IPixelImage {
 
     IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Koala.ppm");
     testImage2.render("jpg");
-   // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
+    testImage2.render("ppm");
+    // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
     //testImage.render();
 
-   // testImage.render();
+    // testImage.render();
+  }
+
+  public int getNumRows() {
+    return this.pixelImage.size();
+  }
+
+  public int getNumPixelsInRow() {
+    return this.pixelImage.get(0).size();
+  }
+
+  public IPixel getPixel(int row, int pixelRowIndex) {
+    if (row < 0 || row >= getNumRows() || pixelRowIndex < 0
+        || pixelRowIndex >= getNumPixelsInRow()) {
+      throw new IllegalArgumentException("pixel does not exist. Indices are out of bounds");
+    }
+
+    IPixel oldPixel = this.pixelImage.get(row).get(pixelRowIndex);
+
+    return new Pixel(oldPixel.getR(), oldPixel.getG(), oldPixel.getB());
+  }
+
+  public List<List<IPixel>> getPixels() {
+
+    List<List<IPixel>> imageCopy = new ArrayList<>();
+    for (int row = 0; row < getNumRows(); row++) {
+      List<IPixel> tempRow = new ArrayList<>();
+      for (int pixelRowIndex = 0; pixelRowIndex < getNumPixelsInRow(); pixelRowIndex++) {
+        tempRow.add(getPixel(row, pixelRowIndex));
+      }
+      imageCopy.add(tempRow);
+    }
+
+    return imageCopy;
   }
 
 }
