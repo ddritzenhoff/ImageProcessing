@@ -5,4 +5,6 @@ public interface IPixel {
   int getG();
   int getB();
 
+  void scaleChannels(double scalar);
+
 }

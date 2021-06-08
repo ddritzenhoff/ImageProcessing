@@ -32,6 +32,12 @@ public class Pixel implements IPixel {
     return this.b;
   }
 
+  @Override
+  public void scaleChannels(double scalar) {
+    this.r = (int) (this.r * scalar);
+    this.g = (int) (this.g * scalar);
+    this.b = (int) (this.b * scalar);
+  }
 
   @Override
   public String toString() {

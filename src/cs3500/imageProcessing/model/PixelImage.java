@@ -27,9 +27,13 @@ public class PixelImage implements IPixelImage {
     this.fileName = fileName;
   }
 
-//  public PixelImage(List<List<IPixel>> pixelImage) {
-//  this.pixelImage = pixelImage;
-//  }
+  public PixelImage(List<List<IPixel>> pixelImage) {
+  this.pixelImage = pixelImage;
+  this.imageHeight = getNumRows();
+  this.imageWidth = getNumPixelsInRow();
+  this.maxValue = 255; // TODO: question: is this correct?
+  this.fileName = "tempFileName.ppm";
+  }
 
   @Override
   public void render(String type) {

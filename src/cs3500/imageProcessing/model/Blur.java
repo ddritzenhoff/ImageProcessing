@@ -25,41 +25,71 @@ public class Blur implements ITransformation {
       List<IPixel> pixelRow = pixelRows.get(row);
       for (int pixelRowIndex = 0; pixelRowIndex < pixelRow.size(); pixelRowIndex++) {
 
-        // get pixels surrounding this pixel.
-        List<List<IPixel>> kernelPixels = getKernelPixels(pixelRows, row, pixelRowIndex);
+        int numDiagonalNeighbors = getNumEdgeNeighbors(row, pixelRowIndex);
+        int numStraightNeighbors = getNumStraightNeighbors(row, pixelRowIndex);
 
-        // map pixels with kernel
-
-        // add pixels to newImage
+        pixelRows.get(row).get(pixelRowIndex).scaleChannels(
+            (1.0 / 16) * numDiagonalNeighbors * (1.0 / 8) * numStraightNeighbors * (1.0 / 4));
 
       }
     }
-
-    return null;
+    return new PixelImage(pixelRows);
   }
 
-  protected List<List<IPixel>> getKernelPixels(List<List<IPixel>> pixelRows, int row,
-      int pixelRowIndex) {
+  // TODO: you could add this as a value within the IPixel
+  protected int getNumEdgeNeighbors(int row, int pixelRowIndex) {
+    // TODO: make more dynamic
+    int numEdgeNeighbors = 0;
 
-    List<List<IPixel>> kernel = new ArrayList<>();
-    for (int rowX = -1; rowX <= 1; rowX++) {
-      List<IPixel> kernelRow = new ArrayList<>();
-      for (int colX = -1; colX <= 1; colX++) {
+    // check top left corner
+    int tempPixelRow = row + -1;
+    int tempPixelRowIndex = pixelRowIndex + -1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numEdgeNeighbors++;
 
-        int tempPixelRow = row + rowX;
-        int tempPixelRowIndex = pixelRowIndex + colX;
-        if (pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) {
+    // check top right corner
+    tempPixelRow = row + -1;
+    tempPixelRowIndex = pixelRowIndex + 1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numEdgeNeighbors++;
 
-          IPixel tempPixel = this.oldImage.getPixel(tempPixelRow, tempPixelRowIndex);
-          kernelRow.add(tempPixel);
-        } else {
-          kernelRow.add(null);
-        }
-      }
-      kernel.add(kernelRow);
-    }
+    // check bottom left corner
+    tempPixelRow = row + 1;
+    tempPixelRowIndex = pixelRowIndex + -1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numEdgeNeighbors++;
 
-    return kernel;
+    // check bottom right corner
+    tempPixelRow = row + 1;
+    tempPixelRowIndex = pixelRowIndex + 1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numEdgeNeighbors++;
+
+    return numEdgeNeighbors;
+  }
+
+  // TODO: you could add this as a value within the IPixel
+  protected int getNumStraightNeighbors(int row, int pixelRowIndex) {
+    // TODO: make more dynamic
+    int numStraightNeighbors = 0;
+
+    // check left
+    int tempPixelRow = row;
+    int tempPixelRowIndex = pixelRowIndex + -1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numStraightNeighbors++;
+
+    // check right
+    tempPixelRow = row;
+    tempPixelRowIndex = pixelRowIndex + 1;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numStraightNeighbors++;
+
+    // check up
+    tempPixelRow = row - 1;
+    tempPixelRowIndex = pixelRowIndex;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numStraightNeighbors++;
+
+    // check down
+    tempPixelRow = row + 1;
+    tempPixelRowIndex = pixelRowIndex;
+    if(pixelWithinBounds(tempPixelRow, tempPixelRowIndex)) numStraightNeighbors++;
+
+    return numStraightNeighbors;
   }
 
   protected boolean pixelWithinBounds(int tempPixelRow, int tempPixelRowIndex) {
