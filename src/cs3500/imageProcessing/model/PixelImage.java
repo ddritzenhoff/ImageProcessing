@@ -79,25 +79,6 @@ public class PixelImage implements IPixelImage {
     //return null;
   }
 
-
-  public static void main(String[] args) {
-    String filename2;
-
-    if (args.length > 0) {
-      filename2 = args[0];
-    } else {
-      filename2 = "src/Koala.ppm";
-    }
-
-    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Koala.ppm");
-    testImage2.render("jpg");
-    testImage2.render("ppm");
-    // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
-    //testImage.render();
-
-    // testImage.render();
-  }
-
   public int getNumRows() {
     return this.pixelImage.size();
   }
@@ -129,6 +110,29 @@ public class PixelImage implements IPixelImage {
     }
 
     return imageCopy;
+  }
+
+
+  public static void main(String[] args) {
+    String filename2;
+
+    if (args.length > 0) {
+      filename2 = args[0];
+    } else {
+      filename2 = "src/Koala.ppm";
+    }
+
+    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Koala.ppm");
+//    testImage2.render("jpg");
+//    testImage2.render("ppm");
+//    testImage2.render("png");
+
+    IPixelImage rect = new Checkerboard(50, 10).returnPixelImage();
+    rect.render(".ppm");
+    // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
+    //testImage.render();
+
+    // testImage.render();
   }
 
 }
