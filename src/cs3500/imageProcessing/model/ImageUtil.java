@@ -84,6 +84,17 @@ public class ImageUtil {
     return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
   }
 
+  public static int pixelClamp(int value) {
+    if (value > 255) {
+      return 255;
+    }
+    if (value < 0 ) {
+      return 0 ;
+    }
+    return value;
+  }
+
+
   //demo main
   public static void main(String []args) {
       String filename;

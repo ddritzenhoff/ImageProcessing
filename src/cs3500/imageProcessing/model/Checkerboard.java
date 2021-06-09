@@ -37,7 +37,7 @@ public class Checkerboard implements IPixelImage {
   }
 
   public List<List<IPixel>> makeCheckerboard() {
-    IPixel blackPixel = new Pixel(0,0,0);
+    IPixel blackPixel = new Pixel(1,255,1);
     IPixel whitePixel = new Pixel(255,255,255);
 
     List<List<IPixel>> image = new ArrayList<>();
@@ -66,11 +66,9 @@ public class Checkerboard implements IPixelImage {
     for ( int x = 0 ; x < numTiles/2 ; x ++  ) {
       for (int i = 0; i < scaleFactor; i++) {
         row.add(pixel1);
-
       }
       for (int i = 0; i < scaleFactor; i++) {
         row.add(pixel2);
-
       }
     }
 
@@ -103,4 +101,5 @@ public class Checkerboard implements IPixelImage {
   public int getNumPixelsInRow() {
     return delegate.getNumPixelsInRow();
   }
+
 }

@@ -41,9 +41,20 @@ public class Pixel implements IPixel {
 
   @Override
   public void scaleRGB(double r, double g, double b) {
-    this.r = (int)(this.r * r + this.g*g + this.b*b );
-    this.g = (int)(this.r * r + this.g*g + this.b*b );
-    this.b = (int)(this.r * r + this.g*g + this.b*b );
+    int oldR = this.r;
+    int oldG = this.g;
+    int oldB = this.b;
+    this.r = (int)(oldR * r + oldG * g + oldB * b );
+    this.g = (int)(oldR * r + oldG * g + oldB * b );
+    this.b = (int)(oldR * r + oldG * g + oldB * b );
+  }
+
+
+  @Override
+  public void addValues(IPixel tempPixel) {
+    this.r = ImageUtil.pixelClamp(this.r + tempPixel.getR());
+    this.g = ImageUtil.pixelClamp(this.g + tempPixel.getG());
+    this.b = ImageUtil.pixelClamp(this.b + tempPixel.getB());
   }
 
   @Override

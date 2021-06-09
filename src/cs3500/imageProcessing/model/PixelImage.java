@@ -148,8 +148,8 @@ public class PixelImage implements IPixelImage {
 
 
 
-     Greyscale testGreyscale = new Greyscale(rect);
-     testGreyscale.apply("koalaTestGreyscale").render("png");
+//     Greyscale testGreyscale = new Greyscale(testImage2);
+//     testGreyscale.apply("koalaTestGreyscale").render("png");
 
    // testImage.render();
   }
