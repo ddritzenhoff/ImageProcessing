@@ -15,7 +15,7 @@ public class Greyscale implements ITransformation {
 
 
   public Greyscale(IPixelImage oldImage) {
-    // this.oldImage = oldImage;
+
     this.abstractDelegate = new AbstractColorTransformation(oldImage, greyScaleMatrix);
 
   }
