@@ -12,4 +12,6 @@ public interface IPixel {
 
   void applyMatrix(double[][] matrix);
 
+  void clamp();
+
 }

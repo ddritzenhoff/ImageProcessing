@@ -15,7 +15,7 @@ public class Sharpen implements ITransformation {
           {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
 
   public Sharpen(IPixelImage oldImage) {
-    this.abstractDelegate = new AbstractTransformation(oldImage, sharpenKernel);
+    this.abstractDelegate = new AbstractFilterTransformation(oldImage, sharpenKernel);
   }
 
   @Override

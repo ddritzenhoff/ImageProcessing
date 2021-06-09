@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 // TODO: I think that I want to make this class final so that it can only be used as a delegate.
-public final class AbstractTransformation implements ITransformation{
+public final class AbstractFilterTransformation implements ITransformation{
 
   protected final IPixelImage oldImage;
   protected final double[][] kernel;
   protected final int kernelSize;
 
-  protected AbstractTransformation(IPixelImage oldImage, double[][] kernel) {
+  protected AbstractFilterTransformation(IPixelImage oldImage, double[][] kernel) {
     this.oldImage = Objects.requireNonNull(oldImage);
     this.kernel = Objects.requireNonNull(kernel);
     this.kernelSize = this.kernel.length;
@@ -54,6 +54,9 @@ public final class AbstractTransformation implements ITransformation{
 
       tempPixelRow++;
     }
+
+    // clamp the values to make sure they stay within range.
+    newPixel.clamp();
 
     return newPixel;
   }

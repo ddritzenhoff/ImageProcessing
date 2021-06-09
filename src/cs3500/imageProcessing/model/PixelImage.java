@@ -127,31 +127,16 @@ public class PixelImage implements IPixelImage {
       filename2 = "src/Koala.ppm";
     }
 
-
-
     IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Koala.ppm");
-//    testImage2.render("jpg");
-//    testImage2.render("ppm");
-//    testImage2.render("png");
-    testImage2.render("ppm");
 
-//    IPixelImage rect = new Checkerboard(50, 10).returnPixelImage();
-//    rect.render("ppm");
-    // IPixelImage testImage = new PixelImage().generatePPM("src/Koala.ppm");
-    //testImage.render();
-    IPixelImage testImage3 = ImageUtil.PPMtoPixelImage("EditedBlurredKoala1.png");
-    //Blur test2 = new Blur()
-     Blur test = new Blur(testImage3);
+//    IPixelImage finalSharpen = new Sharpen ( new Sharpen ( new Sharpen (
+//        new Sharpen(testImage2).apply("")).apply("")).apply("")).apply("sharpencomposite");
+//
+//    finalSharpen.render("ppm");
 
-     //test.apply("k");
-     test.apply("k").render("png");
+    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply("");
+    finalSharpen2.render("ppm");
 
-
-
-//     Greyscale testGreyscale = new Greyscale(testImage2);
-//     testGreyscale.apply("koalaTestGreyscale").render("png");
-
-   // testImage.render();
   }
 
 }

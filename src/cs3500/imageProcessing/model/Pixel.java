@@ -52,9 +52,16 @@ public class Pixel implements IPixel {
 
   @Override
   public void addValues(IPixel tempPixel) {
-    this.r = ImageUtil.pixelClamp(this.r + tempPixel.getR());
-    this.g = ImageUtil.pixelClamp(this.g + tempPixel.getG());
-    this.b = ImageUtil.pixelClamp(this.b + tempPixel.getB());
+    this.r = this.r + tempPixel.getR();
+    this.g = this.g + tempPixel.getG();
+    this.b = this.b + tempPixel.getB();
+  }
+
+  @Override
+  public void clamp() {
+    this.r = ImageUtil.pixelClamp(this.r);
+    this.g = ImageUtil.pixelClamp(this.g);
+    this.b = ImageUtil.pixelClamp(this.b);
   }
 
   @Override

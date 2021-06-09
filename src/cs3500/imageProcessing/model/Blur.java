@@ -1,8 +1,5 @@
 package cs3500.imageProcessing.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Blur implements ITransformation {
 
 //  protected final IPixelImage oldImage;
@@ -14,7 +11,7 @@ protected final ITransformation abstractDelegate;
 
   public Blur(IPixelImage oldImage) {
 //    this.oldImage = oldImage;
-    this.abstractDelegate = new AbstractTransformation(oldImage, blurKernel);
+    this.abstractDelegate = new AbstractFilterTransformation(oldImage, blurKernel);
   }
 
   @Override
