@@ -1,8 +1,10 @@
 package cs3500.imageProcessing.model;
 
 
-// TODO: the abstract class functionality should probably change a little.
-//  also, I'm not completely sure that this works.
+/**
+ * Represents an ITransformation sharpen operation.
+ * Converts the passed-in image to a sharpened version of itself.
+ */
 public class Sharpen implements ITransformation {
 
   protected final ITransformation abstractDelegate;
@@ -14,16 +16,17 @@ public class Sharpen implements ITransformation {
           {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
           {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
 
-  public Sharpen(IPixelImage oldImage) {
-    this.abstractDelegate = new AbstractFilterTransformation(oldImage, sharpenKernel);
+  /**
+   * Constructor of a Sharpen operation
+   * Uses a AbstractFilterTransformation named abstractDelegate to abstract the process of using
+   * kernels over an image.
+   */
+  public Sharpen() {
+    this.abstractDelegate = new AbstractFilterTransformation(sharpenKernel);
   }
 
-  /**
-   * Apply performs a ITransformation on an IPixelImage.
-   * @return a new IPixelImage with a sharpen transformation applied to it.
-   */
   @Override
-  public IPixelImage apply() {
-    return this.abstractDelegate.apply();
+  public IPixelImage apply(IPixelImage oldImage) {
+    return this.abstractDelegate.apply(oldImage);
   }
 }

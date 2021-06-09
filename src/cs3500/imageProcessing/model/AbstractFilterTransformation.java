@@ -4,25 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class AbstractFilterTransformation implements ITransformation{
+/**
+ * Represents an ITransformation kernel operation. For everything that uses a kernel, this class
+ * abstracts the process of using that kernel over the image.
+ */
+public final class AbstractFilterTransformation implements ITransformation {
 
-  protected final IPixelImage oldImage;
-  protected final double[][] kernel;
-  protected final int kernelSize;
+  private final double[][] kernel;
+  private final int kernelSize;
 
-  protected AbstractFilterTransformation(IPixelImage oldImage, double[][] kernel) {
-    this.oldImage = Objects.requireNonNull(oldImage);
+  /**
+   * Represents an ITransformation filter operation. Converts the passed-in image to an operated-on
+   * version of itself using the kernel.
+   *
+   * @param kernel an odd 2D array (1x1, 3x3, etc) that represents the values the surrounding pixels
+   *               of the image must be multiplied by. After multiplication, the products are summed
+   *               together.
+   */
+  protected AbstractFilterTransformation(double[][] kernel) {
     this.kernel = Objects.requireNonNull(kernel);
     this.kernelSize = this.kernel.length;
   }
 
   @Override
-  public IPixelImage apply() {
+  public IPixelImage apply(IPixelImage oldImage) {
+
+    Objects.requireNonNull(oldImage);
+
     List<List<IPixel>> pixelRows = new ArrayList<>();
     for (int row = 0; row < oldImage.getNumRows(); row++) {
       List<IPixel> pixelRow = new ArrayList<>();
       for (int pixelRowIndex = 0; pixelRowIndex < oldImage.getNumPixelsInRow(); pixelRowIndex++) {
-        pixelRow.add(getNewPixel(row, pixelRowIndex));
+        pixelRow.add(getNewPixel(row, pixelRowIndex, oldImage));
       }
 
       pixelRows.add(pixelRow);
@@ -31,7 +44,15 @@ public final class AbstractFilterTransformation implements ITransformation{
     return new PixelImage(pixelRows);
   }
 
-  protected IPixel getNewPixel(int row, int pixelRowIndex) {
+  /**
+   * Uses the kernel to take the sum of the products of the surrounding pixels.
+   *
+   * @param row           the pixel row of interest.
+   * @param pixelRowIndex the pixel row index of interest.
+   * @param oldImage      the image containing the pixels to be operated on.
+   * @return a new IPixel, which contains the RGB values from the kernel operation.
+   */
+  private IPixel getNewPixel(int row, int pixelRowIndex, IPixelImage oldImage) {
     int startingValue = -1 * (this.kernelSize / 2);
     IPixel newPixel = new Pixel(0, 0, 0);
 
@@ -42,7 +63,7 @@ public final class AbstractFilterTransformation implements ITransformation{
 
         int p1 = row + tempPixelRow;
         int p2 = pixelRowIndex + tempPixelRowIndex;
-        if (pixelWithinBounds(p1, p2)) {
+        if (pixelWithinBounds(p1, p2, oldImage)) {
           IPixel tempPixel = oldImage.getPixel(p1, p2);
           tempPixel.scaleChannels(this.kernel[ii][jj]);
           newPixel.addValues(tempPixel);
@@ -60,8 +81,16 @@ public final class AbstractFilterTransformation implements ITransformation{
     return newPixel;
   }
 
-  protected boolean pixelWithinBounds(int tempPixelRow, int tempPixelRowIndex) {
-    return tempPixelRow >= 0 && tempPixelRow < this.oldImage.getNumRows() && tempPixelRowIndex >= 0
-        && tempPixelRowIndex < this.oldImage.getNumPixelsInRow();
+  /**
+   * Checks to see whether the pixel is within bounds of the passed-in image.
+   *
+   * @param tempPixelRow      the pixel row of interest.
+   * @param tempPixelRowIndex the pixel row index of interest.
+   * @param oldImage          the image containing the pixels within question.
+   * @return true if the pixel is within bounds and false otherwise.
+   */
+  private boolean pixelWithinBounds(int tempPixelRow, int tempPixelRowIndex, IPixelImage oldImage) {
+    return tempPixelRow >= 0 && tempPixelRow < oldImage.getNumRows() && tempPixelRowIndex >= 0
+        && tempPixelRowIndex < oldImage.getNumPixelsInRow();
   }
 }

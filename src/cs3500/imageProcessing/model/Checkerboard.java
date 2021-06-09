@@ -18,21 +18,13 @@ public class Checkerboard implements IPixelImage {
   protected  int maxValue = 255;
   protected List<List<IPixel>> pixelImage;
 
-
-
-  //protected final String fileName;
-  //PixelImage newCheckerBoard = super(1000,1000,255,temp,"c");
-
-
   /**
    * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles.
    * The number of tiles will create a numTiles x numTiles sized checkerboard.
    * @param sizeTile the pixel dimensions of a single tile.
-   * @param numTiles
+   * @param numTiles the number of tiles to exist within the image.
    */
   public Checkerboard(int sizeTile, int numTiles) {
-    //TODO: documentation regarding the parameters.
-
     this.numTiles = numTiles;
     this.imageWidth = sizeTile * numTiles;
     this.imageHeight = sizeTile * numTiles;
@@ -40,15 +32,12 @@ public class Checkerboard implements IPixelImage {
     ///this.delegate = new PixelImage(pixelImage,"Checkerboard");
     this.delegate = new PixelImage(imageWidth, imageHeight,
         255, pixelImage, "Checkerboard");
-
   }
 
-  public IPixelImage returnPixelImage() {
-  // return new PixelImage(imageWidth,imageHeight,255,pixelImage,"CHECKERBOARD");
-    return delegate;
-  }
-
-  //TODO: JAVADOC
+  /**
+   * Creates a checkerboard pattern programmatically.
+   * @return the 2D arraylist of pixels, which make up the checkerboard pattern.
+   */
   private List<List<IPixel>> makeCheckerboard() {
     IPixel blackPixel = new Pixel(0,0,0);
     IPixel whitePixel = new Pixel(255,255,255);
@@ -70,10 +59,17 @@ public class Checkerboard implements IPixelImage {
         image.add(tempWRow);
       }
     }
-    return image ;
+    return image;
   }
 
-  //TODO: JAVADOC
+  /**
+   * Makes a row of the checkerboard.
+   * @param pixel1 a pixel containing color 1.
+   * @param pixel2 a pixel containing color 2 where color 1 != color 2. This helps create the
+   *               checkerboard pattern.
+   * @param scaleFactor the degree to how big the checkerboard row will be.
+   * @return the row of pixels, which make up one of the checkerboard rows.
+   */
   private List<IPixel> makeRow(IPixel pixel1, IPixel pixel2, int scaleFactor) {
 
     List<IPixel> row = new ArrayList<>();

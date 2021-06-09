@@ -26,10 +26,11 @@ public class Greyscale implements ITransformation {
   /**
    * Apply performs a ITransformation on an IPixelImage.
    * @return a new IPixelImage with a Greyscale color transformation applied to it.
+   * @param oldImage the image to be converted into a new grayscale image.
    */
   @Override
-  public IPixelImage apply() {
-    return this.abstractDelegate.apply();
+  public IPixelImage apply(IPixelImage oldImage) {
+    return this.abstractDelegate.apply(oldImage);
   }
 
 }

@@ -14,6 +14,7 @@ public interface ITransformation {
    *  Currently there are two color transformations: Sepia, and Greyscale.
    *  Currently there are two filter transformations: Blur, and Sharpen.
    * @return a new IPixelImage with the appropriate transformation applied to it.
+   * @param oldImage this is the image to be operated upon.
    */
-  IPixelImage apply();
+  IPixelImage apply(IPixelImage oldImage);
 }

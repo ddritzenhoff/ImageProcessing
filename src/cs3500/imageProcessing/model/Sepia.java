@@ -27,10 +27,11 @@ public class Sepia implements ITransformation {
   /**
    * Apply performs a ITransformation on an IPixelImage.
    * @return a new IPixelImage with a Sepia color transformation applied to it.
+   * @param oldImage
    */
   @Override
-  public IPixelImage apply() {
-    return this.abstractDelegate.apply();
+  public IPixelImage apply(IPixelImage oldImage) {
+    return abstractDelegate.apply(oldImage);
   }
 
 }

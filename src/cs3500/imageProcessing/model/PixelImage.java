@@ -130,15 +130,12 @@ public class PixelImage implements IPixelImage {
 
    // IPixelImage testImage2 = new Checkerboard(100,10);
 
+    ITransformation Chained = new ChainedTransformation(testImage2, commands);
 
-    IPixelImage finalSharpen = new Sharpen ( new Sharpen ( new Sharpen (
-        new Sharpen(testImage2).apply()).apply()).apply()).apply();
-
-    finalSharpen.render("ppm");
+    IPixelImage test = Chained.apply(testImage2);
+    test.render("ppm");
 
 
-    IPixelImage finalBlur = new Blur ( new Blur ( new Blur (
-        new Blur(testImage2).apply()).apply()).apply()).apply();
 
     finalBlur.render("ppm");
    // ITransformation sepia = new Sepia(testImage2);
