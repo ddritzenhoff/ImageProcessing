@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PixelImage implements IPixelImage {
@@ -26,10 +27,10 @@ public class PixelImage implements IPixelImage {
   }
 
   public PixelImage(List<List<IPixel>> pixelImage) {
-  this.pixelImage = pixelImage;
-  this.imageHeight = getNumRows();
-  this.imageWidth = getNumPixelsInRow();
-  this.maxValue = 255; // TODO: question: is this correct?
+    this.pixelImage = pixelImage;
+    this.imageHeight = getNumRows();
+    this.imageWidth = getNumPixelsInRow();
+    this.maxValue = 255; // TODO: question: is this correct?
     this.fileName = "tempFileName";
   }
 
@@ -45,7 +46,7 @@ public class PixelImage implements IPixelImage {
         newFileName =  fileName.substring(10);
       }
       System.out.println(newFileName);
-        String newTitle = "Edited" + newFileName + "." + type;
+      String newTitle = "Edited" + newFileName + "." + type;
       fos = new FileOutputStream(newTitle);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -125,15 +126,41 @@ public class PixelImage implements IPixelImage {
       filename2 = "src/Koala.ppm";
     }
 
-    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Koala.ppm");
+  IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/boston.ppm");
 
-//    IPixelImage finalSharpen = new Sharpen ( new Sharpen ( new Sharpen (
-//        new Sharpen(testImage2).apply("")).apply("")).apply("")).apply("sharpencomposite");
-//
-//    finalSharpen.render("ppm");
+   // IPixelImage testImage2 = new Checkerboard(100,10);
 
-    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply();
-    finalSharpen2.render("ppm");
+
+    IPixelImage finalSharpen = new Sharpen ( new Sharpen ( new Sharpen (
+        new Sharpen(testImage2).apply()).apply()).apply()).apply();
+
+    finalSharpen.render("ppm");
+
+
+    IPixelImage finalBlur = new Blur ( new Blur ( new Blur (
+        new Blur(testImage2).apply()).apply()).apply()).apply();
+
+    finalBlur.render("ppm");
+   // ITransformation sepia = new Sepia(testImage2);
+
+    List commands = Arrays.asList(
+        //TransformEnum.GREYSCALE,
+        TransformEnum.SEPIA,
+        TransformEnum.SEPIA,
+        TransformEnum.BLUR,
+        TransformEnum.GREYSCALE,
+        TransformEnum.BLUR,
+        TransformEnum.BLUR,
+        TransformEnum.BLUR,
+        TransformEnum.BLUR
+       );
+//        TransformEnum.SEPIA
+    //);
+    ITransformation chainedTransformTest = new ChainedTransformation(testImage2, commands);
+    chainedTransformTest.apply().render("ppm");
+
+//    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply();
+//    finalSharpen2.render("ppm");
 
   }
 

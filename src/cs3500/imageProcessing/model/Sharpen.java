@@ -18,6 +18,10 @@ public class Sharpen implements ITransformation {
     this.abstractDelegate = new AbstractFilterTransformation(oldImage, sharpenKernel);
   }
 
+  /**
+   * Apply performs a ITransformation on an IPixelImage.
+   * @return a new IPixelImage with a sharpen transformation applied to it.
+   */
   @Override
   public IPixelImage apply() {
     return this.abstractDelegate.apply();

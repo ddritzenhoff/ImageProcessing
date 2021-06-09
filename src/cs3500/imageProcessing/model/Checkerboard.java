@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Creates a checkerboard programatticaly using the IPixelImage format.
+ * Represented as a 2D array.
+ */
 public class Checkerboard implements IPixelImage {
   protected IPixelImage delegate;
   protected  int imageWidth;
@@ -15,11 +19,17 @@ public class Checkerboard implements IPixelImage {
   protected List<List<IPixel>> pixelImage;
 
 
+
   //protected final String fileName;
   //PixelImage newCheckerBoard = super(1000,1000,255,temp,"c");
 
 
-
+  /**
+   * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles.
+   * The number of tiles will create a numTiles x numTiles sized checkerboard.
+   * @param sizeTile the pixel dimensions of a single tile.
+   * @param numTiles
+   */
   public Checkerboard(int sizeTile, int numTiles) {
     //TODO: documentation regarding the parameters.
 
@@ -38,8 +48,9 @@ public class Checkerboard implements IPixelImage {
     return delegate;
   }
 
-  public List<List<IPixel>> makeCheckerboard() {
-    IPixel blackPixel = new Pixel(1,255,1);
+  //TODO: JAVADOC
+  private List<List<IPixel>> makeCheckerboard() {
+    IPixel blackPixel = new Pixel(0,0,0);
     IPixel whitePixel = new Pixel(255,255,255);
 
     List<List<IPixel>> image = new ArrayList<>();
@@ -62,6 +73,7 @@ public class Checkerboard implements IPixelImage {
     return image ;
   }
 
+  //TODO: JAVADOC
   private List<IPixel> makeRow(IPixel pixel1, IPixel pixel2, int scaleFactor) {
 
     List<IPixel> row = new ArrayList<>();

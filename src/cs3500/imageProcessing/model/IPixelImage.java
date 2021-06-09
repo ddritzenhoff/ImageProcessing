@@ -4,14 +4,19 @@ import java.util.List;
 
 public interface IPixelImage {
 
-  public List<List<IPixel>> getPixels();
+  //TODO: JAVADOC
+  List<List<IPixel>> getPixels();
 
-  public IPixel getPixel(int row, int pixelRowIndex);
+  //TODO: JAVADOC
+  IPixel getPixel(int row, int pixelRowIndex);
 
-  public void render(String type);
+  //TODO: JAVADOC
+  void render(String type);
 
-  public int getNumRows();
+  //TODO: JAVADOC
+  int getNumRows();
 
-  public int getNumPixelsInRow();
+  //TODO: JAVADOC
+  int getNumPixelsInRow();
 
 }

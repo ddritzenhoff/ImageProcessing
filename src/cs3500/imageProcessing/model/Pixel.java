@@ -1,7 +1,8 @@
 package cs3500.imageProcessing.model;
 
 /**
- * represents a singular pixel.
+ * represents a singular pixel in a IPixelImage.
+ * Has a r, g, and b value to represent the three color channels; red, green and blue.
  */
 public class Pixel implements IPixel {
   private int r;
@@ -20,37 +21,47 @@ public class Pixel implements IPixel {
     this.b = b;
   }
 
+  /**
+   * getter to return the this pixels r value.
+   * @return an integer representing the red value of a pixel.
+   */
   public int getR() {
     return this.r;
   }
 
+
+  /**
+   * getter to return the this pixels g value.
+   * @return an integer representing the green value of a pixel.
+   */
   public int getG() {
     return this.g;
   }
 
+  /**
+   * getter to return the this pixels b value.
+   * @return an integer representing the blue value of a pixel.
+   */
   public int getB() {
     return this.b;
   }
 
-  @Override
+  /**
+   * Scales this pixel.
+   * Multiplies the scalar value to every channel of this pixel.
+   * @param scalar a decimal value.
+   */
   public void scaleChannels(double scalar) {
     this.r = (int) (this.r * scalar);
     this.g = (int) (this.g * scalar);
     this.b = (int) (this.b * scalar);
   }
 
-  @Override
-  public void scaleRGB(double r, double g, double b) {
-    int oldR = this.r;
-    int oldG = this.g;
-    int oldB = this.b;
-    this.r = (int)(oldR * r + oldG * g + oldB * b );
-    this.g = (int)(oldR * r + oldG * g + oldB * b );
-    this.b = (int)(oldR * r + oldG * g + oldB * b );
-  }
 
-
-  @Override
+  /**
+   *
+   * @param tempPixel
+   */
   public void addValues(IPixel tempPixel) {
     this.r = this.r + tempPixel.getR();
     this.g = this.g + tempPixel.getG();

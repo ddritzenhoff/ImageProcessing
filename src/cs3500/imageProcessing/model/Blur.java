@@ -13,6 +13,10 @@ protected final ITransformation abstractDelegate;
     this.abstractDelegate = new AbstractFilterTransformation(oldImage, blurKernel);
   }
 
+  /**
+   * Apply performs a ITransformation on an IPixelImage.
+   * @return a new IPixelImage with a blur transformation applied to it.
+   */
   @Override
   public IPixelImage apply() {
     return this.abstractDelegate.apply();
