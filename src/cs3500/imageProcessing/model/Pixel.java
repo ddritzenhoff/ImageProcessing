@@ -46,6 +46,22 @@ public class Pixel implements IPixel {
     this.b = (int)(this.r * r + this.g*g + this.b*b );
   }
 
+  @Override
+  public void applyMatrix(double[][] matrix) {
+    int oldR = r;
+    int oldG = g;
+    int oldB = b;
+
+    int newR = (int)((oldR * matrix[0][0]) + (oldG * matrix[0][1]) + (oldB * matrix[0][2])) ;
+    int newG = (int)((oldR * matrix[1][0]) + (oldG * matrix[1][1]) + (oldB * matrix[1][2])) ;
+    int newB = (int)((oldR * matrix[2][0]) + (oldG * matrix[2][1]) + (oldB * matrix[2][2])) ;
+
+    r = ImageUtil.pixelClamp(newR);
+    g = ImageUtil.pixelClamp(newG);
+    b = ImageUtil.pixelClamp(newB);
+
+
+  }
 
   @Override
   public String toString() {

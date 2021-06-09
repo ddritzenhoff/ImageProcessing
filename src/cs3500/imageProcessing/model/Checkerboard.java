@@ -32,7 +32,7 @@ public class Checkerboard implements IPixelImage {
   }
 
   public IPixelImage returnPixelImage() {
-//    return new PixelImage(imageWidth,imageHeight,255,pixelImage,"CHECKERBOARD");
+  // return new PixelImage(imageWidth,imageHeight,255,pixelImage,"CHECKERBOARD");
     return delegate;
   }
 

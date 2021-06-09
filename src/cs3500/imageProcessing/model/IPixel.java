@@ -8,4 +8,8 @@ public interface IPixel {
   void scaleChannels(double scalar);
   void scaleRGB(double r, double g , double b);
 
+  void addValues(IPixel tempPixel);
+
+  void applyMatrix(double[][] matrix);
+
 }
