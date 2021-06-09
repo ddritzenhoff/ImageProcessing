@@ -4,7 +4,9 @@ import java.util.List;
 
 public class Greyscale implements ITransformation {
 
-  protected final IPixelImage oldImage;
+  //protected final IPixelImage oldImage;
+  protected final ITransformation abstractDelegate;
+
 
   protected final double[][] greyScaleMatrix =
       {{.2126,  .7152, .0722},
@@ -13,20 +15,15 @@ public class Greyscale implements ITransformation {
 
 
   public Greyscale(IPixelImage oldImage) {
-    this.oldImage = oldImage;
+    // this.oldImage = oldImage;
+    this.abstractDelegate = new AbstractColorTransformation(oldImage, greyScaleMatrix);
+
   }
 
   @Override
   public IPixelImage apply(String id) {
-    List<List<IPixel>> pixelRows = this.oldImage.getPixels();
-
-    for (int row = 0; row < pixelRows.size(); row++) {
-      List<IPixel> pixelRow = pixelRows.get(row);
-      for (int pixelRowIndex = 0; pixelRowIndex < pixelRow.size(); pixelRowIndex++) {
-        pixelRows.get(row).get(pixelRowIndex).applyMatrix(greyScaleMatrix);
-      }
-    }
-    return new PixelImage(pixelRows,id); //TODO: added a field for ID
+    //List<List<IPixel>> pixelRows = this.oldImage.getPixels();
+    return this.abstractDelegate.apply(id);
   }
 
 }
