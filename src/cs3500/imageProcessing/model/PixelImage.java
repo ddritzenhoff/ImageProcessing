@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This is how an image is represented within this program. It is simply a collection of IPixels
+ * arranged within a 2D structure to mimic the layout of an image.
+ */
 public class PixelImage implements IPixelImage {
 
   protected final int imageWidth;
@@ -17,6 +21,15 @@ public class PixelImage implements IPixelImage {
   protected final List<List<IPixel>> pixelImage;
   protected final String fileName;
 
+  /**
+   * Constructs a PixelImage object.
+   *
+   * @param imageWidth  the number of pixels within a row of pixels.
+   * @param imageHeight the number of pixels within a column of pixels.
+   * @param maxValue    the max value that a pixel can take.
+   * @param pixelImage  the 2D array of pixels to represent an image.
+   * @param fileName    the name of the file.
+   */
   public PixelImage(int imageWidth, int imageHeight, int maxValue,
       List<List<IPixel>> pixelImage, String fileName) {
     this.imageWidth = imageWidth;
@@ -26,13 +39,21 @@ public class PixelImage implements IPixelImage {
     this.fileName = fileName;
   }
 
+  /**
+   * Constructs a PixelImage object with a default file name.
+   *
+   * @param pixelImage the 2D array of pixels to represent an image.
+   */
   public PixelImage(List<List<IPixel>> pixelImage) {
     this.pixelImage = pixelImage;
     this.imageHeight = getNumRows();
     this.imageWidth = getNumPixelsInRow();
-    this.maxValue = 255; // TODO: question: is this correct?
+    this.maxValue = 255;
     this.fileName = "tempFileName";
   }
+
+  // TODO: consider removing fileName and putting it into model.
+  // TODO: also consider to move render a different class.
 
   @Override
   public void render(String type) {
@@ -42,8 +63,8 @@ public class PixelImage implements IPixelImage {
     try {
 //      System.out.println(this.fileName);
       String newFileName = fileName;
-      if (newFileName.contains("src/files/")){
-        newFileName =  fileName.substring(10);
+      if (newFileName.contains("src/files/")) {
+        newFileName = fileName.substring(10);
       }
       System.out.println(newFileName);
       String newTitle = "Edited" + newFileName + "." + type;
@@ -126,23 +147,20 @@ public class PixelImage implements IPixelImage {
       filename2 = "src/Koala.ppm";
     }
 
-  IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Boston.ppm");
+    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Boston.ppm");
 
-   // IPixelImage testImage2 = new Checkerboard(100,10);
+    // IPixelImage testImage2 = new Checkerboard(100,10);
     ITransformation sepia = new Sepia();
     ITransformation blur = new Blur();
     ITransformation greyscale = new Greyscale();
     ITransformation sharpen = new Sharpen();
 
-
-    List<ITransformation> commands = Arrays.asList( blur,blur,blur,blur );
+    List<ITransformation> commands = Arrays.asList(blur, blur, blur, blur);
 
     ITransformation Chained = new ChainedTransformation(testImage2, commands);
 
     IPixelImage test = Chained.apply(testImage2);
     test.render("ppm");
-
-
 
 
   }

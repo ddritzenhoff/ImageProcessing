@@ -4,9 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class represents the model to process different images. This particular implementation lets
+ * you add images to 'storage' and transform them using different operations.
+ */
 public class ProcessingModel implements IModel {
+
   protected final Map<String, IPixelImage> images;
 
+  /**
+   * Constructs a IModel object.
+   */
   public ProcessingModel() {
     this.images = new HashMap<>();
   }
@@ -47,15 +55,12 @@ public class ProcessingModel implements IModel {
   }
 
   public void importPPM(String fileName) {
-    images.putIfAbsent(fileName,ImageUtil.PPMtoPixelImage(fileName));
+    images.putIfAbsent(fileName, ImageUtil.PPMtoPixelImage(fileName));
   }
 
   public void exportPPM(String fileName) {
     images.get(fileName).render("ppm");
   }
-
-
-
 
 
 }

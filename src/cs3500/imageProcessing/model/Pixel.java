@@ -1,10 +1,13 @@
 package cs3500.imageProcessing.model;
 
+import java.util.Objects;
+
 /**
- * represents a singular pixel in a IPixelImage.
- * Has a r, g, and b value to represent the three color channels; red, green and blue.
+ * represents a singular pixel in a IPixelImage. Has a r, g, and b value to represent the three
+ * color channels; red, green and blue.
  */
 public class Pixel implements IPixel {
+
   private int r;
   private int g;
   private int b;
@@ -42,6 +45,7 @@ public class Pixel implements IPixel {
 
   @Override
   public void addValues(IPixel tempPixel) {
+    Objects.requireNonNull(tempPixel);
     this.r = this.r + tempPixel.getR();
     this.g = this.g + tempPixel.getG();
     this.b = this.b + tempPixel.getB();
@@ -56,26 +60,25 @@ public class Pixel implements IPixel {
 
   @Override
   public void applyMatrix(double[][] matrix) {
+    Objects.requireNonNull(matrix);
+
     int oldR = r;
     int oldG = g;
     int oldB = b;
 
-    int newR = (int)((oldR * matrix[0][0]) + (oldG * matrix[0][1]) + (oldB * matrix[0][2])) ;
-    int newG = (int)((oldR * matrix[1][0]) + (oldG * matrix[1][1]) + (oldB * matrix[1][2])) ;
-    int newB = (int)((oldR * matrix[2][0]) + (oldG * matrix[2][1]) + (oldB * matrix[2][2])) ;
+    int newR = (int) ((oldR * matrix[0][0]) + (oldG * matrix[0][1]) + (oldB * matrix[0][2]));
+    int newG = (int) ((oldR * matrix[1][0]) + (oldG * matrix[1][1]) + (oldB * matrix[1][2]));
+    int newB = (int) ((oldR * matrix[2][0]) + (oldG * matrix[2][1]) + (oldB * matrix[2][2]));
 
     r = ImageUtil.pixelClamp(newR);
     g = ImageUtil.pixelClamp(newG);
     b = ImageUtil.pixelClamp(newB);
-
-
   }
 
   @Override
   public String toString() {
-    return   "\n" + r + "\n" + g + "\n" + b  ;
+    return "\n" + r + "\n" + g + "\n" + b;
   }
-
 
 
 }

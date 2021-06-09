@@ -7,20 +7,21 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Creates a checkerboard programatticaly using the IPixelImage format.
- * Represented as a 2D array.
+ * Creates a checkerboard programatticaly using the IPixelImage format. Represented as a 2D array.
  */
 public class Checkerboard implements IPixelImage {
+
   protected IPixelImage delegate;
-  protected  int imageWidth;
-  protected  int imageHeight;
+  protected int imageWidth;
+  protected int imageHeight;
   protected int numTiles;
-  protected  int maxValue = 255;
+  protected int maxValue = 255;
   protected List<List<IPixel>> pixelImage;
 
   /**
-   * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles.
-   * The number of tiles will create a numTiles x numTiles sized checkerboard.
+   * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles. The
+   * number of tiles will create a numTiles x numTiles sized checkerboard.
+   *
    * @param sizeTile the pixel dimensions of a single tile.
    * @param numTiles the number of tiles to exist within the image.
    */
@@ -36,26 +37,28 @@ public class Checkerboard implements IPixelImage {
 
   /**
    * Creates a checkerboard pattern programmatically.
+   *
    * @return the 2D arraylist of pixels, which make up the checkerboard pattern.
    */
   private List<List<IPixel>> makeCheckerboard() {
-    IPixel blackPixel = new Pixel(0,0,0);
-    IPixel whitePixel = new Pixel(255,255,255);
+    IPixel blackPixel = new Pixel(0, 0, 0);
+    IPixel whitePixel = new Pixel(255, 255, 255);
 
     List<List<IPixel>> image = new ArrayList<>();
 
     //make a scale factor. it will be the width of every box.
-    int scaleFactor = imageWidth/numTiles;
+    int scaleFactor = imageWidth / numTiles;
     //do black a scale factor amount of times, then white, then black, etc.
 
     List<IPixel> tempRow = makeRow(blackPixel, whitePixel, scaleFactor);
     List<IPixel> tempWRow = makeRow(whitePixel, blackPixel, scaleFactor);
 
-    for ( int j = 0 ; j < numTiles/2 ; j ++ ) {
+    for (int j = 0; j < numTiles / 2; j++) {
       for (int i = 0; i < scaleFactor; i++) {
         image.add(tempRow);
       }
-      for (int i = 0; i < scaleFactor; i++) { ;
+      for (int i = 0; i < scaleFactor; i++) {
+        ;
         image.add(tempWRow);
       }
     }
@@ -64,16 +67,17 @@ public class Checkerboard implements IPixelImage {
 
   /**
    * Makes a row of the checkerboard.
-   * @param pixel1 a pixel containing color 1.
-   * @param pixel2 a pixel containing color 2 where color 1 != color 2. This helps create the
-   *               checkerboard pattern.
+   *
+   * @param pixel1      a pixel containing color 1.
+   * @param pixel2      a pixel containing color 2 where color 1 != color 2. This helps create the
+   *                    checkerboard pattern.
    * @param scaleFactor the degree to how big the checkerboard row will be.
    * @return the row of pixels, which make up one of the checkerboard rows.
    */
   private List<IPixel> makeRow(IPixel pixel1, IPixel pixel2, int scaleFactor) {
 
     List<IPixel> row = new ArrayList<>();
-    for ( int x = 0 ; x < numTiles/2 ; x ++  ) {
+    for (int x = 0; x < numTiles / 2; x++) {
       for (int i = 0; i < scaleFactor; i++) {
         row.add(pixel1);
       }

@@ -8,13 +8,14 @@ import java.io.FileInputStream;
 
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.
- * Additionally, this class has static utility methods to convert from a
- * PPM to a IPixelImage, and clamp the values of a pixel.
+ * Additionally, this class has static utility methods to convert from a PPM to a IPixelImage, and
+ * clamp the values of a pixel.
  */
 public class ImageUtil {
 
   /**
    * method to verify that the file that will be converted into a IPixelImage exists
+   *
    * @param fileName represents the string name of the file.
    * @return a Scanner containing the fileInputStream of the given fileName.
    */
@@ -23,8 +24,7 @@ public class ImageUtil {
     try {
       sc = new Scanner(new FileInputStream(fileName));
       return sc;
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("file name incorrect.");
     }
 
@@ -32,6 +32,7 @@ public class ImageUtil {
 
   /**
    * converts a PPM file into a pixel image.
+   *
    * @param fileName name of the file.
    * @return a new IPi
    */
@@ -48,7 +49,7 @@ public class ImageUtil {
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
       if (s.charAt(0) != '#') {
-        builder.append(s+System.lineSeparator());
+        builder.append(s + System.lineSeparator());
       }
     }
 
@@ -73,7 +74,7 @@ public class ImageUtil {
     maxValue = sc.nextInt();
     //System.out.println("Maximum value of a color in this file (usually 256): " + maxValue);
 
-    for (int i = 0; i < imageHeight; i++ ) {
+    for (int i = 0; i < imageHeight; i++) {
       List<IPixel> tempPixelRow = new ArrayList<>(imageWidth);
       for (int j = 0; j < imageWidth; j++) {
 
@@ -81,7 +82,7 @@ public class ImageUtil {
         int g = sc.nextInt();
         int b = sc.nextInt();
 
-        IPixel tempPixel = new Pixel(r,g,b);
+        IPixel tempPixel = new Pixel(r, g, b);
         tempPixelRow.add(tempPixel);
 
         //System.out.println("Color of pixel (" + j + "," + i + "): " + r + "," + g + "," + b);
@@ -98,24 +99,23 @@ public class ImageUtil {
     if (value > 255) {
       return 255;
     }
-    if (value < 0 ) {
-      return 0 ;
+    if (value < 0) {
+      return 0;
     }
     return value;
   }
 
 
   //demo main
-  public static void main(String []args) {
-      String filename;
-      
-      if (args.length>0) {
-          filename = args[0];
-      }
-      else {
-          filename = "src/Koala.ppm";
-      }
-      
+  public static void main(String[] args) {
+    String filename;
+
+    if (args.length > 0) {
+      filename = args[0];
+    } else {
+      filename = "src/Koala.ppm";
+    }
+
 //      ImageUtil.readPPM(filename);
   }
 
