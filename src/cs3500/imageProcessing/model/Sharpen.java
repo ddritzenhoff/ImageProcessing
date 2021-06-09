@@ -3,7 +3,9 @@ package cs3500.imageProcessing.model;
 
 // TODO: the abstract class functionality should probably change a little.
 //  also, I'm not completely sure that this works.
-public class Sharpen extends AbstractTransformation implements ITransformation {
+public class Sharpen implements ITransformation {
+
+  protected final ITransformation abstractDelegate;
 
   protected final double[][] sharpenKernel =
       {{-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8},
@@ -12,12 +14,12 @@ public class Sharpen extends AbstractTransformation implements ITransformation {
           {-1.0 / 8, 1.0 / 4, 1.0 / 4, 1.0 / 4, -1.0 / 8},
           {-1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8, -1.0 / 8}};
 
-  protected Sharpen(IPixelImage oldImage) {
-    super(oldImage);
+  public Sharpen(IPixelImage oldImage) {
+    this.abstractDelegate = new AbstractTransformation(oldImage, sharpenKernel);
   }
 
   @Override
   public IPixelImage apply(String id) {
-    return super.doApply(sharpenKernel);
+    return this.abstractDelegate.apply(id);
   }
 }

@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AbstractTransformation {
+// TODO: I think that I want to make this class final so that it can only be used as a delegate.
+public final class AbstractTransformation implements ITransformation{
 
   protected final IPixelImage oldImage;
-  protected double[][] kernel;
-  protected int kernelSize;
+  protected final double[][] kernel;
+  protected final int kernelSize;
 
-  protected AbstractTransformation(IPixelImage oldImage) {
+  protected AbstractTransformation(IPixelImage oldImage, double[][] kernel) {
     this.oldImage = Objects.requireNonNull(oldImage);
-  }
-
-  protected IPixelImage doApply(double[][] kernel) {
-
     this.kernel = Objects.requireNonNull(kernel);
     this.kernelSize = this.kernel.length;
+  }
 
+  @Override
+  public IPixelImage apply(String id) {
     List<List<IPixel>> pixelRows = new ArrayList<>();
     for (int row = 0; row < oldImage.getNumRows(); row++) {
       List<IPixel> pixelRow = new ArrayList<>();
@@ -33,8 +33,6 @@ public class AbstractTransformation {
   }
 
   protected IPixel getNewPixel(int row, int pixelRowIndex) {
-
-
     int startingValue = -1 * (this.kernelSize / 2);
     IPixel newPixel = new Pixel(0, 0, 0);
 
