@@ -14,11 +14,19 @@ public class Pixel implements IPixel {
 
   /**
    * constructor to represent the individual components of a pixel.
-   * @param r  the red value of a pixel
-   * @param g  the green value of a pixel
-   * @param b  the blue value of a pixel
+   *
+   * @param r the red value of a pixel
+   * @param g the green value of a pixel
+   * @param b the blue value of a pixel
+   * @throws IllegalArgumentException if the R, G, or B values are greater than 255, or less than
+   *                                  0.
    */
-  public Pixel(int r, int g, int b) {
+  public Pixel(int r, int g, int b) throws IllegalArgumentException {
+    if (r < 0 || g < 0 || b < 0 || r > 255 || g > 255 || b > 255) {
+      throw new IllegalArgumentException("Illegal pixel");
+    }
+
+    // TODO: QUESTION: where would we set the min and max vlaues of the pixel? Within ImageUtil?
     this.r = r;
     this.g = g;
     this.b = b;
