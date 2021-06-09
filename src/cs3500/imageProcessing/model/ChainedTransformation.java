@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ChainedTransformation implements ITransformation {
 
-  ArrayList<TransformEnum> transforms;
+  ArrayList<ITransformation> transforms;
   IPixelImage oldImage;
 
   /**
@@ -20,8 +20,7 @@ public class ChainedTransformation implements ITransformation {
    * @param transforms a list of TransformEnum, consisting of the currently supported color, and
    *                   filter transformations.
    */
-  ChainedTransformation(IPixelImage oldImage, List<TransformEnum> transforms) {
-
+  ChainedTransformation(IPixelImage oldImage, List<ITransformation> transforms) {
     this.oldImage = oldImage;
     this.transforms = new ArrayList<>(transforms);
   }

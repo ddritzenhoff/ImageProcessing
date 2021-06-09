@@ -6,13 +6,18 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
-
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method 
- *  as required.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * Additionally, this class has static utility methods to convert from a
+ * PPM to a IPixelImage, and clamp the values of a pixel.
  */
 public class ImageUtil {
 
+  /**
+   * method to verify that the file that will be converted into a IPixelImage exists
+   * @param fileName represents the string name of the file.
+   * @return a Scanner containing the fileInputStream of the given fileName.
+   */
   protected static Scanner requireFileExists(String fileName) {
     Scanner sc = null;
     try {
@@ -25,6 +30,11 @@ public class ImageUtil {
 
   }
 
+  /**
+   * converts a PPM file into a pixel image.
+   * @param fileName name of the file.
+   * @return a new IPi
+   */
   protected static IPixelImage PPMtoPixelImage(String fileName) {
 
     int imageWidth;

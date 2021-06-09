@@ -19,9 +19,8 @@ public class Sepia implements ITransformation {
    * @param oldImage the IPixelImage that will have the Sepia
    *                color transformation applied to it.
    */
-  public Sepia(IPixelImage oldImage) {
-    this.abstractDelegate = new AbstractColorTransformation(oldImage, sepiaMatrix);
-
+  public Sepia() {
+    this.abstractDelegate = new AbstractColorTransformation(sepiaMatrix);
   }
 
   /**

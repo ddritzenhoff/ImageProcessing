@@ -126,9 +126,16 @@ public class PixelImage implements IPixelImage {
       filename2 = "src/Koala.ppm";
     }
 
-  IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/boston.ppm");
+  IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Boston.ppm");
 
    // IPixelImage testImage2 = new Checkerboard(100,10);
+    ITransformation sepia = new Sepia();
+    ITransformation blur = new Blur();
+    ITransformation greyscale = new Greyscale();
+    ITransformation sharpen = new Sharpen();
+
+
+    List<ITransformation> commands = Arrays.asList( blur,blur,blur,blur );
 
     ITransformation Chained = new ChainedTransformation(testImage2, commands);
 
@@ -137,27 +144,6 @@ public class PixelImage implements IPixelImage {
 
 
 
-    finalBlur.render("ppm");
-   // ITransformation sepia = new Sepia(testImage2);
-
-    List commands = Arrays.asList(
-        //TransformEnum.GREYSCALE,
-        TransformEnum.SEPIA,
-        TransformEnum.SEPIA,
-        TransformEnum.BLUR,
-        TransformEnum.GREYSCALE,
-        TransformEnum.BLUR,
-        TransformEnum.BLUR,
-        TransformEnum.BLUR,
-        TransformEnum.BLUR
-       );
-//        TransformEnum.SEPIA
-    //);
-    ITransformation chainedTransformTest = new ChainedTransformation(testImage2, commands);
-    chainedTransformTest.apply().render("ppm");
-
-//    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply();
-//    finalSharpen2.render("ppm");
 
   }
 

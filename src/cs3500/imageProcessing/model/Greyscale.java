@@ -16,11 +16,9 @@ public class Greyscale implements ITransformation {
   /**
    * Constructor of a Greyscale color transformation.
    * Uses a AbstractColorTransformation named abstractDelegate to abstract the procedure.
-   * @param oldImage the IPixelImage that will have the Greyscale
-   *                color transformation applied to it.
    */
-  public Greyscale(IPixelImage oldImage) {
-    this.abstractDelegate = new AbstractColorTransformation(oldImage, greyScaleMatrix);
+  public Greyscale() {
+    this.abstractDelegate = new AbstractColorTransformation(greyScaleMatrix);
   }
 
   /**

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ProcessingModel implements IModel{
+public class ProcessingModel implements IModel {
   protected final Map<String, IPixelImage> images;
 
   public ProcessingModel() {
@@ -35,7 +35,27 @@ public class ProcessingModel implements IModel{
   }
 
   @Override
-  public IPixelImage applyTransformation(ITransformation transform) {
-    return null;
+  public IPixelImage applyTransformation(ITransformation transform, String fileName) {
+    Objects.requireNonNull(transform);
+    Objects.requireNonNull(fileName);
+
+    return transform.apply(images.get(fileName));
   }
+
+  public IPixelImage generateCheckerboard(int sizeTile, int numSquares) {
+    return new Checkerboard(sizeTile, numSquares);
+  }
+
+  public void importPPM(String fileName) {
+    images.putIfAbsent(fileName,ImageUtil.PPMtoPixelImage(fileName));
+  }
+
+  public void exportPPM(String fileName) {
+    images.get(fileName).render("ppm");
+  }
+
+
+
+
+
 }

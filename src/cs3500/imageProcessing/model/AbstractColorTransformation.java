@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class AbstractColorTransformation implements ITransformation {
 
-  protected final IPixelImage oldImage;
+  protected IPixelImage oldImage;
   protected final double[][] colorMatrix;
 
   /**
