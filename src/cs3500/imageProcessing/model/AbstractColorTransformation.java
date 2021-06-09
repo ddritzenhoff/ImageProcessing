@@ -25,7 +25,7 @@ public class AbstractColorTransformation implements ITransformation {
         pixelRows.get(row).get(pixelRowIndex).applyMatrix(colorMatrix);
       }
     }
-    return new PixelImage(pixelRows,id); //TODO: added a field for ID
+    return new PixelImage(pixelRows); //TODO: added a field for ID
 
   }
 }

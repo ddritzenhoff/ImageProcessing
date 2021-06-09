@@ -27,7 +27,9 @@ public class Checkerboard implements IPixelImage {
     this.imageWidth = sizeTile * numTiles;
     this.imageHeight = sizeTile * numTiles;
     this.pixelImage = makeCheckerboard();
-    this.delegate = new PixelImage(pixelImage,"Checkerboard");
+    ///this.delegate = new PixelImage(pixelImage,"Checkerboard");
+    this.delegate = new PixelImage(imageWidth, imageHeight,
+        255, pixelImage, "Checkerboard");
 
   }
 
