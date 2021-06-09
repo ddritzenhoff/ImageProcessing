@@ -1,6 +1,5 @@
 package cs3500.imageProcessing.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ public class AbstractColorTransformation implements ITransformation {
   }
 
   @Override
-  public IPixelImage apply(String id) {
+  public IPixelImage apply() {
     List<List<IPixel>> pixelRows = this.oldImage.getPixels();
 
     for (int row = 0; row < pixelRows.size(); row++) {

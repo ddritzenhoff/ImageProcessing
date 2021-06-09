@@ -1,7 +1,5 @@
 package cs3500.imageProcessing.model;
 
-import java.util.List;
-
 public class Greyscale implements ITransformation {
 
   //protected final IPixelImage oldImage;
@@ -21,9 +19,9 @@ public class Greyscale implements ITransformation {
   }
 
   @Override
-  public IPixelImage apply(String id) {
+  public IPixelImage apply() {
     //List<List<IPixel>> pixelRows = this.oldImage.getPixels();
-    return this.abstractDelegate.apply(id);
+    return this.abstractDelegate.apply();
   }
 
 }

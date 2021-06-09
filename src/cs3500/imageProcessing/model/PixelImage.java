@@ -2,13 +2,11 @@ package cs3500.imageProcessing.model;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PixelImage implements IPixelImage {
 
@@ -134,7 +132,7 @@ public class PixelImage implements IPixelImage {
 //
 //    finalSharpen.render("ppm");
 
-    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply("");
+    IPixelImage finalSharpen2 = new Sharpen ( testImage2).apply();
     finalSharpen2.render("ppm");
 
   }

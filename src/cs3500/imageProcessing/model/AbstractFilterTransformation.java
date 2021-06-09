@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: I think that I want to make this class final so that it can only be used as a delegate.
 public final class AbstractFilterTransformation implements ITransformation{
 
   protected final IPixelImage oldImage;
@@ -18,7 +17,7 @@ public final class AbstractFilterTransformation implements ITransformation{
   }
 
   @Override
-  public IPixelImage apply(String id) {
+  public IPixelImage apply() {
     List<List<IPixel>> pixelRows = new ArrayList<>();
     for (int row = 0; row < oldImage.getNumRows(); row++) {
       List<IPixel> pixelRow = new ArrayList<>();
@@ -29,7 +28,7 @@ public final class AbstractFilterTransformation implements ITransformation{
       pixelRows.add(pixelRow);
     }
 
-    return new PixelImage(pixelRows, "abstractImage");
+    return new PixelImage(pixelRows);
   }
 
   protected IPixel getNewPixel(int row, int pixelRowIndex) {

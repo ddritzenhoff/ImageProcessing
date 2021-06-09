@@ -19,7 +19,7 @@ public class Sharpen implements ITransformation {
   }
 
   @Override
-  public IPixelImage apply(String id) {
-    return this.abstractDelegate.apply(id);
+  public IPixelImage apply() {
+    return this.abstractDelegate.apply();
   }
 }

@@ -1,7 +1,5 @@
 package cs3500.imageProcessing.model;
 
-import java.util.List;
-
 public class Sepia implements ITransformation {
 
   protected final ITransformation abstractDelegate;
@@ -19,9 +17,9 @@ public class Sepia implements ITransformation {
   }
 
   @Override
-  public IPixelImage apply(String id) {
+  public IPixelImage apply() {
     //List<List<IPixel>> pixelRows = this.oldImage.getPixels();
-    return this.abstractDelegate.apply(id);
+    return this.abstractDelegate.apply();
   }
 
 }
