@@ -18,10 +18,17 @@ public interface IPixel {
    */
   int getG();
 
-  //TODO: JAVADOC -- Dominik working on this.
+  /**
+   * Gets the BLUE value of the pixel. This is a value between 0 and 255.
+   * @return the integer representation of how much green there is within the pixel.
+   */
   int getB();
 
-  //TODO: JAVADOC
+  /**
+   * Scales this pixel.
+   * Multiplies the scalar value to every channel of this pixel.
+   * @param scalar a decimal value.
+   */
   void scaleChannels(double scalar);
 
   //TODO: JAVADOC
@@ -31,6 +38,11 @@ public interface IPixel {
   void clamp();
 
   //TODO: JAVADOC
+
+  /**
+   * adds all of the R, G, and B values of the given tempPixel to this pixel.
+   * @param tempPixel the pixel which will be used to add to this pixel.
+   */
   void addValues(IPixel tempPixel);
 
 

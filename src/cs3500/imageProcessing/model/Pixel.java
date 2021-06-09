@@ -21,47 +21,26 @@ public class Pixel implements IPixel {
     this.b = b;
   }
 
-  /**
-   * getter to return the this pixels r value.
-   * @return an integer representing the red value of a pixel.
-   */
   public int getR() {
     return this.r;
   }
 
-
-  /**
-   * getter to return the this pixels g value.
-   * @return an integer representing the green value of a pixel.
-   */
   public int getG() {
     return this.g;
   }
 
-  /**
-   * getter to return the this pixels b value.
-   * @return an integer representing the blue value of a pixel.
-   */
   public int getB() {
     return this.b;
   }
 
-  /**
-   * Scales this pixel.
-   * Multiplies the scalar value to every channel of this pixel.
-   * @param scalar a decimal value.
-   */
+
   public void scaleChannels(double scalar) {
     this.r = (int) (this.r * scalar);
     this.g = (int) (this.g * scalar);
     this.b = (int) (this.b * scalar);
   }
 
-
-  /**
-   *
-   * @param tempPixel
-   */
+  @Override
   public void addValues(IPixel tempPixel) {
     this.r = this.r + tempPixel.getR();
     this.g = this.g + tempPixel.getG();
