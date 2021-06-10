@@ -34,17 +34,17 @@ public class ImageUtil {
   /**
    * converts a PPM file into a pixel image.
    *
-   * @param fileName name of the file.
+   * @param fileDirectory name of the file.
    * @return a new IPixelImage representation of a PPM image.
    */
-  protected static IPixelImage PPMtoPixelImage(String fileName) {
+  protected static IPixelImage PPMtoPixelImage(String fileDirectory, String fileName) {
 
     int imageWidth;
     int imageHeight;
     int maxValue;
     List<List<IPixel>> pixelImage;
 
-    Scanner sc = requireFileExists(fileName);
+    Scanner sc = requireFileExists(fileDirectory);
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {

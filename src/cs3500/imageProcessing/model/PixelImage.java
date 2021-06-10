@@ -60,18 +60,18 @@ public class PixelImage implements IPixelImage {
   // TODO: also consider to move render a different class.
   // TODO: ben- i think we need the string fileName constructor b/c we want to add things to the file name
 
-//  /**
-//   * Constructs a PixelImage object with a default file name.
-//   *
-//   * @param pixelImage the 2D array of pixels to represent an image.
-//   */
-//  public PixelImage(List<List<IPixel>> pixelImage, String fileName) {
-//    this.pixelImage = pixelImage;
-//    this.imageHeight = getNumRows();
-//    this.imageWidth = getNumPixelsInRow();
-//    this.maxValue = 255;
-//    this.fileName = "tempFileName";
-//  }
+  /**
+   * Constructs a PixelImage object with a default file name.
+   *
+   * @param pixelImage the 2D array of pixels to represent an image.
+   */
+  public PixelImage(List<List<IPixel>> pixelImage, String fileName) {
+    this.pixelImage = pixelImage;
+    this.imageHeight = getNumRows();
+    this.imageWidth = getNumPixelsInRow();
+    this.maxValue = 255;
+    this.fileName = fileName;
+  }
 
 
   //TODO: fix render and naming conventions. Make it standardized and cleaner. - Ben
@@ -82,7 +82,6 @@ public class PixelImage implements IPixelImage {
     String value = "";
     FileOutputStream fos = null;
     try {
-//      System.out.println(this.fileName);
       String newFileName = fileName;
       if (newFileName.contains("src/files/")) {
         newFileName = fileName.substring(10);
@@ -112,7 +111,7 @@ public class PixelImage implements IPixelImage {
         } catch (IOException e) {
           e.printStackTrace();
         }
-        //TODO: observers.
+
       }
     }
 
@@ -123,6 +122,11 @@ public class PixelImage implements IPixelImage {
       e.printStackTrace();
     }
     //return null;
+  }
+
+  //TODO: added this.
+  public String getFileName() {
+    return this.fileName;
   }
 
   public int getNumRows() {
@@ -168,8 +172,8 @@ public class PixelImage implements IPixelImage {
       filename2 = "src/Koala.ppm";
     }
 
-    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Boston.ppm");
-    IPixelImage koalappm = ImageUtil.PPMtoPixelImage("src/files/koala.ppm");
+    IPixelImage testImage2 = ImageUtil.PPMtoPixelImage("src/files/Boston.ppm", "boston");
+    IPixelImage koalappm = ImageUtil.PPMtoPixelImage("src/files/koala.ppm", "koala");
 
     // IPixelImage testImage2 = new Checkerboard(100,10);
     ITransformation sepia = new Sepia();
@@ -182,7 +186,7 @@ public class PixelImage implements IPixelImage {
     ITransformation Chained = new ChainedTransformation(commands);
 
     IPixelImage test = Chained.apply(testImage2);
-    test.render("ppm");
+    //test.render("ppm");
 
     IModel testModel = new ProcessingModel();
 
@@ -190,10 +194,18 @@ public class PixelImage implements IPixelImage {
     testModel.addImage("test2", test);
     testModel.addImage("koala", koalappm);
 
-    testModel.applyTransformation(blur, "test1");
-    testModel.chainTransformations(commands, "koala").render("png");
+//    testModel.applyTransformation(blur, "test1");
+//    testModel.chainTransformations(commands, "koala").render("png");
+//
+    testModel.importPPM("src/files/Boston.ppm","boston2");
+    testModel.removeImage("boston2");
+    testModel.addImage("checkerboard1", testModel.generateCheckerboard(10,100));
+    testModel.exportPPM("checkerboard1");
+    System.out.println(testModel.printRegistry());
 
-
+    testModel.importPPM("src/files/4kTiger.ppm","tiger");
+    testModel.applyTransformation(greyscale , "tiger").render("png");
+    //testModel.exportPPM("boston2");
 
 
 

@@ -74,14 +74,21 @@ public class ProcessingModel implements IModel {
     return new Checkerboard(sizeTile, numSquares);
   }
 
-  public void importPPM(String fileName) {
+  public void importPPM(String directoryName, String fileName) {
     ImageUtil.requireNonNull(fileName, "import ppm filename");
-    images.putIfAbsent(fileName, ImageUtil.PPMtoPixelImage(fileName));
+    images.putIfAbsent(fileName, ImageUtil.PPMtoPixelImage(directoryName, fileName));
   }
 
   public void exportPPM(String fileName) {
     ImageUtil.requireNonNull(fileName, "export ppm filename");
+    if (!images.containsKey(fileName)) {
+      throw new IllegalArgumentException("registry does not have this file.");
+    }
     images.get(fileName).render("ppm");
+  }
+
+  public String printRegistry() {
+    return images.keySet().toString();
   }
 
 

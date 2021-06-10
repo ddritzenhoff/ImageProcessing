@@ -34,7 +34,7 @@ public final class AbstractColorTransformation implements ITransformation {
         pixelRows.get(row).get(pixelRowIndex).applyMatrix(colorMatrix);
       }
     }
-    return new PixelImage(pixelRows);
+    return new PixelImage(pixelRows, "color modified "+ oldImage.getFileName());
 
   }
 }

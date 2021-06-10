@@ -42,4 +42,10 @@ public interface IPixelImage {
    */
   int getNumPixelsInRow();
 
+  /**
+   * returns the file name of the current IPixelImage.
+   * @return a string representing the fileName.
+   */
+  String getFileName();
+
 }

@@ -31,7 +31,6 @@ public class ChainedTransformation implements ITransformation {
     for (ITransformation t : transforms) {
       tempImage = t.apply(tempImage);
     }
-
     return tempImage;
   }
 }

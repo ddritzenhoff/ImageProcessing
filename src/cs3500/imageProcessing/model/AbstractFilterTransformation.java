@@ -37,11 +37,10 @@ public final class AbstractFilterTransformation implements ITransformation {
       for (int pixelRowIndex = 0; pixelRowIndex < oldImage.getNumPixelsInRow(); pixelRowIndex++) {
         pixelRow.add(getNewPixel(row, pixelRowIndex, oldImage));
       }
-
       pixelRows.add(pixelRow);
     }
 
-    return new PixelImage(pixelRows);
+    return new PixelImage(pixelRows, "filter modified " + oldImage.getFileName());
   }
 
   /**

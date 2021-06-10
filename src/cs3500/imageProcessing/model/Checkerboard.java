@@ -18,6 +18,7 @@ public class Checkerboard implements IPixelImage {
   protected int numTiles;
   protected int maxValue = 255;
   protected List<List<IPixel>> pixelImage;
+  protected String checkerboardName;
 
   /**
    * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles. The
@@ -31,9 +32,10 @@ public class Checkerboard implements IPixelImage {
     this.imageWidth = sizeTile * numTiles;
     this.imageHeight = sizeTile * numTiles;
     this.pixelImage = makeCheckerboard();
-    ///this.delegate = new PixelImage(pixelImage,"Checkerboard");
-    this.delegate = new PixelImage(imageWidth, imageHeight,
-        255, pixelImage, "Checkerboard");
+    this.checkerboardName = sizeTile + "x" + numTiles + " Checkerboard";
+    this.delegate = new PixelImage(pixelImage,checkerboardName);
+//    this.delegate = new PixelImage(imageWidth, imageHeight,
+//        255, pixelImage, checkerboardName );
   }
 
   /**
@@ -115,6 +117,16 @@ public class Checkerboard implements IPixelImage {
   @Override
   public int getNumPixelsInRow() {
     return delegate.getNumPixelsInRow();
+  }
+
+  /**
+   * returns the file name of the current IPixelImage.
+   *
+   * @return a string representing the fileName.
+   */
+  @Override
+  public String getFileName() {
+    return checkerboardName;
   }
 
 }

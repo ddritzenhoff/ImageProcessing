@@ -25,7 +25,7 @@ public class PixelImageCreator {
   public static IPixelImage create(FileType fileType, String fileName) {
     switch (fileType) {
       case PPM:
-        return ImageUtil.PPMtoPixelImage(fileName);
+        return ImageUtil.PPMtoPixelImage(null,fileName);
       default:
         throw new IllegalStateException("Unexpected value: " + fileType);
     }

@@ -7,8 +7,17 @@ public interface IModel {
 
   void addImage(String id, IPixelImage image);
 
+  /**
+   * removes the image with the given ID from the map of images.
+   * @param id
+   */
   void removeImage(String id);
 
+  /**
+   * replaces the IPixelImage at the given ID with the given image parameter.
+   * @param id string id that corresponds to a IPixelImage
+   * @param image a new IPixelIamge that will take the spot of the previous id.
+   */
   void replaceImage(String id, IPixelImage image);
 
 
@@ -48,7 +57,7 @@ public interface IModel {
    * imports a PPM and converts it to a IPixelImage using PPMtoPixelImage.
    * @param fileName
    */
-  void importPPM(String fileName);
+  void importPPM(String directoryName,String fileName);
 
   /**
    * exports an IPixelImage as a filetype of the given fileName.
@@ -56,4 +65,6 @@ public interface IModel {
    * @param fileName
    */
   void exportPPM(String fileName);
+
+  String printRegistry();
 }
