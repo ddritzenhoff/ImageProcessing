@@ -10,6 +10,7 @@ import java.util.List;
  * Creates a checkerboard programatticaly using the IPixelImage format. Represented as a 2D array.
  */
 public class Checkerboard implements IPixelImage {
+  //TODO: Tests for checkerboard?
 
   protected IPixelImage delegate;
   protected int imageWidth;

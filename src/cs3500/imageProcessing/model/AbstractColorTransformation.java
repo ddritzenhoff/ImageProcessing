@@ -7,7 +7,7 @@ import java.util.Objects;
  * Represents an ITransformation color transformation. This class abstracts the process of modifying
  * the color of a pixel based on its own color.
  */
-public class AbstractColorTransformation implements ITransformation {
+public final class AbstractColorTransformation implements ITransformation {
 
   protected IPixelImage oldImage;
   protected final double[][] colorMatrix;

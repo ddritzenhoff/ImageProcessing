@@ -21,6 +21,10 @@ public class Blur implements ITransformation {
     this.abstractDelegate = new AbstractFilterTransformation(blurKernel);
   }
 
+  /**
+   * Apply performs a ITransformation on an IPixelImage.
+   * @return a new IPixelImage with a blur transformation applied to it.
+   */
   @Override
   public IPixelImage apply(IPixelImage oldImage) {
     return this.abstractDelegate.apply(oldImage);

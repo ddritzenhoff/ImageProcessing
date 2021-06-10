@@ -53,7 +53,7 @@ public class Pixel implements IPixel {
 
   @Override
   public void addValues(IPixel tempPixel) {
-    Objects.requireNonNull(tempPixel);
+    ImageUtil.requireNonNull(tempPixel,"null pixel in addValues");
     this.r = this.r + tempPixel.getR();
     this.g = this.g + tempPixel.getG();
     this.b = this.b + tempPixel.getB();
@@ -68,7 +68,11 @@ public class Pixel implements IPixel {
 
   @Override
   public void applyMatrix(double[][] matrix) {
-    Objects.requireNonNull(matrix);
+    ImageUtil.requireNonNull(matrix, "null apply Matrix matrix");
+    if (matrix.length != 3 || !testMatrix(matrix)) {
+      throw new IllegalArgumentException("Invalid matrix size");
+    }
+
 
     int oldR = r;
     int oldG = g;
@@ -88,5 +92,37 @@ public class Pixel implements IPixel {
     return "\n" + r + "\n" + g + "\n" + b;
   }
 
+  /**
+   * tests a matrix to verify it has nxn dimensions.
+   * @param matrix the specific matrix
+   * @return false if the matrix of n length does not have nxn elements. true otherwise.
+   */
+  private boolean testMatrix (double [][] matrix ) {
+    int counter = 0;
+    for (double[] d  : matrix) {
+      for (double dd : d) {
+        counter++;
+      }
+    }
+    int matrixLength = matrix.length * matrix.length;
+    return counter == matrixLength;
+  }
 
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pixel pixel = (Pixel) o;
+    return getR() == pixel.getR() && this.getG() == pixel.getG() && this.getB() == pixel.getB();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getR(), getG(), getB());
+  }
 }

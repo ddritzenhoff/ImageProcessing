@@ -16,17 +16,17 @@ public class ChainedTransformation implements ITransformation {
   /**
    * constructor for a ChainedTransformation
    *
-   * @param oldImage   represents the old image that will be copied, then altered.
    * @param transforms a list of TransformEnum, consisting of the currently supported color, and
    *                   filter transformations.
    */
-  ChainedTransformation(IPixelImage oldImage, List<ITransformation> transforms) {
-    this.oldImage = oldImage;
+  ChainedTransformation(List<ITransformation> transforms) {
+   // this.oldImage = oldImage;
     this.transforms = new ArrayList<>(transforms);
   }
 
   @Override
   public IPixelImage apply(IPixelImage oldImage) {
+    this.oldImage = oldImage;
     IPixelImage tempImage = oldImage;
     for (ITransformation t : transforms) {
       tempImage = t.apply(tempImage);

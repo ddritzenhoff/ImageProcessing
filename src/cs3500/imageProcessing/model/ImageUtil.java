@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
+
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.
  * Additionally, this class has static utility methods to convert from a PPM to a IPixelImage, and
@@ -34,7 +35,7 @@ public class ImageUtil {
    * converts a PPM file into a pixel image.
    *
    * @param fileName name of the file.
-   * @return a new IPi
+   * @return a new IPixelImage representation of a PPM image.
    */
   protected static IPixelImage PPMtoPixelImage(String fileName) {
 
@@ -95,6 +96,12 @@ public class ImageUtil {
     return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
   }
 
+  /**
+   * clamps the integer value passed in. the clamp default value is set to 255.
+   * Used to ensure that a pixel value does not go below 0, and does not go past 255.
+   * @param value an integer that will be either returned, or replaced with 0 or 255.
+   * @return a value between 0 and 255.
+   */
   public static int pixelClamp(int value) {
     if (value > 255) {
       return 255;
@@ -105,19 +112,20 @@ public class ImageUtil {
     return value;
   }
 
-
-  //demo main
-  public static void main(String[] args) {
-    String filename;
-
-    if (args.length > 0) {
-      filename = args[0];
-    } else {
-      filename = "src/Koala.ppm";
+  /**
+   * a method that checks if the object is null.
+   * @param o object to be checked for nullity
+   * @param message will throw a IlelgalARgument exception with the given message
+   * @param <T> generic for object type
+   * @return either the object, or throws an illegal argument exception.
+   */
+  public static <T> T  requireNonNull(T o, String message) {
+    if (o == null) {
+      throw new IllegalArgumentException("Null "+ message);
     }
-
-//      ImageUtil.readPPM(filename);
+    return o;
   }
+
 
 }
 

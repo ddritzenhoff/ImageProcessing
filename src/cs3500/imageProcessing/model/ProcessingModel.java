@@ -1,6 +1,8 @@
 package cs3500.imageProcessing.model;
 
+import java.awt.Image;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,19 +35,37 @@ public class ProcessingModel implements IModel {
   }
 
   @Override
-  public void removeImage(String fileName, IPixelImage image) {
-
+  public void removeImage(String fileName) {
+    images.remove(fileName);
   }
 
   @Override
   public void replaceImage(String fileName, IPixelImage image) {
+    images.replace(fileName,image);
+  }
 
+  /**
+   * chainTransformations performs a series of ITransformations on an IPixelImage. Currently there
+   * are two color transformations: Sepia, and Greyscale. Currently there are two filter
+   * transformations: Blur,and Sharpen.
+   *
+   * @param transforms this is the list of the transforms that will be performed on the IPixelImage
+   *                   correlated with the fileName.
+   * @param fileName   this is the image to be operated upon.
+   * @return a new IPixelImage with the appropriate transformations applied to it.
+   */
+  @Override
+  public IPixelImage chainTransformations(List<ITransformation> transforms, String fileName) {
+    ImageUtil.requireNonNull(transforms, "list transforms");
+    ImageUtil.requireNonNull(fileName, "chain transformation filename");
+    IPixelImage newImage = new ChainedTransformation(transforms).apply(images.get(fileName));
+    return newImage;
   }
 
   @Override
   public IPixelImage applyTransformation(ITransformation transform, String fileName) {
-    Objects.requireNonNull(transform);
-    Objects.requireNonNull(fileName);
+    ImageUtil.requireNonNull(transform, "apply transformation transform");
+    ImageUtil.requireNonNull(fileName, "apply transformation filename");
 
     return transform.apply(images.get(fileName));
   }
@@ -55,10 +75,12 @@ public class ProcessingModel implements IModel {
   }
 
   public void importPPM(String fileName) {
+    ImageUtil.requireNonNull(fileName, "import ppm filename");
     images.putIfAbsent(fileName, ImageUtil.PPMtoPixelImage(fileName));
   }
 
   public void exportPPM(String fileName) {
+    ImageUtil.requireNonNull(fileName, "export ppm filename");
     images.get(fileName).render("ppm");
   }
 
