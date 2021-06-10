@@ -49,11 +49,13 @@ public class PixelImage implements IPixelImage {
    * @param pixelImage the 2D array of pixels to represent an image.
    */
   public PixelImage(List<List<IPixel>> pixelImage) {
-    this.pixelImage = pixelImage;
-    this.imageHeight = getNumRows();
-    this.imageWidth = getNumPixelsInRow();
-    this.maxValue = 255;
-    this.fileName = "tempFileName";
+//    this.pixelImage = pixelImage;
+//    this.imageHeight = getNumRows();
+//    this.imageWidth = getNumPixelsInRow();
+//    this.maxValue = 255;
+//    this.fileName = "tempFileName";
+    //OR
+    this( pixelImage, "tempFilename");
   }
 
   // TODO: consider removing fileName and putting it into model.
@@ -203,8 +205,8 @@ public class PixelImage implements IPixelImage {
     testModel.exportPPM("checkerboard1");
     System.out.println(testModel.printRegistry());
 
-    testModel.importPPM("src/files/4kTiger.ppm","tiger");
-    testModel.applyTransformation(greyscale , "tiger").render("png");
+    //testModel.importPPM("src/files/4kTiger.ppm","tiger");
+    //testModel.applyTransformation(greyscale , "tiger").render("png");
     //testModel.exportPPM("boston2");
 
 
