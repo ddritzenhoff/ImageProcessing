@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import cs3500.imageProcessing.model.Blur;
+import cs3500.imageProcessing.model.Checkerboard;
 import cs3500.imageProcessing.model.Greyscale;
 import cs3500.imageProcessing.model.IModel;
 import cs3500.imageProcessing.model.IPixel;

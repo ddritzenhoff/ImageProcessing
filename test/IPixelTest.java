@@ -233,8 +233,6 @@ public class IPixelTest {
     IPixel normalPixel = new Pixel(100, 80, 130);
     assertEquals("\n100\n80\n130" ,normalPixel.toString());
     assertEquals("\n0\n0\n0" ,blackPixel.toString());
-
-
   }
 
 

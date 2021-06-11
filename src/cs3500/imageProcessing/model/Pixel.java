@@ -26,7 +26,6 @@ public class Pixel implements IPixel {
       throw new IllegalArgumentException("Illegal pixel");
     }
 
-    // TODO: QUESTION: where would we set the min and max vlaues of the pixel? Within ImageUtil?
     this.r = r;
     this.g = g;
     this.b = b;
@@ -53,7 +52,7 @@ public class Pixel implements IPixel {
 
   @Override
   public void addValues(IPixel tempPixel) {
-    ImageUtil.requireNonNull(tempPixel,"null pixel in addValues");
+    ImageUtil.requireNonNull(tempPixel, "null pixel in addValues");
     this.r = this.r + tempPixel.getR();
     this.g = this.g + tempPixel.getG();
     this.b = this.b + tempPixel.getB();
@@ -72,7 +71,6 @@ public class Pixel implements IPixel {
     if (matrix.length != 3 || !testMatrix(matrix)) {
       throw new IllegalArgumentException("Invalid matrix size");
     }
-
 
     int oldR = r;
     int oldG = g;
@@ -94,15 +92,14 @@ public class Pixel implements IPixel {
 
   /**
    * tests a matrix to verify it has nxn dimensions.
+   *
    * @param matrix the specific matrix
    * @return false if the matrix of n length does not have nxn elements. true otherwise.
    */
-  private boolean testMatrix (double [][] matrix ) {
+  private boolean testMatrix(double[][] matrix) {
     int counter = 0;
-    for (double[] d  : matrix) {
-      for (double dd : d) {
-        counter++;
-      }
+    for (double[] d : matrix) {
+      counter += d.length;
     }
     int matrixLength = matrix.length * matrix.length;
     return counter == matrixLength;

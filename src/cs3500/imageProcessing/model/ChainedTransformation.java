@@ -21,7 +21,6 @@ public class ChainedTransformation implements ITransformation {
    */
   ChainedTransformation(List<ITransformation> transforms) {
     ImageUtil.requireNonNull(transforms, "checking transform constructor");
-   // this.oldImage = oldImage;
     this.transforms = new ArrayList<>(transforms);
   }
 

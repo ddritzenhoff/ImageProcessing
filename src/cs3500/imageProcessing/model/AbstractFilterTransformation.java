@@ -40,7 +40,7 @@ public final class AbstractFilterTransformation implements ITransformation {
       pixelRows.add(pixelRow);
     }
 
-    return new PixelImage(pixelRows, "filter modified " + oldImage.getFileName());
+    return new PixelImage(pixelRows);
   }
 
   /**

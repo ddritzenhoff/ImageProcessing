@@ -2,6 +2,10 @@ package cs3500.imageProcessing.model;
 
 import java.util.List;
 
+/**
+ * This interface is how images are represented within the model. They are simply a collection of
+ * pixels within a 2D structure to mimic that of an image.
+ */
 public interface IPixelImage {
 
   /**
@@ -49,8 +53,9 @@ public interface IPixelImage {
   String getFileName();
 
   /**
-   * returns true if the object o is equivalent to this IPixelImage.
-   * does a deep comparison: checks pixel by pixel if the two IPixelImages are the same.
+   * returns true if the object o is equivalent to this IPixelImage. does a deep comparison: checks
+   * pixel by pixel if the two IPixelImages are the same.
+   *
    * @param o object
    * @return a boolean representing if this object equals o.
    */

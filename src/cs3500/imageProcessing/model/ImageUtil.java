@@ -21,7 +21,7 @@ public class ImageUtil {
    * @return a Scanner containing the fileInputStream of the given fileName.
    */
   protected static Scanner requireFileExists(String fileName) {
-    Scanner sc = null;
+    Scanner sc;
     try {
       sc = new Scanner(new FileInputStream(fileName));
       return sc;
@@ -65,15 +65,11 @@ public class ImageUtil {
     }
 
     imageWidth = sc.nextInt();
-    // pixelRow = new ArrayList<>(imageWidth);
-    //System.out.println("Width of image: " + imageWidth);
 
     imageHeight = sc.nextInt();
     pixelImage = new ArrayList<>(imageHeight);
-    //System.out.println("Height of image: " + imageHeight);
 
     maxValue = sc.nextInt();
-    //System.out.println("Maximum value of a color in this file (usually 256): " + maxValue);
 
     for (int i = 0; i < imageHeight; i++) {
       List<IPixel> tempPixelRow = new ArrayList<>(imageWidth);
@@ -89,17 +85,16 @@ public class ImageUtil {
         //System.out.println("Color of pixel (" + j + "," + i + "): " + r + "," + g + "," + b);
         //System.out.print("(" + j + "," + i + "): " + r + "," + g + "," + b + "  ");
       }
-      //System.out.println("\n");
       pixelImage.add(tempPixelRow);
     }
 
     return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
   }
 
-  //TODO: tests for this method. Only being tested indirectly in IPixelTest.
   /**
-   * clamps the integer value passed in. the clamp default value is set to 255.
-   * Used to ensure that a pixel value does not go below 0, and does not go past 255.
+   * clamps the integer value passed in. the clamp default value is set to 255. Used to ensure that
+   * a pixel value does not go below 0, and does not go past 255.
+   *
    * @param value an integer that will be either returned, or replaced with 0 or 255.
    * @return a value between 0 and 255.
    */
@@ -115,14 +110,15 @@ public class ImageUtil {
 
   /**
    * a method that checks if the object is null.
-   * @param o object to be checked for nullity
+   *
+   * @param o       object to be checked for nullity
    * @param message will throw a IlelgalARgument exception with the given message
-   * @param <T> generic for object type
+   * @param <T>     generic for object type
    * @return either the object, or throws an illegal argument exception.
    */
-  public static <T> T  requireNonNull(T o, String message) {
+  public static <T> T requireNonNull(T o, String message) {
     if (o == null) {
-      throw new IllegalArgumentException("Null "+ message);
+      throw new IllegalArgumentException("Null " + message);
     }
     return o;
   }

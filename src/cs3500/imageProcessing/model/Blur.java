@@ -23,6 +23,7 @@ public class Blur implements ITransformation {
 
   /**
    * Apply performs a ITransformation on an IPixelImage.
+   *
    * @return a new IPixelImage with a blur transformation applied to it.
    */
   @Override

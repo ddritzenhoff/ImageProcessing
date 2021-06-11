@@ -1,10 +1,8 @@
 package cs3500.imageProcessing.model;
 
-import java.awt.Image;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This class represents the model to process different images. This particular implementation lets
@@ -23,7 +21,7 @@ public class ProcessingModel implements IModel {
 
   @Override
   public void addImage(String fileName, IPixelImage image) {
-    ImageUtil.requireNonNull(fileName,"addImage filename.");
+    ImageUtil.requireNonNull(fileName, "addImage filename.");
     ImageUtil.requireNonNull(image, "addImage IPixelImage");
 
     if (images.containsKey(fileName)) {
@@ -50,21 +48,9 @@ public class ProcessingModel implements IModel {
     if (!images.containsKey(fileName)) {
       throw new IllegalArgumentException("invalid filename");
     }
-    images.replace(fileName,image);
+    images.replace(fileName, image);
   }
 
-  /**
-   * chainTransformations performs a series of ITransformations on an IPixelImage. Currently there
-   * are two color transformations: Sepia, and Greyscale. Currently there are two filter
-   * transformations: Blur,and Sharpen.
-   *
-   * @param transforms this is the list of the transforms that will be performed on the IPixelImage
-   *                   correlated with the fileName.
-   * @param fileName   this is the image to be operated upon.
-   * @return a new IPixelImage with the appropriate transformations applied to it.
-   */
-  //TODO: I think this should be void. Also, if the list is empty, should we just do nothing,
-  // or should we throw an exception?
   @Override
   public IPixelImage chainTransformations(List<ITransformation> transforms, String fileName) {
     ImageUtil.requireNonNull(transforms, "list transforms");
@@ -78,13 +64,11 @@ public class ProcessingModel implements IModel {
 
   //TODO: I think this should be void
   @Override
-  public IPixelImage applyTransformation(ITransformation transform, String fileName) {
+  public void applyTransformation(ITransformation transform, String fileName, String newFileName) {
     ImageUtil.requireNonNull(transform, "apply transformation transform");
-    ImageUtil.requireNonNull(fileName, "apply transformation filename");
-    if (!images.containsKey(fileName)) {
-      throw new IllegalArgumentException("registry does not have this file.");
-    }
-    return transform.apply(images.get(fileName));
+    checkRegistry(fileName, newFileName);
+
+    this.images.putIfAbsent(newFileName, transform.apply(images.get(fileName)));
   }
 
   //TODO: I think this should MAYBE be void, and add the generated checkerboad to the catalog.
@@ -98,7 +82,7 @@ public class ProcessingModel implements IModel {
   public void importPPM(String directoryName, String fileName) {
     ImageUtil.requireNonNull(fileName, "import ppm filename");
     ImageUtil.requireNonNull(fileName, "import ppm directoryName");
-    addImage(fileName, ImageUtil.PPMtoPixelImage(directoryName, fileName));
+    addImage(fileName, ImageUtil.PPMtoPixelImage(directoryName));
   }
 
   public void exportPPM(String fileName) {
@@ -113,13 +97,11 @@ public class ProcessingModel implements IModel {
     return images.keySet().toString();
   }
 
-  public IPixelImage getImage(String fileName){
+  public IPixelImage getImage(String fileName) {
     if (!images.containsKey(fileName)) {
       throw new IllegalArgumentException("registry does not have this file.");
     }
-    return new PixelImage(images.get(fileName).getPixels(),fileName);
-   // return images.get(fileName);
-
+    return new PixelImage(images.get(fileName).getPixels());
   }
 
 }
