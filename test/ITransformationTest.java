@@ -2,6 +2,7 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import cs3500.imageProcessing.model.AbstractColorTransformation;
 import cs3500.imageProcessing.model.Blur;
 import cs3500.imageProcessing.model.Greyscale;
 import cs3500.imageProcessing.model.IPixel;
@@ -60,13 +61,7 @@ public class ITransformationTest {
             {.2126, .7152, .0722},
             {.2126, .7152, .0722}};
 
-    assertEquals(new Pixel(255,255,255), testPixelImage.getPixel(0,0));
     IPixelImage testGreyscale = greyscale.apply(testPixelImage);
-
-    //get a pixel, and compare a pixel.
-
-    //System.out.println(testBlur);
-
     IPixel newPixel = new Pixel(254,254,254);
     newPixel.applyMatrix(testMatrix);
     assertEquals(testGreyscale.getPixel(0,0),newPixel);
@@ -90,6 +85,34 @@ public class ITransformationTest {
     IPixel newPixel = new Pixel(255,255,255);
     newPixel.applyMatrix(testMatrix);
     assertEquals(testSepia.getPixel(0,0),newPixel);
+  }
+
+  @Test
+  public void testApplyBlur() {
+
+    assertEquals(new Pixel(255,255,255), testPixelImage.getPixel(0,0));
+    IPixelImage testBlur = blur.apply(testPixelImage);
+
+    IPixel newPixel = new Pixel(94,94,94);
+    IPixel newPixel2 = new Pixel(122,122,122);
+
+    assertEquals(newPixel, testBlur.getPixel(0,0));
+    assertEquals(newPixel2, testBlur.getPixel(1,1));
+
+  }
+
+  @Test
+  public void testApplySharpen() {
+
+    assertEquals(new Pixel(255,255,255), testPixelImage.getPixel(0,0));
+    IPixelImage testSharpen = sharpen.apply(testPixelImage);
+
+    IPixel newPixel = new Pixel(254,254,254);
+    IPixel newPixel2 = new Pixel(0,0,0);
+
+    assertEquals(newPixel, testSharpen.getPixel(0,0));
+    assertEquals(newPixel2, testSharpen.getPixel(1,1));
+
   }
 
 

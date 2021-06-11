@@ -35,7 +35,9 @@ public interface IPixel {
   void scaleChannels(double scalar);
 
   /**
-   * @param matrix
+   * performs a color transformation which modifies the color of a pixel based on its own color.
+   *
+   * @param matrix represents a linear color transformation in a array of doubles.
    */
   void applyMatrix(double[][] matrix);
 

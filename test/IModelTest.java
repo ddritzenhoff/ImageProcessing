@@ -62,26 +62,32 @@ public class IModelTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void addImageInvalidID() {
+  public void addImageInvalidIDAreadyExists() {
     testModel.addImage("bad!",testPixelImage);
-    testModel.addImage("bad!",testModel.generateCheckerboard(2,2));
+    testModel.addImage("bad!",new PixelImage(testPixelArray));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void addImageValid() {
     testModel.addImage("bad!",testPixelImage);
-    testModel.addImage("bad!",testModel.generateCheckerboard(2,2));
+    testModel.generateCheckerboard(2,2, "testCheckerboard");
+    IPixelImage testImage = testModel.getImage("testCheckerboard");
+
+    testModel.addImage("testCheckerboard", testImage);
   }
 
   @Test
   public void addImageSeveralValid() {
     testModel.addImage("tpi",testPixelImage);
     assertEquals("[tpi]", testModel.printRegistry());
-    testModel.addImage("cb1",testModel.generateCheckerboard(2,2));
+    IPixelImage newCb = new Checkerboard(2,2);
+    testModel.addImage("cb1", newCb);
+
     assertEquals("[cb1, tpi]", testModel.printRegistry());
     testModel.addImage("tpi2",testPixelImage);
     assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
-    testModel.addImage("cb2",testModel.generateCheckerboard(2,2));
+    IPixelImage newCb2 = new Checkerboard(2,2);
+    testModel.addImage("cb2",newCb2);
     assertEquals("[cb2, cb1, tpi2, tpi]", testModel.printRegistry());
 
   }
@@ -95,7 +101,8 @@ public class IModelTest {
   @Test(expected = IllegalArgumentException.class)
   public void removeImageValidThenInvalidFileName() {
     testModel.addImage("tpi",testPixelImage);
-    testModel.addImage("cb1",testModel.generateCheckerboard(2,2));
+    IPixelImage newCb = new Checkerboard(2,2);
+    testModel.addImage("cb1",newCb);
     testModel.removeImage("tpi");
     testModel.removeImage("tpi");
   }
@@ -106,11 +113,13 @@ public class IModelTest {
     // Adding images:
     testModel.addImage("tpi",testPixelImage);
     assertEquals("[tpi]", testModel.printRegistry());
-    testModel.addImage("cb1",testModel.generateCheckerboard(2,2));
+    IPixelImage newCb = new Checkerboard(2,2);
+    testModel.addImage("cb1",newCb);
     assertEquals("[cb1, tpi]", testModel.printRegistry());
     testModel.addImage("tpi2",testPixelImage);
     assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
-    testModel.addImage("cb2",testModel.generateCheckerboard(2,2));
+    IPixelImage newCb2 = new Checkerboard(2,2);
+    testModel.addImage("cb2",newCb2);
     assertEquals("[cb2, cb1, tpi2, tpi]", testModel.printRegistry());
 
     // Removing images:
@@ -123,10 +132,9 @@ public class IModelTest {
 
   @Test
   public void replaceImage() {
-    //TODO: test.
-    IPixelImage checkerboard = testModel.generateCheckerboard(193,5);
+    IPixelImage checkerboard = new Checkerboard(193,5);
     testModel.addImage("tpi",testPixelImage);
-    testModel.replaceImage("tpi",testModel.generateCheckerboard(193,5));
+    testModel.replaceImage("tpi",checkerboard);
     assertNotEquals(testPixelImage,testModel.getImage("tpi"));
     assertTrue(testModel.getImage("tpi").equals(checkerboard));
 
@@ -135,7 +143,8 @@ public class IModelTest {
   @Test(expected = IllegalArgumentException.class)
   public void replaceImageInvalidKey() {
     testModel.addImage("tpi",testPixelImage);
-    testModel.replaceImage("tpiINVALID",testModel.generateCheckerboard(193,5));
+    IPixelImage cb1 = new Checkerboard(193,5);
+    testModel.replaceImage("tpiINVALID",cb1);
 
   }
 
@@ -145,12 +154,32 @@ public class IModelTest {
     testModel.replaceImage("tpi",null);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void alterMapWithAlreadyPresentValuesChainedTransformation() {
+    testModel.addImage("tpi",testPixelImage);
+    List<ITransformation> commands = Arrays.asList(sepia, blur, sepia, blur,
+        sharpen, greyscale, blur, sepia);
+   testModel.chainTransformations(commands,"tpi","tpi");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void alterMapWithAlreadyPresentValuesSingleTransformation() {
+    testModel.addImage("tpi",testPixelImage);
+    testModel.applyTransformation(blur, "tpi" , "tpi");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void alterMapWithAlreadyPresentValuesCheckerboard() {
+    testModel.generateCheckerboard(2,2,"test");
+    testModel.generateCheckerboard(2,2,"test");
+  }
 
   @Test
   public void chainTransformations() {
     List<ITransformation> commands = Arrays.asList(sepia, sepia, sepia);
     testModel.addImage("tpi",testPixelImage);
-    IPixelImage testChained = testModel.chainTransformations(commands, "tpi");
+    testModel.chainTransformations(commands, "tpi", "newtpi");
+    IPixelImage testChained = testModel.getImage( "newtpi");
     assertEquals(new Pixel(255,255,236), testChained.getPixels().get(0).get(0));
 
   }
@@ -159,7 +188,7 @@ public class IModelTest {
   public void chainTransformationsInvalidFileName() {
     List<ITransformation> commands = Arrays.asList(sepia, sepia, sepia);
     testModel.addImage("tpi2",testPixelImage);
-    IPixelImage testChained = testModel.chainTransformations(commands, "tpi");
+    testModel.chainTransformations(commands, "tpi",  "tipi3");
 
   }
 
@@ -167,7 +196,8 @@ public class IModelTest {
   public void chainTransformationsEmptyList() {
     List<ITransformation> commands = Arrays.asList();
     testModel.addImage("tpi",testPixelImage);
-    IPixelImage testChained = testModel.chainTransformations(commands, "tpi");
+    testModel.chainTransformations(commands, "tpi", "newtpi");
+    IPixelImage testChained = testModel.getImage( "tpi");
     assertEquals(new Pixel(255,255,255), testChained.getPixels().get(0).get(0));
 
   }
@@ -176,18 +206,19 @@ public class IModelTest {
   public void chainTransformationsInvalidListElement() {
     List<ITransformation> commands = Arrays.asList(sepia, null, sepia);
     testModel.addImage("tpi2",testPixelImage);
-    IPixelImage testChained = testModel.chainTransformations(commands, "tpi");
+    testModel.chainTransformations(commands, "tpi","tpichained");
+    IPixelImage testChained = testModel.getImage("tpichained");
     assertEquals(new Pixel(255,255,238), testChained.getPixels().get(0).get(0));
 
   }
 
   @Test
   public void applyTransformation() {
-    IPixelImage checkerboard = testModel.generateCheckerboard(193,5);
+    IPixelImage checkerboard = new Checkerboard(193,5);
     testModel.addImage("tpi2",testPixelImage);
     testModel.addImage("checkerboard",checkerboard);
-
-    IPixelImage newImagePostSepiaFilter = testModel.applyTransformation(sepia,"tpi2");
+    testModel.applyTransformation(sepia,"tpi2", "sepiatpi2");
+    IPixelImage newImagePostSepiaFilter =  testModel.getImage("sepiatpi2");
 
     IPixel blackSepiaPixel = newImagePostSepiaFilter.getPixel(1,1);
     assertEquals(blackSepiaPixel, new Pixel(0,0,0));
@@ -197,21 +228,98 @@ public class IModelTest {
 
   }
 
-  @Test
-  public void generateCheckerboard() {
+  @Test(expected = IllegalArgumentException.class)
+  public void generateCheckerboardInvalidName() {
+    testModel.generateCheckerboard(100,2, "testCb");
+    testModel.generateCheckerboard(100,2, "testCb");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void generateCheckerboardInvalidSquares() {
+    testModel.generateCheckerboard(100,-1, "test");
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void generateCheckerboardInvalidSize() {
+    testModel.generateCheckerboard(-1,100,"test");
   }
 
   @Test
-  public void importPPM() {
+  public void generateCheckerboardValid() {
+    testModel.generateCheckerboard(100,2, "testCb");
+    IPixelImage cb = new Checkerboard(100,2);
+    assertEquals("[testCb]",testModel.printRegistry());
+    assertTrue(cb.equals(testModel.getImage("testCb")));
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void importPPMInvalidFile() {
+    testModel.importPPM("src/files/koalaINVALID.ppm", "koalaImport!");
+    assertEquals("[koalaImport!]", testModel.printRegistry());
+    testModel.importPPM("src/files/manhattan-small.ppm", "manhattan!");
+
+  }
+
+  @Test
+  public void importPPMValid() {
+    testModel.importPPM("src/files/koala.ppm", "koalaImport!");
+    assertEquals("[koalaImport!]", testModel.printRegistry());
+    testModel.importPPM("src/files/manhattan-small.ppm", "manhattan!");
+    assertEquals("[koalaImport!, manhattan!]", testModel.printRegistry());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void exportPPMInvalidName() {
+    testModel.importPPM("src/files/koala.ppm", "koalaImport!");
+    assertEquals("[koalaImport!]", testModel.printRegistry());
+
+    testModel.exportPPM("koalaImport!6");
   }
 
   @Test
   public void exportPPM() {
+
+//    List<ITransformation> commands = Arrays.asList(sepia, blur, sepia, blur, sharpen, greyscale, blur, sepia);
+//
+//    testModel.chainTransformations(commands, "koalaImport!",  "Heavily altered koala");
+//    testModel.chainTransformations(commands, "manhattan!",  "Heavily altered manhattan");
+
+    testModel.importPPM("src/files/car.ppm", "car");
+    testModel.importPPM("src/files/hotairballoon.ppm", "hotairballoon");
+//
+//    testModel.applyTransformation(blur,"hotairballoon", "blurred hotairballoon");
+//    testModel.applyTransformation(sharpen,"hotairballoon", "sharpened hotairballoon");
+//    testModel.applyTransformation(sepia,"hotairballoon", "sepia hotairballoon");
+//    testModel.applyTransformation(greyscale,"hotairballoon", "greyscale hotairballoon");
+//
+//    testModel.applyTransformation(blur,"car", "blurred car");
+//    testModel.applyTransformation(sharpen,"car", "sharpened car");
+//    testModel.applyTransformation(sepia,"car", "sepia car");
+//    testModel.applyTransformation(greyscale,"car", "greyscale car");
+//
+//    testModel.exportPPM("blurred car");
+//    testModel.exportPPM("sharpened car");
+//    testModel.exportPPM("sepia car");
+//    testModel.exportPPM("greyscale car");
+//
+//    testModel.exportPPM("blurred hotairballoon");
+//    testModel.exportPPM("sharpened hotairballoon");
+//    testModel.exportPPM("sepia hotairballoon");
+//    testModel.exportPPM("greyscale hotairballo//testModel.exportPPM("Heavily altered manhattan");
+
   }
 
   @Test
   public void printRegistry() {
+    testModel.addImage("tpi",testPixelImage);
+    assertEquals("[tpi]", testModel.printRegistry());
+    IPixelImage newCb = new Checkerboard(2,2);
+    testModel.addImage("cb1", newCb);
+
+    assertEquals("[cb1, tpi]", testModel.printRegistry());
+    testModel.addImage("tpi2",testPixelImage);
+    assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
   }
 
-  //TODO : tests for other methods i wrote
 }

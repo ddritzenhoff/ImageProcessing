@@ -52,17 +52,16 @@ public class ProcessingModel implements IModel {
   }
 
   @Override
-  public IPixelImage chainTransformations(List<ITransformation> transforms, String fileName) {
+  public void chainTransformations(List<ITransformation> transforms, String fileName,
+      String newFileName) {
     ImageUtil.requireNonNull(transforms, "list transforms");
-    ImageUtil.requireNonNull(fileName, "chain transformation filename");
-    if (!images.containsKey(fileName)) {
-      throw new IllegalArgumentException("registry does not have this file.");
-    }
+    checkRegistry(fileName, newFileName);
+
     IPixelImage newImage = new ChainedTransformation(transforms).apply(images.get(fileName));
-    return newImage;
+
+    images.putIfAbsent(newFileName, newImage);
   }
 
-  //TODO: I think this should be void
   @Override
   public void applyTransformation(ITransformation transform, String fileName, String newFileName) {
     ImageUtil.requireNonNull(transform, "apply transformation transform");
@@ -71,12 +70,19 @@ public class ProcessingModel implements IModel {
     this.images.putIfAbsent(newFileName, transform.apply(images.get(fileName)));
   }
 
-  //TODO: I think this should MAYBE be void, and add the generated checkerboad to the catalog.
-  public IPixelImage generateCheckerboard(int sizeTile, int numSquares) {
-    if (sizeTile < 1 || numSquares < 1 ) {
+
+  public void generateCheckerboard(int sizeTile, int numSquares, String newFileName) {
+    if (sizeTile < 1 || numSquares < 1) {
       throw new IllegalArgumentException("invalid parameters to make a checkerboard");
     }
-    return new Checkerboard(sizeTile, numSquares);
+
+    if (images.containsKey(newFileName)) {
+      throw new IllegalArgumentException("registry already has a file with this name");
+    }
+
+    IPixelImage newCb = new Checkerboard(sizeTile, numSquares);
+    this.images.putIfAbsent(newFileName,
+        newCb);
   }
 
   public void importPPM(String directoryName, String fileName) {
@@ -87,10 +93,12 @@ public class ProcessingModel implements IModel {
 
   public void exportPPM(String fileName) {
     ImageUtil.requireNonNull(fileName, "export ppm filename");
+
     if (!images.containsKey(fileName)) {
       throw new IllegalArgumentException("registry does not have this file.");
     }
-    images.get(fileName).render("ppm");
+
+    images.get(fileName).render("ppm", fileName);
   }
 
   public String printRegistry() {
@@ -102,6 +110,19 @@ public class ProcessingModel implements IModel {
       throw new IllegalArgumentException("registry does not have this file.");
     }
     return new PixelImage(images.get(fileName).getPixels());
+  }
+
+  void checkRegistry(String fileName, String newFileName) throws IllegalArgumentException {
+    ImageUtil.requireNonNull(fileName, "chain transformation filename");
+    ImageUtil.requireNonNull(newFileName, "newFileName does not exist");
+
+    if (!images.containsKey(fileName)) {
+      throw new IllegalArgumentException("registry does not have this file.");
+    }
+
+    if (images.containsKey(newFileName)) {
+      throw new IllegalArgumentException("registry already has a file with this name");
+    }
   }
 
 }

@@ -19,7 +19,7 @@ public class ChainedTransformation implements ITransformation {
    * @param transforms a list of TransformEnum, consisting of the currently supported color, and
    *                   filter transformations.
    */
-  ChainedTransformation(List<ITransformation> transforms) {
+   public ChainedTransformation(List<ITransformation> transforms) {
     ImageUtil.requireNonNull(transforms, "checking transform constructor");
     this.transforms = new ArrayList<>(transforms);
   }

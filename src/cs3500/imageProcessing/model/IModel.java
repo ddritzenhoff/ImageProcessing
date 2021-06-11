@@ -58,7 +58,7 @@ public interface IModel {
    * @param numSquares  integer representing the n, in a nxn square board.
    * @param newFileName this is the name of the new file that has been created.
    */
-  IPixelImage generateCheckerboard(int sizeTile, int numSquares);
+  void generateCheckerboard(int sizeTile, int numSquares, String newFileName);
 
   /**
    * imports a PPM and converts it to an IPixelImage using PPMtoPixelImage.

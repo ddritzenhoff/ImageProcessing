@@ -21,28 +21,23 @@ public class PixelImage implements IPixelImage {
   protected final List<List<IPixel>> pixelImage;
 
   /**
-   * Constructs a PixelImage object with a default file name.
+   * Constructs a PixelImage object.
    *
    * @param pixelImage the 2D array of pixels to represent an image.
    */
-  public PixelImage(List<List<IPixel>> pixelImage, String fileName) {
-    this.pixelImage = pixelImage;
+  public PixelImage(List<List<IPixel>> pixelImage) {
+    this.pixelImage = ImageUtil.requireNonNull(pixelImage, "PixelImage constructor");
     this.imageHeight = getNumRows();
     this.imageWidth = getNumPixelsInRow();
     this.maxValue = 255;
-    this.fileName = fileName;
   }
 
   @Override
-  public void render(String type) {
+  public void render(String type, String newFileName) {
     //currently returns a string render.
     String value = "";
     FileOutputStream fos = null;
     try {
-      String newFileName = fileName;
-      if (newFileName.contains("src/files/")) {
-        newFileName = fileName.substring(10);
-      }
       System.out.println(newFileName);
       String newTitle = newFileName + "." + type;
       fos = new FileOutputStream(newTitle);
@@ -67,7 +62,6 @@ public class PixelImage implements IPixelImage {
         } catch (IOException e) {
           e.printStackTrace();
         }
-
       }
     }
 
@@ -77,11 +71,6 @@ public class PixelImage implements IPixelImage {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  //TODO: added this.
-  public String getFileName() {
-    return this.fileName;
   }
 
   public int getNumRows() {
@@ -123,8 +112,8 @@ public class PixelImage implements IPixelImage {
     if (o == null) {
       return false;
     }
-    IPixelImage that =  o;
-    PixelImage np = new PixelImage(o.getPixels(), "Test");
+    IPixelImage that = o;
+    PixelImage np = new PixelImage(o.getPixels());
 
     boolean start = true;
     List<List<IPixel>> thatPixels = that.getPixels();
@@ -138,6 +127,6 @@ public class PixelImage implements IPixelImage {
 
   @Override
   public int hashCode() {
-    return Objects.hash(imageWidth, imageHeight, maxValue, pixelImage, fileName);
+    return Objects.hash(imageWidth, imageHeight, maxValue, pixelImage);
   }
 }

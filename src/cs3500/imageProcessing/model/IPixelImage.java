@@ -29,7 +29,7 @@ public interface IPixelImage {
    *
    * @param type the file extension type to be created.
    */
-  void render(String type);
+  void render(String type, String newFileName);
 
   /**
    * Gets the number of rows that exist within the file.
@@ -46,11 +46,6 @@ public interface IPixelImage {
    */
   int getNumPixelsInRow();
 
-  /**
-   * returns the file name of the current IPixelImage.
-   * @return a string representing the fileName.
-   */
-  String getFileName();
 
   /**
    * returns true if the object o is equivalent to this IPixelImage. does a deep comparison: checks

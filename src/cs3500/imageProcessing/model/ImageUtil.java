@@ -37,7 +37,7 @@ public class ImageUtil {
    * @param fileDirectory name of the file.
    * @return a new IPixelImage representation of a PPM image.
    */
-  protected static IPixelImage PPMtoPixelImage(String fileDirectory, String fileName) {
+  protected static IPixelImage PPMtoPixelImage(String fileDirectory) {
 
     int imageWidth;
     int imageHeight;
@@ -82,13 +82,11 @@ public class ImageUtil {
         IPixel tempPixel = new Pixel(r, g, b);
         tempPixelRow.add(tempPixel);
 
-        //System.out.println("Color of pixel (" + j + "," + i + "): " + r + "," + g + "," + b);
-        //System.out.print("(" + j + "," + i + "): " + r + "," + g + "," + b + "  ");
       }
       pixelImage.add(tempPixelRow);
     }
 
-    return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
+    return new PixelImage(pixelImage);
   }
 
   /**
