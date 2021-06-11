@@ -129,4 +129,9 @@ public class Checkerboard implements IPixelImage {
     return checkerboardName;
   }
 
+  @Override
+  public boolean equals(IPixelImage o) {
+    return delegate.equals(o);
+  }
+
 }

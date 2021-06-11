@@ -89,7 +89,7 @@ public class PixelImage implements IPixelImage {
         newFileName = fileName.substring(10);
       }
       System.out.println(newFileName);
-      String newTitle = "Edited" + newFileName + "." + type;
+      String newTitle = newFileName + "." + type;
       fos = new FileOutputStream(newTitle);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -216,18 +216,14 @@ public class PixelImage implements IPixelImage {
 
   //TODO: just added this and some more stuff
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
+  public boolean equals(IPixelImage o) {
+
+    if (o == null ) {
       return false;
     }
-    PixelImage that = (PixelImage) o;
-    if (!(imageWidth == that.imageWidth && imageHeight == that.imageHeight
-        && maxValue == that.maxValue && Objects.equals(fileName, that.fileName))) {
-      return false;
-    }
+    IPixelImage that =  o;
+    PixelImage np = new PixelImage(o.getPixels(), "Test");
+
     boolean start = true;
     List<List<IPixel>> thatPixels = that.getPixels();
     for (int i = 0 ; i < this.getNumRows() ; i ++) {

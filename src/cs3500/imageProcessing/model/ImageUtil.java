@@ -96,6 +96,7 @@ public class ImageUtil {
     return new PixelImage(imageWidth, imageHeight, maxValue, pixelImage, fileName);
   }
 
+  //TODO: tests for this method. Only being tested indirectly in IPixelTest.
   /**
    * clamps the integer value passed in. the clamp default value is set to 255.
    * Used to ensure that a pixel value does not go below 0, and does not go past 255.

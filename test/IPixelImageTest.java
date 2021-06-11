@@ -2,10 +2,14 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import cs3500.imageProcessing.model.Blur;
+import cs3500.imageProcessing.model.Greyscale;
 import cs3500.imageProcessing.model.IPixel;
 import cs3500.imageProcessing.model.IPixelImage;
+import cs3500.imageProcessing.model.ITransformation;
 import cs3500.imageProcessing.model.Pixel;
 import cs3500.imageProcessing.model.PixelImage;
+import cs3500.imageProcessing.model.Sepia;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +36,8 @@ public class IPixelImageTest {
     testPixelArray.add(pixelList);
 
     testPixelImage = new PixelImage(testPixelArray);
+
+
 
     }
 

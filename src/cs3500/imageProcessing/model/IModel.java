@@ -66,5 +66,19 @@ public interface IModel {
    */
   void exportPPM(String fileName);
 
+  /**
+   * creates a string of the keys of the current images in the registry.
+   * @return a string of a list of current images in our model.
+   */
   String printRegistry();
+
+  //TODO: do you wanna keep this? I think its pretty useful,
+  // but im currently only using it for testing.
+  // It might be useful in the the controller tho.
+  /**
+   * returns a copy of the IPixelImage at the given fileName.
+   * @param fileName the corresponding file name of the IPixel image
+   * @return a copy of the IPixelImage at the given file name.
+   */
+  IPixelImage getImage(String fileName);
 }

@@ -48,4 +48,12 @@ public interface IPixelImage {
    */
   String getFileName();
 
+  /**
+   * returns true if the object o is equivalent to this IPixelImage.
+   * does a deep comparison: checks pixel by pixel if the two IPixelImages are the same.
+   * @param o object
+   * @return a boolean representing if this object equals o.
+   */
+  boolean equals(IPixelImage o);
+
 }

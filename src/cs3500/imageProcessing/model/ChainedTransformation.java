@@ -20,6 +20,7 @@ public class ChainedTransformation implements ITransformation {
    *                   filter transformations.
    */
   ChainedTransformation(List<ITransformation> transforms) {
+    ImageUtil.requireNonNull(transforms, "checking transform constructor");
    // this.oldImage = oldImage;
     this.transforms = new ArrayList<>(transforms);
   }
@@ -29,6 +30,7 @@ public class ChainedTransformation implements ITransformation {
     this.oldImage = oldImage;
     IPixelImage tempImage = oldImage;
     for (ITransformation t : transforms) {
+      ImageUtil.requireNonNull(t, "checking multi transform apply");
       tempImage = t.apply(tempImage);
     }
     return tempImage;
