@@ -1,23 +1,32 @@
-import static org.junit.Assert.*;
 
-import cs3500.imageProcessing.model.Blur;
-import cs3500.imageProcessing.model.Checkerboard;
-import cs3500.imageProcessing.model.Greyscale;
-import cs3500.imageProcessing.model.IModel;
-import cs3500.imageProcessing.model.IPixel;
-import cs3500.imageProcessing.model.IPixelImage;
-import cs3500.imageProcessing.model.ITransformation;
-import cs3500.imageProcessing.model.Pixel;
-import cs3500.imageProcessing.model.PixelImage;
-import cs3500.imageProcessing.model.ProcessingModel;
-import cs3500.imageProcessing.model.Sepia;
-import cs3500.imageProcessing.model.Sharpen;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import cs3500.imageprocessing.model.Blur;
+import cs3500.imageprocessing.model.Checkerboard;
+import cs3500.imageprocessing.model.Greyscale;
+import cs3500.imageprocessing.model.IModel;
+import cs3500.imageprocessing.model.IPixel;
+import cs3500.imageprocessing.model.IPixelImage;
+import cs3500.imageprocessing.model.ITransformation;
+import cs3500.imageprocessing.model.Pixel;
+import cs3500.imageprocessing.model.PixelImage;
+import cs3500.imageprocessing.model.ProcessingModel;
+import cs3500.imageprocessing.model.Sepia;
+import cs3500.imageprocessing.model.Sharpen;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests for our model implementation.
+ * Tests all of the methods in the interface and their effects.
+ * Tests invalid inputs and outcomes of IModel manipulations.
+ */
 public class IModelTest {
   IModel testModel;
 
@@ -159,7 +168,7 @@ public class IModelTest {
     testModel.addImage("tpi",testPixelImage);
     List<ITransformation> commands = Arrays.asList(sepia, blur, sepia, blur,
         sharpen, greyscale, blur, sepia);
-   testModel.chainTransformations(commands,"tpi","tpi");
+    testModel.chainTransformations(commands,"tpi","tpi");
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -263,10 +272,10 @@ public class IModelTest {
 
   @Test
   public void importPPMValid() {
-    testModel.importPPM("src/files/koala.ppm", "koalaImport!");
-    assertEquals("[koalaImport!]", testModel.printRegistry());
-    testModel.importPPM("src/files/manhattan-small.ppm", "manhattan!");
-    assertEquals("[koalaImport!, manhattan!]", testModel.printRegistry());
+    testModel.importPPM("res/car.ppm", "car");
+    assertEquals("[car]", testModel.printRegistry());
+    testModel.importPPM("res/car.ppm", "car2");
+    assertEquals("[car2, car]", testModel.printRegistry());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -280,33 +289,32 @@ public class IModelTest {
   @Test
   public void exportPPM() {
 
-//    List<ITransformation> commands = Arrays.asList(sepia, blur, sepia, blur, sharpen, greyscale, blur, sepia);
-//
-//    testModel.chainTransformations(commands, "koalaImport!",  "Heavily altered koala");
-//    testModel.chainTransformations(commands, "manhattan!",  "Heavily altered manhattan");
+    testModel.importPPM("res/car.ppm", "car");
+    testModel.importPPM("res/hotairballoon.ppm", "hotairballoon");
 
-    testModel.importPPM("src/files/car.ppm", "car");
-    testModel.importPPM("src/files/hotairballoon.ppm", "hotairballoon");
-//
-//    testModel.applyTransformation(blur,"hotairballoon", "blurred hotairballoon");
-//    testModel.applyTransformation(sharpen,"hotairballoon", "sharpened hotairballoon");
-//    testModel.applyTransformation(sepia,"hotairballoon", "sepia hotairballoon");
-//    testModel.applyTransformation(greyscale,"hotairballoon", "greyscale hotairballoon");
-//
-//    testModel.applyTransformation(blur,"car", "blurred car");
-//    testModel.applyTransformation(sharpen,"car", "sharpened car");
-//    testModel.applyTransformation(sepia,"car", "sepia car");
-//    testModel.applyTransformation(greyscale,"car", "greyscale car");
-//
-//    testModel.exportPPM("blurred car");
-//    testModel.exportPPM("sharpened car");
-//    testModel.exportPPM("sepia car");
-//    testModel.exportPPM("greyscale car");
-//
-//    testModel.exportPPM("blurred hotairballoon");
-//    testModel.exportPPM("sharpened hotairballoon");
-//    testModel.exportPPM("sepia hotairballoon");
-//    testModel.exportPPM("greyscale hotairballo//testModel.exportPPM("Heavily altered manhattan");
+    testModel.applyTransformation(blur,"hotairballoon", "blurred hotairballoon");
+    testModel.applyTransformation(sharpen,"hotairballoon", "sharpened hotairballoon");
+    testModel.applyTransformation(sepia,"hotairballoon", "sepia hotairballoon");
+    testModel.applyTransformation(greyscale,"hotairballoon", "greyscale hotairballoon");
+
+    testModel.applyTransformation(blur,"car", "blurred car");
+    testModel.applyTransformation(sharpen,"car", "sharpened car");
+    testModel.applyTransformation(sepia,"car", "sepia car");
+    testModel.applyTransformation(greyscale,"car", "greyscale car");
+
+    testModel.exportPPM("blurred car");
+    testModel.exportPPM("sharpened car");
+    testModel.exportPPM("sepia car");
+    testModel.exportPPM("greyscale car");
+
+    testModel.exportPPM("blurred hotairballoon");
+    testModel.exportPPM("sharpened hotairballoon");
+    testModel.exportPPM("sepia hotairballoon");
+    testModel.exportPPM("greyscale hotairballoon");
+    //testModel.exportPPM("Heavily altered manhattan");
+    assertEquals("[greyscale car, greyscale hotairballoon, sharpened car, car, "
+        + "sepia car, hotairballoon, blurred hotairballoon, sharpened hotairballoon, blurred car,"
+        + " sepia hotairballoon]",testModel.printRegistry());
 
   }
 

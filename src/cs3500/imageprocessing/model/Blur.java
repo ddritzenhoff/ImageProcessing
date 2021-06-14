@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 
 /**
@@ -7,9 +7,9 @@ package cs3500.imageProcessing.model;
  */
 public class Blur implements ITransformation {
 
-  protected final ITransformation abstractDelegate;
+  private final ITransformation abstractDelegate;
 
-  protected final double[][] blurKernel = {{1.0 / 16, 1.0 / 8, 1.0 / 16},
+  private final double[][] blurKernel = {{1.0 / 16, 1.0 / 8, 1.0 / 16},
       {1.0 / 8, 1.0 / 4, 1.0 / 8},
       {1.0 / 16, 1.0 / 8, 1.0 / 16}};
 

@@ -1,23 +1,23 @@
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import cs3500.imageProcessing.model.AbstractColorTransformation;
-import cs3500.imageProcessing.model.Blur;
-import cs3500.imageProcessing.model.Greyscale;
-import cs3500.imageProcessing.model.IPixel;
-import cs3500.imageProcessing.model.IPixelImage;
-import cs3500.imageProcessing.model.ITransformation;
-import cs3500.imageProcessing.model.Pixel;
-import cs3500.imageProcessing.model.PixelImage;
-import cs3500.imageProcessing.model.Sepia;
+import cs3500.imageprocessing.model.Blur;
+import cs3500.imageprocessing.model.Greyscale;
+import cs3500.imageprocessing.model.IPixel;
+import cs3500.imageprocessing.model.IPixelImage;
+import cs3500.imageprocessing.model.ITransformation;
+import cs3500.imageprocessing.model.Pixel;
+import cs3500.imageprocessing.model.PixelImage;
+import cs3500.imageprocessing.model.Sepia;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ *  Tests for ITransformations. Tests invalid inputs and the effects of ITransformations.
+ */
 public class ITransformationTest {
 
   Pixel whitePixel;
@@ -31,8 +31,6 @@ public class ITransformationTest {
   ITransformation greyscale;
   ITransformation sharpen;
 
-  ITransformation AbstractColorTransform;
-
   @Before
   public void init() {
     whitePixel = new Pixel(255,255,255);
@@ -43,12 +41,11 @@ public class ITransformationTest {
     testPixelArray.add(pixelList);
     testPixelArray.add(pixelList);
     testPixelImage = new PixelImage(testPixelArray);
-    //AbstractColorTransform.apply
 
-     blur = new Blur();
-     sepia= new Sepia();
-     greyscale = new Greyscale();
-     sharpen = new Greyscale();
+    blur = new Blur();
+    sepia = new Sepia();
+    greyscale = new Greyscale();
+    sharpen = new Greyscale();
 
 
   }
@@ -79,9 +76,6 @@ public class ITransformationTest {
     IPixelImage testSepia = sepia.apply(testPixelImage);
 
     //get a pixel, and compare a pixel.
-
-    //System.out.println(testBlur);
-
     IPixel newPixel = new Pixel(255,255,255);
     newPixel.applyMatrix(testMatrix);
     assertEquals(testSepia.getPixel(0,0),newPixel);

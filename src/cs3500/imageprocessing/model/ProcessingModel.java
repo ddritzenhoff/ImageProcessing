@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class ProcessingModel implements IModel {
 
-  protected final Map<String, IPixelImage> images;
+  private final Map<String, IPixelImage> images;
 
   /**
    * Constructs a IModel object.
@@ -70,7 +70,7 @@ public class ProcessingModel implements IModel {
     this.images.putIfAbsent(newFileName, transform.apply(images.get(fileName)));
   }
 
-
+  @Override
   public void generateCheckerboard(int sizeTile, int numSquares, String newFileName) {
     if (sizeTile < 1 || numSquares < 1) {
       throw new IllegalArgumentException("invalid parameters to make a checkerboard");
@@ -85,12 +85,14 @@ public class ProcessingModel implements IModel {
         newCb);
   }
 
+  @Override
   public void importPPM(String directoryName, String fileName) {
     ImageUtil.requireNonNull(fileName, "import ppm filename");
     ImageUtil.requireNonNull(fileName, "import ppm directoryName");
-    addImage(fileName, ImageUtil.PPMtoPixelImage(directoryName));
+    addImage(fileName, ImageUtil.ppmToPixelImage(directoryName));
   }
 
+  @Override
   public void exportPPM(String fileName) {
     ImageUtil.requireNonNull(fileName, "export ppm filename");
 
@@ -105,6 +107,7 @@ public class ProcessingModel implements IModel {
     return images.keySet().toString();
   }
 
+  @Override
   public IPixelImage getImage(String fileName) {
     if (!images.containsKey(fileName)) {
       throw new IllegalArgumentException("registry does not have this file.");
@@ -112,7 +115,8 @@ public class ProcessingModel implements IModel {
     return new PixelImage(images.get(fileName).getPixels());
   }
 
-  void checkRegistry(String fileName, String newFileName) throws IllegalArgumentException {
+
+  private void checkRegistry(String fileName, String newFileName) throws IllegalArgumentException {
     ImageUtil.requireNonNull(fileName, "chain transformation filename");
     ImageUtil.requireNonNull(newFileName, "newFileName does not exist");
 

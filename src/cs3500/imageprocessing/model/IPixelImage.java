@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.List;
 
@@ -54,6 +54,6 @@ public interface IPixelImage {
    * @param o object
    * @return a boolean representing if this object equals o.
    */
-  boolean equals(IPixelImage o);
+  boolean equals(Object o);
 
 }

@@ -2,16 +2,17 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import cs3500.imageProcessing.model.IPixel;
-import cs3500.imageProcessing.model.Pixel;
+import cs3500.imageprocessing.model.IPixel;
+import cs3500.imageprocessing.model.Pixel;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * tests for the IPixel class. Tests invalid inputs, and operations on pixels.
+ */
 public class IPixelTest {
   IPixel blackPixel;
   IPixel whitePixel;
-
 
   @Before
   public void init() {
@@ -64,18 +65,18 @@ public class IPixelTest {
   @Test
   public void testScaleChannelsWhitePixel() {
     whitePixel.scaleChannels(.5);
-    assertEquals(whitePixel.getR(), 255/2);
-    assertEquals(whitePixel.getG(), 255/2);
-    assertEquals(whitePixel.getB(), 255/2);
+    assertEquals(whitePixel.getR(), 255 / 2);
+    assertEquals(whitePixel.getG(), 255 / 2);
+    assertEquals(whitePixel.getB(), 255 / 2);
   }
 
   @Test
   public void testNegativeScaleChannelsWhitePixel() {
 
     whitePixel.scaleChannels(-.5);
-    assertEquals( -255/2, whitePixel.getR());
-    assertEquals( -255/2,whitePixel.getG());
-    assertEquals(-255/2,whitePixel.getB());
+    assertEquals( -255 / 2, whitePixel.getR());
+    assertEquals( -255 / 2,whitePixel.getG());
+    assertEquals(-255 / 2,whitePixel.getB());
   }
 
   @Test

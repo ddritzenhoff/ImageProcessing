@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 /**
  * represents a ITransformation color transformation. Changes all the pixels in the IPixelImage to
@@ -6,8 +6,8 @@ package cs3500.imageProcessing.model;
  */
 public class Sepia implements ITransformation {
 
-  protected final ITransformation abstractDelegate;
-  protected final double[][] sepiaMatrix =
+  private final ITransformation abstractDelegate;
+  private final double[][] sepiaMatrix =
       {{.393, .769, .189},
           {.349, .686, .168},
           {.272, .534, .131}};
@@ -23,7 +23,7 @@ public class Sepia implements ITransformation {
   /**
    * Apply performs a ITransformation on an IPixelImage.
    *
-   * @param oldImage
+   * @param oldImage Old IPixelImage that will be transformed.
    * @return a new IPixelImage with a Sepia color transformation applied to it.
    */
   @Override

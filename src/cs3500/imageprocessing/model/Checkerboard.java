@@ -1,18 +1,20 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Creates a checkerboard programmatically using the IPixelImage format. Represented as a 2D array.
  */
 public class Checkerboard implements IPixelImage {
 
-  protected IPixelImage delegate;
-  protected int imageWidth;
-  protected int imageHeight;
-  protected int numTiles;
-  protected List<List<IPixel>> pixelImage;
+  private IPixelImage delegate;
+  private int imageWidth;
+  private int imageHeight;
+  private int numTiles;
+  private List<List<IPixel>> pixelImage;
+
 
   /**
    * creates a Checkerboard depending on the pixel size of the tile, and the number of tiles. The
@@ -112,8 +114,12 @@ public class Checkerboard implements IPixelImage {
 
 
   @Override
-  public boolean equals(IPixelImage o) {
+  public boolean equals(Object o) {
     return delegate.equals(o);
   }
 
+  @Override
+  public int hashCode() {
+    return Objects.hash(delegate, imageWidth, imageHeight, numTiles, pixelImage);
+  }
 }

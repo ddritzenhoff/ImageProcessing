@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -15,9 +15,9 @@ import java.util.Objects;
  */
 public class PixelImage implements IPixelImage {
 
-  protected final int imageWidth;
-  protected final int imageHeight;
-  protected final int maxValue;
+  private final int imageWidth;
+  private final int imageHeight;
+  private final int maxValue;
   protected final List<List<IPixel>> pixelImage;
 
   /**
@@ -31,6 +31,8 @@ public class PixelImage implements IPixelImage {
     this.imageWidth = getNumPixelsInRow();
     this.maxValue = 255;
   }
+
+
 
   @Override
   public void render(String type, String newFileName) {
@@ -73,14 +75,17 @@ public class PixelImage implements IPixelImage {
     }
   }
 
+  @Override
   public int getNumRows() {
     return this.pixelImage.size();
   }
 
+  @Override
   public int getNumPixelsInRow() {
     return this.pixelImage.get(0).size();
   }
 
+  @Override
   public IPixel getPixel(int row, int pixelRowIndex) {
     if (row < 0 || row >= getNumRows() || pixelRowIndex < 0
         || pixelRowIndex >= getNumPixelsInRow()) {
@@ -92,6 +97,7 @@ public class PixelImage implements IPixelImage {
     return new Pixel(oldPixel.getR(), oldPixel.getG(), oldPixel.getB());
   }
 
+  @Override
   public List<List<IPixel>> getPixels() {
 
     List<List<IPixel>> imageCopy = new ArrayList<>();
@@ -107,13 +113,17 @@ public class PixelImage implements IPixelImage {
   }
 
   @Override
-  public boolean equals(IPixelImage o) {
+  public boolean equals(Object o) {
 
     if (o == null) {
       return false;
     }
-    IPixelImage that = o;
-    PixelImage np = new PixelImage(o.getPixels());
+    if (!(o instanceof IPixelImage)) {
+      return false;
+    }
+    IPixelImage that = (IPixelImage)o;
+
+    //IPixelImage that = new PixelImage(o.getPixels());
 
     boolean start = true;
     List<List<IPixel>> thatPixels = that.getPixels();
@@ -129,4 +139,5 @@ public class PixelImage implements IPixelImage {
   public int hashCode() {
     return Objects.hash(imageWidth, imageHeight, maxValue, pixelImage);
   }
+
 }

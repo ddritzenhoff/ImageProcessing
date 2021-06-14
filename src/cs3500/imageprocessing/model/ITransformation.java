@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 /**
  * a ITransformation represents either a color, filter, or chained transformation. It's

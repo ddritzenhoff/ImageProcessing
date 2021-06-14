@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 /**
  * This represents the most basic version of an image. It contains three different channels, which

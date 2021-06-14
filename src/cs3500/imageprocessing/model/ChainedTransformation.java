@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,23 +10,21 @@ import java.util.List;
  */
 public class ChainedTransformation implements ITransformation {
 
-  ArrayList<ITransformation> transforms;
-  IPixelImage oldImage;
+  private ArrayList<ITransformation> transforms;
 
   /**
-   * constructor for a ChainedTransformation
+   * constructor for a ChainedTransformation.
    *
    * @param transforms a list of TransformEnum, consisting of the currently supported color, and
    *                   filter transformations.
    */
-   public ChainedTransformation(List<ITransformation> transforms) {
+  public ChainedTransformation(List<ITransformation> transforms) {
     ImageUtil.requireNonNull(transforms, "checking transform constructor");
     this.transforms = new ArrayList<>(transforms);
   }
 
   @Override
   public IPixelImage apply(IPixelImage oldImage) {
-    this.oldImage = oldImage;
     IPixelImage tempImage = oldImage;
     for (ITransformation t : transforms) {
       ImageUtil.requireNonNull(t, "checking multi transform apply");

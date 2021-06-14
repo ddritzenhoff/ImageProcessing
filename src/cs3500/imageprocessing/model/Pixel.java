@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.Objects;
 
@@ -43,7 +43,7 @@ public class Pixel implements IPixel {
     return this.b;
   }
 
-
+  @Override
   public void scaleChannels(double scalar) {
     this.r = (int) (this.r * scalar);
     this.g = (int) (this.g * scalar);

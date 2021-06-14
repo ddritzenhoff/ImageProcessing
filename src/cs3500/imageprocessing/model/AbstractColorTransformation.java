@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.List;
 import java.util.Objects;
@@ -7,10 +7,9 @@ import java.util.Objects;
  * Represents an ITransformation color transformation. This class abstracts the process of modifying
  * the color of a pixel based on its own color.
  */
-public final class AbstractColorTransformation implements ITransformation {
+public class AbstractColorTransformation implements ITransformation {
 
-  protected IPixelImage oldImage;
-  protected final double[][] colorMatrix;
+  private final double[][] colorMatrix;
 
   /**
    * Represents an ITransformation color transformation. Converts the passed-in image to an
@@ -25,8 +24,8 @@ public final class AbstractColorTransformation implements ITransformation {
 
   @Override
   public IPixelImage apply(IPixelImage oldImage) {
-    this.oldImage = Objects.requireNonNull(oldImage);
-    List<List<IPixel>> pixelRows = this.oldImage.getPixels();
+    IPixelImage oldImage1 = Objects.requireNonNull(oldImage);
+    List<List<IPixel>> pixelRows = oldImage1.getPixels();
 
     for (int row = 0; row < pixelRows.size(); row++) {
       List<IPixel> pixelRow = pixelRows.get(row);

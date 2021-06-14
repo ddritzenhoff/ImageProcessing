@@ -1,21 +1,22 @@
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-import cs3500.imageProcessing.model.Blur;
-import cs3500.imageProcessing.model.Greyscale;
-import cs3500.imageProcessing.model.IPixel;
-import cs3500.imageProcessing.model.IPixelImage;
-import cs3500.imageProcessing.model.ITransformation;
-import cs3500.imageProcessing.model.Pixel;
-import cs3500.imageProcessing.model.PixelImage;
-import cs3500.imageProcessing.model.Sepia;
+import cs3500.imageprocessing.model.IPixel;
+import cs3500.imageprocessing.model.IPixelImage;
+import cs3500.imageprocessing.model.Pixel;
+import cs3500.imageprocessing.model.PixelImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * tests for the IPixelImage class and its subsequent methods.
+ * Creates a mini 3x3 array of Pixels to test operations on.
+ * Tests invalid inputs and effects on IPixelImages.
+ */
 public class IPixelImageTest {
   IPixel whitePixel;
   IPixel blackPixel;
@@ -34,19 +35,14 @@ public class IPixelImageTest {
     testPixelArray.add(pixelList);
     testPixelArray.add(pixelList);
     testPixelArray.add(pixelList);
-
     testPixelImage = new PixelImage(testPixelArray);
 
-
-
-    }
+  }
 
 
   @Test
   public void getPixels() {
     IPixelImage test = new PixelImage(testPixelArray);
-//    System.out.println(test.getPixels().equals(testPixelArray));
-    //TODO i made a equals method for pixel and IPixelImage
     assertEquals(test.getPixels(),testPixelArray);
   }
 
@@ -76,16 +72,11 @@ public class IPixelImageTest {
   }
 
   @Test
-  public void render() {
-  }
-
-  @Test
   public void getNumRows() {
     assertEquals(3,testPixelImage.getNumRows());
     testPixelArray.add(pixelList);
     testPixelImage  = new PixelImage(testPixelArray);
     assertEquals(4,testPixelImage.getNumRows());
-
   }
 
   @Test

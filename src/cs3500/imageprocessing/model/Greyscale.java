@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 /**
  * represents a ITransformation color transformation. Changes all the pixels in the IPixelImage to
@@ -6,8 +6,8 @@ package cs3500.imageProcessing.model;
  */
 public class Greyscale implements ITransformation {
 
-  protected final ITransformation abstractDelegate;
-  protected final double[][] greyScaleMatrix =
+  private final ITransformation abstractDelegate;
+  private final double[][] greyScaleMatrix =
       {{.2126, .7152, .0722},
           {.2126, .7152, .0722},
           {.2126, .7152, .0722}};

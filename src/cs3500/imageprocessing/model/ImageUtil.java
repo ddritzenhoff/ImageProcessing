@@ -1,4 +1,4 @@
-package cs3500.imageProcessing.model;
+package cs3500.imageprocessing.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.io.FileInputStream;
 public class ImageUtil {
 
   /**
-   * method to verify that the file that will be converted into a IPixelImage exists
+   * method to verify that the file that will be converted into a IPixelImage exists.
    *
    * @param fileName represents the string name of the file.
    * @return a Scanner containing the fileInputStream of the given fileName.
@@ -37,7 +37,7 @@ public class ImageUtil {
    * @param fileDirectory name of the file.
    * @return a new IPixelImage representation of a PPM image.
    */
-  protected static IPixelImage PPMtoPixelImage(String fileDirectory) {
+  protected static IPixelImage ppmToPixelImage(String fileDirectory) {
 
     int imageWidth;
     int imageHeight;
