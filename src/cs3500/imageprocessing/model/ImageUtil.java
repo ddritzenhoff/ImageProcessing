@@ -1,10 +1,15 @@
 package cs3500.imageprocessing.model;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
