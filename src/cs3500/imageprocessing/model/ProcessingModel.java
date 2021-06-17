@@ -11,12 +11,45 @@ import java.util.Map;
 public class ProcessingModel implements IModel {
 
   private final Map<String, IPixelImage> images;
+  private final Map<String, Boolean> visibility;
+
+  public ProcessingModel(Map<String, IPixelImage> images, Map<String, Boolean> visibility) {
+    this.images = images;
+    this.visibility = visibility;
+  }
 
   /**
    * Constructs a IModel object.
    */
   public ProcessingModel() {
     this(new HashMap<>(), new HashMap<>());
+  }
+
+
+  //TODO: Create a layer.
+//TODO: be able to select a layer: i.e (current first) ;
+  //TODO: load a image into a layer. image can be of any kind.
+  //TODO: saving stuff -- (method will be called saveMultiLayerImage)
+
+  //TODO: visibility. my idea is to have a hashmap of <String,boolean> that will have true or
+  // false for visibility. visibility is dependent on when we are RENDERING, and because of this,
+  // visibility is something that will be saved in the contents of the file(a txt file to describe our file),
+  // we should be able to access it as a field of our processingModel
+
+
+  /**
+   * this method will do the thing:
+   * A multi-layered image can be saved simply as a collection of files:
+   * one for each layer (as regular images), and one (text) file that
+   * stores the locations of all the layer files.
+   */
+  public void saveMultiLayerImage() {
+
+
+    for(Map.Entry<String, IPixelImage> image : images.entrySet()) {
+
+    }
+
   }
 
   @Override
