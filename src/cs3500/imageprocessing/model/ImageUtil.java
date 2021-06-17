@@ -186,12 +186,14 @@ public class ImageUtil {
         layerName = arr[0];
         order = Integer.parseInt(arr[1]);
         visibility = Boolean.parseBoolean(arr[2]);
-        fileName = arr[3];
-        fileLocation = arr[4];
+       // fileName = arr[3];
+       // fileLocation = arr[4];
 
+       // IPixelImage tempImage2 =
+       //     ImageUtil.txtFileToPixelImage(fileName);
         IPixelImage tempImage =
-            ImageUtil.txtFileToPixelImage(fileName, fileLocation);
-        ILayer tempLayer = new Layer(visibility,tempImage,order,fileName,fileLocation);
+            ImageUtil.txtFileToPixelImage(layerName);
+        ILayer tempLayer = new Layer(visibility,tempImage,order);
 
         //[order,   visibility,    fileName, fileLocation ]
         //-> model    -> model     -> txtFileToPixelImage
@@ -203,7 +205,6 @@ public class ImageUtil {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-
     return new ProcessingModel(modelFileName, loadedLayers);
   }
 
@@ -252,10 +253,10 @@ public class ImageUtil {
   }
 
   //WORKS
-  static IPixelImage txtFileToPixelImage(String fileName, String fileLocation) {
+  static IPixelImage txtFileToPixelImage(String layerName) {
     List<List<IPixel>> pixelCols = new ArrayList<>();
     try {
-      File txtFile = new File(fileLocation+fileName);
+      File txtFile = new File("res/"+layerName);
       Scanner scanner = new Scanner(txtFile);
       int intRows = 0;
       int intCols = 0;
@@ -292,8 +293,9 @@ public class ImageUtil {
       scanner.close();
 
     } catch (FileNotFoundException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
+      throw new IllegalArgumentException(layerName + " does not exist.") ;
+      //System.out.println("An error occurred.");
+      //  e.printStackTrace();
     }
     return new PixelImage(pixelCols);
   }
@@ -302,15 +304,15 @@ public class ImageUtil {
 
   //WORKS
   static BufferedImage normalImageToBufferedImage(String fileLocation) {
+    ImageUtil.requireNonNull(fileLocation, "normalImagetoBufferedImage");
     BufferedImage newBufferedImage;
     try {
       newBufferedImage = ImageIO.read(new File(fileLocation));
       return newBufferedImage;
 
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new IllegalArgumentException(fileLocation + " does not exist.") ;
     }
-    throw new IllegalArgumentException("failed to return buffered image");
   }
 
   //WORKS
@@ -356,6 +358,16 @@ public class ImageUtil {
       ImageIO.write(image, type, outputfile);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  static void imageWrapperExport(IPixelImage image, String newFileName) {
+    String extension = newFileName.substring(newFileName.length()-3);
+    if (extension.equals(".ppm")) {
+      image.render("ppm", newFileName);
+    }
+    else  {
+      saveBufferedImage(newFileName,ImageUtil.pixelImageToBufferedImage(image),extension);
     }
   }
 

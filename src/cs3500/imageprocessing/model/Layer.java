@@ -11,23 +11,32 @@ public class Layer implements ILayer {
   private IPixelImage image; // actual image within the layer
 
 
+//  public Layer(boolean visibility,
+//      IPixelImage image, int order, String fileName, String fileLocation) {
+//  //  this.fileName = fileName;
+//    this.visibility = visibility;
+//    this.image = image;
+//    this.order = order;
+//  }
 
-  public Layer(boolean visibility,
-      IPixelImage image, int order, String fileName, String fileLocation) {
-    this.fileName = fileName;
+  public Layer(boolean visibility,IPixelImage image, int order) {
+    //  this.fileName = fileName;
     this.visibility = visibility;
     this.image = image;
     this.order = order;
   }
 
-  public String getFileName() {
-    return fileName;
-  }
+
+
+
+//  public String getFileName() {
+//    return fileName;
+//  }
 
   @Override
-  public String getFileLocation() {
-    return null;
-  }
+//  public String getFileLocation() {
+//    return null;
+//  }
 
   public boolean getVisibility() {
     return visibility;
@@ -48,8 +57,8 @@ public class Layer implements ILayer {
   public String toString() {
     StringBuilder sb = new StringBuilder("");
         sb.append(order).append(" ").
-          append(visibility).append(" ")
-        .append(fileName).append(" ").append(fileLocation).append("\n");
+          append(visibility).append(" ").append("\n");
+//        .append(fileName).append(" ").append(fileLocation).append("\n");
     // .append(image.toString()).append(" ");
 
     return sb.toString();
@@ -108,13 +117,6 @@ public class Layer implements ILayer {
     this.visibility = visibility;
   }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
-
-  public void setFileLocation(String fileLocation) {
-    this.fileLocation = fileLocation;
-  }
 
   public void setImage(IPixelImage image) {
     this.image = image;

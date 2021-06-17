@@ -1,7 +1,7 @@
 package cs3500.imageprocessing.model;
 
 public interface ILayer {
-  String getFileLocation();
+  //String getFileLocation();
 
   boolean getVisibility();
 
