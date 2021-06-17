@@ -11,11 +11,18 @@ import java.util.Map;
 public class ProcessingModel implements IModel {
 
   private final Map<String, ILayer> layers;
-  private String currentLayer;
+  // String inside the map represents the layer name. a image inside a layer has a name.
+  private String modelName;
 
 
   public ProcessingModel(Map<String, ILayer> layers) {
     this.layers = layers;
+  }
+
+
+  public ProcessingModel(String modelName, Map<String, ILayer> layers) {
+    this.layers = layers;
+    this.modelName = modelName;
   }
 
   /**
@@ -44,39 +51,40 @@ public class ProcessingModel implements IModel {
    * stores the locations of all the layer files.
    */
   public void saveMultiLayerImage() {
-    for(Map.Entry<String, IPixelImage> image : images.entrySet()) {
-
-    }
+    ImageUtil.saveAll(this.modelName,this.layers);
 
   }
 
   @Override
-  public void addLayer(String fileName) {
-
-    if (layers.keySet().size() == 0) {
-      currentLayer = fileName;
-    }
+  public void addLayer(String layerName) {
 
     // TODO: create a dummy pixelImage.
-
-    ILayer layer = new Layer(fileName, true, new PixelImage(new ArrayList<>()));
-    this.layers.putIfAbsent(fileName, layer);
+    ILayer layer = new Layer(true, null, layers.size(),null,null);
+    this.layers.putIfAbsent(layerName, layer);
 
   }
 
-  @Override
-  public void addImageToLayer(String fileName, ILayer layer) {
-    ImageUtil.requireNonNull(fileName, "addImageToLayer filename.");
-    ImageUtil.requireNonNull(layer, "addImageToLayer layer");
 
-    if (layers.containsKey(fileName)) {
+  public void addImageToLayer(String layerName, IPixelImage image, String pixelImageFileName) {
+    ImageUtil.requireNonNull(layerName, "addImageToLayer filename.");
+
+
+    if (layers.containsKey(layerName)) {
       throw new IllegalArgumentException("registry already has a file of this name.");
     }
+    //mutation:
+    layers.get(layerName).setImage(image);
 
-    layers.putIfAbsent(fileName, layer);
+    // OR
+    ILayer currentLayer = layers.get(layerName);
+    layers.replace(layerName,
+        new Layer(currentLayer.getFileLocation(),
+            currentLayer.getVisibility(),
+            image, currentLayer.getOrder()));
+
   }
 
-  @Override
+  @Override // removes the image from the layer
   public void removeImage(String fileName) {
     ImageUtil.requireNonNull(fileName, "remove image");
     if (!images.containsKey(fileName)) {
@@ -86,7 +94,7 @@ public class ProcessingModel implements IModel {
     images.remove(fileName);
   }
 
-  @Override
+  @Override // rep
   public void replaceImage(String fileName, IPixelImage image) {
     ImageUtil.requireNonNull(fileName, "replace image fileName");
     ImageUtil.requireNonNull(image, "replace image IPixelImage");
