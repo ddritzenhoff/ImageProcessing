@@ -130,6 +130,200 @@ public class ImageUtil {
     return o;
   }
 
+  //file will need: file location, file name, visibility.
+  public static void saveAll(String newFileName, Map<String, Layer> images) {
+
+    //TODO: one file with all of the txt information
+    //TODO: several files with all of the other files actual pixels
+    String value = "";
+    FileOutputStream fos = null;
+    try {
+      System.out.println(newFileName);
+      String newTitle = newFileName + "." + "txt";
+      fos = new FileOutputStream(newTitle);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+
+//    try {
+//      outStream.writeBytes(
+//          "P3\n" + "# Created by GIMP version 2.10.20 PNM plug-in" + "\n" + imageWidth + " "
+//              + imageHeight + "\n" + maxValue);
+//
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+
+    for (Layer i : images.values()) {
+      try {
+        outStream.writeBytes(i.toString()+ "\n");
+
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    }
+
+    //sends all the files in the registry to a destination folder
+    for (String s : images.keySet()) {
+      IPixelImage img = images.get(s).getImage();
+      ImageUtil.pixelImageToTxtFile(s,"/res/", img);
+    }
+
+
+    try {
+      outStream.writeBytes("\n");
+      outStream.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  static ProcessingModel readAll(String fileName) {
+    //TODO: get this to work.
+    return null;
+  }
+
+  // I can use render instead.
+  static void pixelImageToTxtFile(String fileName, String destinationFileLocation, IPixelImage image) {
+    //currently returns a string render.
+    String value = "";
+    FileOutputStream fos = null;
+    try {
+      System.out.println(destinationFileLocation+fileName + ".txt");
+      String newTitle = destinationFileLocation+fileName + ".txt";
+      fos = new FileOutputStream(newTitle);
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
+
+    try {
+      outStream.writeBytes(
+          image.getNumPixelsInRow() + " "
+              + image.getNumRows() + "\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (List<IPixel> lop : image.getPixels()) {
+      for (IPixel pixel : lop) {
+        try {
+          value = pixel.toString();
+          outStream.writeBytes(value);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    try {
+      //outStream.writeBytes("\n");
+      outStream.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  static IPixelImage txtFileToPixelImage(String fileName, String fileLocation) {
+    List<List<IPixel>> pixelCols = new ArrayList<>();
+    try {
+      File txtFile = new File(fileLocation);
+      Scanner scanner = new Scanner(txtFile);
+      int intRows = 0;
+      int intCols = 0;
+
+      if (scanner.hasNextLine()) {
+        intRows = Integer.valueOf(scanner.nextInt());
+        intCols = Integer.valueOf(scanner.nextInt());
+      } else {
+        throw new IllegalArgumentException("couldnt get rows and cols from this IPixelImageFile.");
+
+      }
+      for ( int j = 0 ; j < intCols ; j++ ) {
+        List<IPixel> pixelRow = new ArrayList<>();
+        for (int i = 0 ; i < intRows ; i++ ) {
+
+          IPixel newPixel = new Pixel(Integer.valueOf(scanner.nextLine()),
+              Integer.valueOf(scanner.nextLine()),
+              Integer.valueOf(scanner.nextLine()));
+          pixelRow.add(newPixel);
+        }
+        pixelCols.add(pixelRow);
+      }
+      scanner.close();
+
+    } catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
+    }
+    return new PixelImage(pixelCols);
+  }
+
+
+
+
+  static BufferedImage normalImageToBufferedImage(String fileLocation) {
+    BufferedImage newBufferedImage;
+    try {
+      newBufferedImage = ImageIO.read(new File(fileLocation));
+      return newBufferedImage;
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    throw new IllegalArgumentException("failed to return buffered image");
+  }
+
+  static IPixelImage bufferedImageToIPixelImage(BufferedImage image) {
+
+    List<List<IPixel>> col = new ArrayList<>();
+    for(int i = 0 ; i < image.getHeight() ; i ++) {
+      List<IPixel> row = new ArrayList<>();
+      for (int j = 0 ; j < image.getWidth() ; j++ ) {
+        Color pixelColor = new Color (image.getRGB(i,j));
+        row.add(new Pixel(pixelColor.getRed(), pixelColor.getGreen(), pixelColor.getBlue()));
+      }
+      col.add(row);
+    }
+    return new PixelImage(col);
+  }
+
+
+  static void pixelImageToBufferedImage(Layer image) {
+
+    int cols = image.getImage().getNumPixelsInRow();
+    int rows = image.getImage().getNumRows(); //BufferedImage.TYPE_4BYTE_ARGB
+    BufferedImage tempBufferedImage = new BufferedImage(cols,rows,1);
+    for(int i = 0 ; i < rows ; i++) {
+      for (int j = 0 ; j < cols ; j++ ) {
+        IPixel current = image.getImage().getPixel(i,j);
+        Color currentColor = new Color(current.getR(), current.getG(), current.getB());
+        tempBufferedImage.setRGB(i,j,currentColor.getRGB());
+      }
+    }
+    //use set rgb.
+//    BufferedImage b_img = new BufferedImage(image.getImage().getWith(),
+//        image.getImage().getHeight(),
+//        BufferedImage.TYPE_4BYTE_ARGB);
+  }
+
+
+
+  static void saveBufferedImage(String fileName, BufferedImage image, String type) {
+    File outputfile = new File("res/"+fileName +"."+type);
+    try {
+      ImageIO.write(image, type, outputfile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
   // TODO: QUESTION: What happens when something other than a supported file type is read?
   public static void saveImage(String fileName) {
     /*

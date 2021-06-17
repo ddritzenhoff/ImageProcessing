@@ -11,11 +11,12 @@ import java.util.Map;
 public class ProcessingModel implements IModel {
 
   private final Map<String, IPixelImage> images;
-  private final Map<String, Boolean> visibility;
+  private final Map<String, ILayer> layerProperties;
 
-  public ProcessingModel(Map<String, IPixelImage> images, Map<String, Boolean> visibility) {
+
+  public ProcessingModel(Map<String, IPixelImage> images, Map<String, ILayer> layerProperties) {
     this.images = images;
-    this.visibility = visibility;
+    this.layerProperties = layerProperties;
   }
 
   /**
@@ -27,7 +28,7 @@ public class ProcessingModel implements IModel {
 
 
   //TODO: Create a layer.
-//TODO: be able to select a layer: i.e (current first) ;
+  //TODO: be able to select a layer: i.e (current first) ;
   //TODO: load a image into a layer. image can be of any kind.
   //TODO: saving stuff -- (method will be called saveMultiLayerImage)
 
@@ -44,8 +45,6 @@ public class ProcessingModel implements IModel {
    * stores the locations of all the layer files.
    */
   public void saveMultiLayerImage() {
-
-
     for(Map.Entry<String, IPixelImage> image : images.entrySet()) {
 
     }
