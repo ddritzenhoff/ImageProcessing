@@ -22,7 +22,7 @@ public class ProcessingModel implements IModel {
    * Constructs a IModel object.
    */
   public ProcessingModel() {
-    this(new HashMap<>(), new HashMap<>());
+    this(new HashMap<>());
   }
 
 
