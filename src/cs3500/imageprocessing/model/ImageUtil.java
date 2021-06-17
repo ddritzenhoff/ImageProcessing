@@ -1,10 +1,14 @@
 package cs3500.imageprocessing.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import javax.imageio.ImageIO;
 
 
 /**
@@ -120,6 +124,48 @@ public class ImageUtil {
     }
     return o;
   }
+
+  // TODO: QUESTION: What happens when something other than a supported file type is read?
+  public static void saveImage(String fileName) {
+    /*
+    Notes:
+    - it seems like TYPE_INT_ARGB is the default RGB color model, and sRGB is the default color
+    space.
+     */
+
+    ImageUtil.requireNonNull(fileName, "saveImage file name null");
+
+    // at this point, you know that the file name is non-null.
+
+    BufferedImage img;
+    int w, h;
+
+    try {
+      img = ImageIO.read(new File(fileName)); // "bld.jpg" is an example input.
+      w = img.getWidth();
+      h = img.getHeight();
+      if (img.getType() != BufferedImage.TYPE_INT_RGB) {
+        // do something?
+      }
+
+      // convert BufferedImage to PixelImage??
+    } catch (IOException e) {
+      System.out.println("Image could not be read");
+      System.exit(1);
+    }
+  }
+
+
+  /**
+   * this method will do the thing:
+   * A multi-layered image can be saved simply as a collection of files:
+   * one for each layer (as regular images), and one (text) file that
+   * stores the locations of all the layer files.
+   */
+  public static void saveMultiLayerImage() {
+
+  }
+
 
 
 }

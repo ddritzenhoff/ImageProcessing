@@ -33,7 +33,6 @@ public class PixelImage implements IPixelImage {
   }
 
 
-
   @Override
   public void render(String type, String newFileName) {
     //currently returns a string render.
