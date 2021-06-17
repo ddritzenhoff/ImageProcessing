@@ -174,8 +174,8 @@ public class ImageUtil {
      String layerName;
      int order;
      boolean visibility;
-     String fileName;
-     String fileLocation;
+     //String fileName;
+    // String fileLocation;
 
     try {
       File myObj = new File("res/"+modelFileName);

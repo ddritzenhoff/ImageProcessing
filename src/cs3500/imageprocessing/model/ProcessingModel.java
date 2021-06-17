@@ -138,35 +138,38 @@ public class ProcessingModel implements IModel {
         newCb);
   }
 
-  @Override
-  public void importPPM(String directoryName, String fileName) {
-    ImageUtil.requireNonNull(fileName, "import ppm filename");
-    ImageUtil.requireNonNull(fileName, "import ppm directoryName");
-    addImage(fileName, ImageUtil.ppmToPixelImage(directoryName));
-  }
+//  // TODO: should not be dealing with fileName
+//  @Override
+//  public void importPPM(String directoryName, String fileName) {
+//    ImageUtil.requireNonNull(fileName, "import ppm filename");
+//    ImageUtil.requireNonNull(fileName, "import ppm directoryName");
+//    addImage(fileName, ImageUtil.ppmToPixelImage(directoryName));
+//  }
 
-  @Override
-  public void exportPPM(String fileName) {
-    ImageUtil.requireNonNull(fileName, "export ppm filename");
+//  // TODO: should not be dealing with fileName
+//  @Override
+//  public void exportPPM(String fileName) {
+//    ImageUtil.requireNonNull(fileName, "export ppm filename");
+//
+//    if (!images.containsKey(fileName)) {
+//      throw new IllegalArgumentException("registry does not have this file.");
+//    }
+//
+//    images.get(fileName).render("ppm", fileName);
+//  }
 
-    if (!images.containsKey(fileName)) {
-      throw new IllegalArgumentException("registry does not have this file.");
-    }
-
-    images.get(fileName).render("ppm", fileName);
-  }
-
-  public String printRegistry() {
-    return images.keySet().toString();
-  }
-
-  @Override
-  public IPixelImage getImage(String fileName) {
-    if (!images.containsKey(fileName)) {
-      throw new IllegalArgumentException("registry does not have this file.");
-    }
-    return new PixelImage(images.get(fileName).getPixels());
-  }
+//  public String printRegistry() {
+//    return images.keySet().toString();
+//  }
+//
+//  // TODO: self eval needs to change this???
+//  @Override
+//  public IPixelImage getImage(String fileName) {
+//    if (!images.containsKey(fileName)) {
+//      throw new IllegalArgumentException("registry does not have this file.");
+//    }
+//    return new PixelImage(images.get(fileName).getPixels());
+//  }
 
 
   private void checkRegistry(String fileName, String newFileName) throws IllegalArgumentException {
