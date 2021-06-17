@@ -10,13 +10,12 @@ import java.util.Map;
  */
 public class ProcessingModel implements IModel {
 
-  private final Map<String, IPixelImage> images;
-  private final Map<String, ILayer> layerProperties;
+  private final Map<String, ILayer> layers;
+  private String currentLayer;
 
 
-  public ProcessingModel(Map<String, IPixelImage> images, Map<String, ILayer> layerProperties) {
-    this.images = images;
-    this.layerProperties = layerProperties;
+  public ProcessingModel(Map<String, ILayer> layers) {
+    this.layers = layers;
   }
 
   /**
@@ -52,15 +51,29 @@ public class ProcessingModel implements IModel {
   }
 
   @Override
-  public void addImage(String fileName, IPixelImage image) {
-    ImageUtil.requireNonNull(fileName, "addImage filename.");
-    ImageUtil.requireNonNull(image, "addImage IPixelImage");
+  public void addLayer(String fileName) {
 
-    if (images.containsKey(fileName)) {
+    if (layers.keySet().size() == 0) {
+      currentLayer = fileName;
+    }
+
+    // TODO: create a dummy pixelImage.
+
+    ILayer layer = new Layer(fileName, true, new PixelImage(new ArrayList<>()));
+    this.layers.putIfAbsent(fileName, layer);
+
+  }
+
+  @Override
+  public void addImageToLayer(String fileName, ILayer layer) {
+    ImageUtil.requireNonNull(fileName, "addImageToLayer filename.");
+    ImageUtil.requireNonNull(layer, "addImageToLayer layer");
+
+    if (layers.containsKey(fileName)) {
       throw new IllegalArgumentException("registry already has a file of this name.");
     }
 
-    images.putIfAbsent(fileName, image);
+    layers.putIfAbsent(fileName, layer);
   }
 
   @Override
