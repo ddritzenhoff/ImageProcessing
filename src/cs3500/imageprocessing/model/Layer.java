@@ -1,7 +1,9 @@
 package cs3500.imageprocessing.model;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Layer implements ILayer {
   private int order;
@@ -11,6 +13,9 @@ public class Layer implements ILayer {
   //private String fileLocation; // file destination for the specific image in the layer.  // this might not be needed anymore.
   private IPixelImage image; // actual image within the layer
 
+  static List<String> orderedList = new ArrayList<>();
+
+  private String layerName;
 
 //  public Layer(boolean visibility,
 //      IPixelImage image, int order, String fileName, String fileLocation) {
@@ -20,11 +25,12 @@ public class Layer implements ILayer {
 //    this.order = order;
 //  }
 
-  public Layer(boolean visibility,IPixelImage image, int order) {
+  public Layer(boolean visibility,IPixelImage image, String layerName) {
     //  this.fileName = fileName;
+    this.layerName = layerName;
     this.visibility = visibility;
     this.image = image;
-    this.order = order;
+    this.order = orderedList.indexOf(layerName);
   }
 
 
@@ -50,15 +56,20 @@ public class Layer implements ILayer {
   }
 
   public int getOrder() {
-    return order;
+    return orderedList.indexOf(layerName);
+    //return order;
+  }
+
+  public String getLayerName() {
+    return this.layerName;
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("");
-        sb.append(order).append(" ").
-          append(visibility).append(" ").append("\n");
+    sb.append(getOrder()).append(" ").
+        append(visibility).append(" ").append("\n");
 //        .append(fileName).append(" ").append(fileLocation).append("\n");
     // .append(image.toString()).append(" ");
 
@@ -78,9 +89,9 @@ public class Layer implements ILayer {
             ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg")));
     IPixelImage sepiaB = new ChainedTransformation(
         Arrays.asList(new Blur(), new Blur(), new Blur()
-        , new Blur(), new Blur())).apply(
-            ImageUtil.bufferedImageToIPixelImage(
-                ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg")));
+            , new Blur(), new Blur())).apply(
+        ImageUtil.bufferedImageToIPixelImage(
+            ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg")));
     ;
 //    ImageUtil.pixelImageToTxtFile("testPixelImageToTextFile","res/",
 //        testCar);
@@ -88,13 +99,13 @@ public class Layer implements ILayer {
 //    IPixelImage back  = ImageUtil.txtFileToPixelImage(
 //        "testPixelImageToTextFile.txt", "res/" );
     BufferedImage BI = ImageUtil.pixelImageToBufferedImage(new Greyscale().apply( new Blur().apply(testCar)));
-   // BufferedImage BI = ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg");
-   // ImageUtil.saveBufferedImage("test saving bufferedimage", BI, "jpeg"); //WORKS
+    // BufferedImage BI = ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg");
+    // ImageUtil.saveBufferedImage("test saving bufferedimage", BI, "jpeg"); //WORKS
     IPixelImage bufferedImagetoIPixelImage = ImageUtil.bufferedImageToIPixelImage(BI);
 
     //bufferedImagetoIPixelImage.render("ppm"," bufferedImagetoIPixelImage");
 
-   // BufferedImage t2 = ImageUtil.pixelImageToBufferedImage(bufferedImagetoIPixelImage);
+    // BufferedImage t2 = ImageUtil.pixelImageToBufferedImage(bufferedImagetoIPixelImage);
 
 //    ImageUtil.saveBufferedImage("IPixelImagetoBufferedImage",
 //        t2, "gif");
@@ -120,7 +131,7 @@ public class Layer implements ILayer {
     //turns off the second layer
     newModel.toggle("second");
 
-   // newModel.saveTopMostVisible("savethetop!","png");
+    // newModel.saveTopMostVisible("savethetop!","png");
     newModel.addLayer("third");
     newModel.addImageToLayer("third",new Sepia().apply(bufferedImagetoIPixelImage));
 
@@ -140,10 +151,19 @@ public class Layer implements ILayer {
     newModel.addImageToLayer("6",sepiaB);
 
 
+
     newModel.blendLayers("5","6","blended5");
 
     newModel.saveTopMostVisible("should be the blendedImage","png");
-    //newModel.saveMultiLayerImage();
+
+    newModel.deleteLayer("fourth");
+    newModel.deleteLayer("5");
+    newModel.saveMultiLayerImage();
+
+
+    ProcessingModel pm2 = new ProcessingModel("testModel.txt.txt","");
+    pm2.saveMultiLayerImage();
+
 
     //back.render("ppm","final");
 

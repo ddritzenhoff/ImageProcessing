@@ -169,11 +169,11 @@ public class ImageUtil {
 
   //reconstructs a ProcessingModel from two files.
   static ProcessingModel readAll(String modelFileName) {
-     Map<String, ILayer> loadedLayers = new HashMap<>();
-     String layerName;
-     int order;
-     boolean visibility;
-     //String fileName;
+    Map<String, ILayer> loadedLayers = new HashMap<>();
+    String layerName;
+    int order;
+    boolean visibility;
+    //String fileName;
     // String fileLocation;
 
     try {
@@ -185,14 +185,14 @@ public class ImageUtil {
         layerName = arr[0];
         order = Integer.parseInt(arr[1]);
         visibility = Boolean.parseBoolean(arr[2]);
-       // fileName = arr[3];
-       // fileLocation = arr[4];
+        // fileName = arr[3];
+        // fileLocation = arr[4];
 
-       // IPixelImage tempImage2 =
-       //     ImageUtil.txtFileToPixelImage(fileName);
+        // IPixelImage tempImage2 =
+        //     ImageUtil.txtFileToPixelImage(fileName);
         IPixelImage tempImage =
             ImageUtil.txtFileToPixelImage(layerName);
-        ILayer tempLayer = new Layer(visibility,tempImage,order);
+        ILayer tempLayer = new Layer(visibility,tempImage,layerName);
 
         //[order,   visibility,    fileName, fileLocation ]
         //-> model    -> model     -> txtFileToPixelImage
@@ -329,7 +329,7 @@ public class ImageUtil {
     return new PixelImage(row);
   }
 
-//WORKS
+  //WORKS
   static BufferedImage pixelImageToBufferedImage(IPixelImage image) {
 
     int cols = image.getNumPixelsInRow();
@@ -409,5 +409,5 @@ public class ImageUtil {
     ImageUtil.saveBufferedImage(name,b,type);
   }
 
-  }
+}
 

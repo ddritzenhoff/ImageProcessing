@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class ProcessingModel2 implements IModel2 {
 
+  private final Map<String, ILayer> layersMap;
+
   Map<String, IPixelImage> deck;
   Map<String, Boolean> isVisible;
   List<String> layers;
