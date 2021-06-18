@@ -8,9 +8,9 @@ import java.util.Map;
 public class ProcessingModel2 implements IModel2 {
 
   Map<String, IPixelImage> deck;
-  Map<String, Boolean> layerVisibility;
-  List<String> layers; // a1 (invis) a2 (invis) a3 a4
-  String workingLayer; // a2 - invisible
+  Map<String, Boolean> isVisible;
+  List<String> layers;
+  String workingLayer;
 
   public ProcessingModel2() {
     deck = new HashMap<>();
@@ -29,6 +29,7 @@ public class ProcessingModel2 implements IModel2 {
     // at this point, the layer is unique.
 
     layers.add(layerName);
+    isVisible.put(layerName, true);
 
     if (layers.size() == 1) {
       this.setWorkingLayer(layerName);
@@ -88,25 +89,34 @@ public class ProcessingModel2 implements IModel2 {
     ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
     ImageUtil.requireNonNull(this.workingLayer, "a layer does not exist to be worked on");
 
-    /*
-    - If the layer is invisible, you don't want to export it, even if the image doesn't exist.
-     */
-
-    if (!this.deck.containsKey(this.workingLayer)) {
-      throw new IllegalArgumentException("layer exists but no image within layer");
+    if (this.isVisible.get(this.workingLayer) && this.deck.containsKey(this.workingLayer)) {
+      ImageUtil.imageWrapperExport(this.deck.get(this.workingLayer), newFileName);
+      return;
     }
 
-    // at this point, you have a pixelimage to be exported.
+    // at this point, you know that you can't use the working layer because it either doesn't
+    // have an image or is not visible. Either way, it can't be used.
 
+    List<String> tempList = new ArrayList<>(this.layers);
+    tempList.remove(this.workingLayer);
 
+    for (String s : tempList) {
+      if (this.isVisible.get(s) && this.deck.containsKey(s)) {
+        ImageUtil.imageWrapperExport(this.deck.get(s), newFileName);
+        return;
+      }
+    }
 
-    ImageUtil.imageWrapperExport(this.deck.get(this.workingLayer), newFileName);
-    // TODO: deal with visibility.
+    // at this point, none of the images were available to be exported.
+
+    throw new IllegalArgumentException("no images were able to be exported");
   }
 
   @Override
   public void setVisibility(boolean isVisible) {
+    ImageUtil.requireNonNull(this.workingLayer, "setVisibility working layer null");
 
+    this.isVisible.put(this.workingLayer, isVisible);
   }
 
   @Override
@@ -122,5 +132,10 @@ public class ProcessingModel2 implements IModel2 {
     // an IPixelImage to be replaced.
 
     this.deck.put(this.workingLayer, image);
+  }
+
+  @Override
+  public void exportAll(String directoryName) {
+    // TODO: call correct function when done.
   }
 }

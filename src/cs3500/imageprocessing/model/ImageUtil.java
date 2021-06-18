@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 import javax.imageio.ImageIO;
 
-
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.
  * Additionally, this class has static utility methods to convert from a PPM to a IPixelImage, and
@@ -361,8 +360,23 @@ public class ImageUtil {
     }
   }
 
+  private static String getFileExtension(String newFileName) {
+    ImageUtil.requireNonNull(newFileName, "getFileExtension file name null");
+
+    String extension = "";
+
+    int i = newFileName.lastIndexOf('.');
+    if (i > 0) {
+      extension = newFileName.substring(i+1);
+    }
+
+    return extension;
+  }
+
   static void imageWrapperExport(IPixelImage image, String newFileName) {
-    String extension = newFileName.substring(newFileName.length()-3);
+    // TODO: change substring to handle .jpeg or a file extension that isn't 3 chars.
+//    String extension = newFileName.substring(newFileName.length()-3);
+    String extension = ImageUtil.getFileExtension(newFileName);
     if (extension.equals(".ppm")) {
       image.render("ppm", newFileName);
     }

@@ -16,5 +16,6 @@ public interface IModel2 {
 
   public void replaceImage(IPixelImage image);
 
+  public void exportAll(String directoryName);
 
 }
