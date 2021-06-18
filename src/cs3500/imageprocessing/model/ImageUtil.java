@@ -255,7 +255,7 @@ public class ImageUtil {
   static IPixelImage txtFileToPixelImage(String layerName) {
     List<List<IPixel>> pixelCols = new ArrayList<>();
     try {
-      File txtFile = new File("res/"+layerName);
+      File txtFile = new File("res/saveall/"+layerName + ".txt");
       Scanner scanner = new Scanner(txtFile);
       int intRows = 0;
       int intCols = 0;
@@ -383,20 +383,31 @@ public class ImageUtil {
     else  {
       saveBufferedImage(newFileName,ImageUtil.pixelImageToBufferedImage(image),extension);
     }
-  }
-
-
-  /**
-   * this method will do the thing:
-   * A multi-layered image can be saved simply as a collection of files:
-   * one for each layer (as regular images), and one (text) file that
-   * stores the locations of all the layer files.
-   */
-  public static void saveMultiLayerImage() {
 
   }
 
-
+  static void saveTopMostVisibleImage(String name, String type,  Map<String, ILayer> layers) {
+    List<ILayer> visibleLayers = new ArrayList<>();
+    for (ILayer layer : layers.values()) {
+      if(layer.getVisibility()){
+        visibleLayers.add(layer);
+      }
+    }
+    ILayer currentMaxLayer = null;
+    int currentIntMax = -1;
+    for (ILayer layer: visibleLayers) {
+      int curr = layer.getOrder();
+      if(curr > currentIntMax) {
+        currentIntMax = curr;
+        currentMaxLayer = layer;
+      }
+    }
+    if (currentMaxLayer == null) {
+      throw new IllegalArgumentException("all layers are toggled invisible");
+    }
+    BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
+    ImageUtil.saveBufferedImage(name,b,type);
+  }
 
   }
 

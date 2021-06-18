@@ -1,5 +1,6 @@
 package cs3500.imageprocessing.model;
 
+import java.awt.Color;
 import java.util.Objects;
 
 /**
@@ -121,5 +122,23 @@ public class Pixel implements IPixel {
   @Override
   public int hashCode() {
     return Objects.hash(getR(), getG(), getB());
+  }
+
+  static IPixel blend(IPixel p1, IPixel p2) {
+      Color c0 = new Color( p1.getR(), p1.getG(), p1.getB());
+      Color c1 = new Color( p2.getR(), p2.getG(), p2.getB());
+      double totalAlpha = c0.getAlpha() + c1.getAlpha();
+
+
+      double weight0 = .5;
+      double weight1 = 1-weight0;
+
+      double r = weight0 * c0.getRed() + weight1 * c1.getRed();
+      double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
+      double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
+      double a = Math.max(c0.getAlpha(), c1.getAlpha());
+
+      return new Pixel((int) r, (int) g, (int) b);
+
   }
 }

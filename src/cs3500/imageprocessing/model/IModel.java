@@ -102,7 +102,7 @@ public interface IModel {
    */
   //IPixelImage getImage(String fileName);
 
-  /String  getModelName();
+  String  getModelName();
 
   Map<String, ILayer> getLayers();
 }

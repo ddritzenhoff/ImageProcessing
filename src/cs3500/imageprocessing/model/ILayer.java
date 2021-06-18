@@ -13,9 +13,7 @@ public interface ILayer {
 
   void setVisibility(boolean visibility);
 
-  void setFileName(String fileName);
-
-  void setFileLocation(String fileLocation);
+  //void setFileLocation(String fileLocation);
 
   void setImage(IPixelImage image);
 

@@ -1,5 +1,7 @@
 package cs3500.imageprocessing.model;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -15,30 +17,37 @@ public class ProcessingModel implements IModel {
   private String modelName;
 
 
-  public ProcessingModel(Map<String, ILayer> layers) {
-    this.layers = layers;
-
-  }
-
-  public ProcessingModel(String fileName) {
+  //used for loading in a Processing model with a directory name.
+  public ProcessingModel(String fileName, String fileDirectory) {
     this(ImageUtil.readAll(fileName));
   }
 
+  //
   public ProcessingModel(String modelName, Map<String, ILayer> layers) {
     this.layers = layers;
     this.modelName = modelName;
   }
 
+  //
   private ProcessingModel(IModel processingModel){
+
     this.layers = processingModel.getLayers();
     this.modelName = processingModel.getModelName();
   }
 
+//  /**
+//   * Constructs a IModel object.
+//   */
+//  public ProcessingModel(String modelName) {
+//    this(new HashMap<>());
+//  }
+
   /**
    * Constructs a IModel object.
    */
-  public ProcessingModel() {
-    this(new HashMap<>());
+  public ProcessingModel(String modelName) {
+    this.modelName = modelName;
+    this.layers = new HashMap<>();
   }
 
   /**
@@ -49,6 +58,20 @@ public class ProcessingModel implements IModel {
    */
   public void saveMultiLayerImage() {
     ImageUtil.saveAll(this.modelName,this.layers);
+  }
+
+  //
+  public void saveTopMostVisible(String name, String type) {
+    ImageUtil.saveTopMostVisibleImage(name,type,this.layers);
+  }
+
+  public void toggle(String layerName) {
+    ILayer currentLayer = layers.get(layerName);
+    Boolean currentVisibility = currentLayer.getVisibility();
+    ILayer newLayer = new Layer(!currentVisibility,
+        currentLayer.getImage(),
+        currentLayer.getOrder());
+    layers.replace(layerName,newLayer);
   }
 
   public void addLayer(String layerName) {
@@ -71,6 +94,14 @@ public class ProcessingModel implements IModel {
     layers.remove(layerName);
   }
 
+  public void blendLayers(String layer1, String layer2, String newLayerName) {
+    ILayerTransformation blend = new Blend();
+    ILayer newLayer =  blend.apply(layers.get(layer1),layers.get(layer2));
+//    addLayer(newLayerName);
+//    addImageToLayer(newLayerName,newLayer);
+    layers.putIfAbsent(newLayerName, newLayer);
+  }
+
   // applies the transfomration to the layer. does not replace the layer
   public void applyTransformation(ITransformation transform, String layerName) {
     ImageUtil.requireNonNull(transform, "apply transformation transform");
@@ -79,8 +110,8 @@ public class ProcessingModel implements IModel {
     IPixelImage newImage = transform.apply(oldLayer.getImage());
     layers.replace(layerName, new Layer(oldLayer.getVisibility(), newImage,
         oldLayer.getOrder()));
-
   }
+
 
   @Override
   public void chainTransformations(List<ITransformation> transforms, String layerName) {
@@ -92,6 +123,7 @@ public class ProcessingModel implements IModel {
         oldLayer.getOrder()));
 
   }
+
 
 
   public Map<String, ILayer> getLayers() {

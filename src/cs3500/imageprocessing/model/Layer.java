@@ -1,6 +1,7 @@
 package cs3500.imageprocessing.model;
 
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class Layer implements ILayer {
   private int order;
@@ -68,8 +69,21 @@ public class Layer implements ILayer {
 
   public static void main(String[] args) {
     IPixelImage testCar = ImageUtil.ppmToPixelImage("res/sepia car.ppm");
-    ImageUtil.pixelImageToTxtFile("testPixelImageToTextFile","res/",
-        testCar);
+
+//    IPixelImage sepiaB = ImageUtil.ppmToPixelImage("res/sepia car.ppm");
+//    IPixelImage sharpB = ImageUtil.ppmToPixelImage("res/sharpened car.ppm");
+    IPixelImage sharpB =  new ChainedTransformation(
+        Arrays.asList(new Sepia())).apply(
+        ImageUtil.bufferedImageToIPixelImage(
+            ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg")));
+    IPixelImage sepiaB = new ChainedTransformation(
+        Arrays.asList(new Blur(), new Blur(), new Blur()
+        , new Blur(), new Blur())).apply(
+            ImageUtil.bufferedImageToIPixelImage(
+                ImageUtil.normalImageToBufferedImage("res/jpegcar.jpg")));
+    ;
+//    ImageUtil.pixelImageToTxtFile("testPixelImageToTextFile","res/",
+//        testCar);
 
 //    IPixelImage back  = ImageUtil.txtFileToPixelImage(
 //        "testPixelImageToTextFile.txt", "res/" );
@@ -80,11 +94,56 @@ public class Layer implements ILayer {
 
     //bufferedImagetoIPixelImage.render("ppm"," bufferedImagetoIPixelImage");
 
-    BufferedImage t2 = ImageUtil.pixelImageToBufferedImage(bufferedImagetoIPixelImage);
+   // BufferedImage t2 = ImageUtil.pixelImageToBufferedImage(bufferedImagetoIPixelImage);
 
-    ImageUtil.saveBufferedImage("IPixelImagetoBufferedImage",
-        t2, "gif");
+//    ImageUtil.saveBufferedImage("IPixelImagetoBufferedImage",
+//        t2, "gif");
 
+    //instantiate testModel
+    ProcessingModel testModel = new ProcessingModel("testModel");
+
+    //add layers to testModel
+    testModel.addLayer("first");
+    testModel.addImageToLayer("first",testCar);
+    testModel.addLayer("second");
+    testModel.addImageToLayer("second",bufferedImagetoIPixelImage);
+
+    //save testModel. saves all of the sub images in sub directories.
+    testModel.saveMultiLayerImage();
+
+    //make a new model by loading in the saved model.
+    ProcessingModel newModel = new ProcessingModel("testModel.txt","res/");
+    newModel.deleteLayer("first");
+    //save that model
+    newModel.saveMultiLayerImage();
+
+    //turns off the second layer
+    newModel.toggle("second");
+
+   // newModel.saveTopMostVisible("savethetop!","png");
+    newModel.addLayer("third");
+    newModel.addImageToLayer("third",new Sepia().apply(bufferedImagetoIPixelImage));
+
+    //turns off the third layer.
+    newModel.toggle("third");
+
+    newModel.addLayer("fourth");
+    newModel.addImageToLayer("fourth",new Checkerboard(100,10));
+    //turns off the fourth layer.
+    newModel.toggle("fourth");
+    newModel.toggle("fourth");
+
+    newModel.addLayer("5");
+    newModel.addImageToLayer("5",new Sharpen().apply(sharpB));
+
+    newModel.addLayer("6");
+    newModel.addImageToLayer("6",sepiaB);
+
+
+    newModel.blendLayers("5","6","blended5");
+
+    newModel.saveTopMostVisible("should be the blendedImage","png");
+    //newModel.saveMultiLayerImage();
 
     //back.render("ppm","final");
 
