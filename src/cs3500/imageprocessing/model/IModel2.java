@@ -12,7 +12,7 @@ public interface IModel2 {
 
   public void exportLayer(String newFileName);
 
-  public void setVisibility(boolean isVisible);
+  public void setVisiblity(String layerName, boolean isVisible);
 
   public void replaceImage(IPixelImage image);
 

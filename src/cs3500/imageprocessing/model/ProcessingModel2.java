@@ -113,10 +113,15 @@ public class ProcessingModel2 implements IModel2 {
   }
 
   @Override
-  public void setVisibility(boolean isVisible) {
-    ImageUtil.requireNonNull(this.workingLayer, "setVisibility working layer null");
+  public void setVisiblity(String layerName, boolean isVisible) {
+    ImageUtil.requireNonNull(layerName, "toggleVisibility layer name null");
 
-    this.isVisible.put(this.workingLayer, isVisible);
+    if (!this.layers.contains(layerName)) {
+      throw new IllegalArgumentException("layer name does not exist");
+    }
+
+    // toggle the visibility.
+    this.isVisible.put(layerName, isVisible);
   }
 
   @Override

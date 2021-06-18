@@ -2,8 +2,11 @@ package controller;
 
 import cs3500.imageprocessing.model.IModel2;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.function.Function;
 import view.IProcessingView;
 import view.ProcessingView;
 
@@ -13,6 +16,7 @@ public class ProcessingController implements IProcessingController{
   protected final IModel2 model;
   protected final IProcessingView view;
   protected boolean hasQuit;
+  Map<String, Function<Scanner, ICommand>> knownCommands;
 
 
   public ProcessingController(IModel2 model, Readable rd, Appendable ap) throws IllegalArgumentException {
@@ -33,6 +37,18 @@ public class ProcessingController implements IProcessingController{
     this.model = model;
     this.view = new ProcessingView(this.model, ap);
     this.hasQuit = false;
+
+    this.knownCommands = new HashMap<>();
+    this.knownCommands.put("create-layer", s->new AddLayer(s.next()));
+    this.knownCommands.put("current", s->new SetWorkingLayer(s.next()));
+    this.knownCommands.put("load", s->new AddImageToLayer(s.next()));
+    this.knownCommands.put("blur", s->new BlurCMD());
+    this.knownCommands.put("sharpen", s->new SharpenCMD());
+    this.knownCommands.put("sepia", s->new SepiaCMD());
+    this.knownCommands.put("greyscale", s->new GreyscaleCMD());
+    this.knownCommands.put("save", s->new AddImageToLayer(s.next()));
+
+
   }
 
   /**
@@ -44,6 +60,21 @@ public class ProcessingController implements IProcessingController{
     String next;
     try {
       next = this.sc.next();
+      return next;
+    } catch (NoSuchElementException e) {
+      throw new IllegalStateException("No element available.\n");
+    }
+  }
+
+  /**
+   * Handles getting the next element from readable.
+   *
+   * @return The string to direct the next move.
+   */
+  protected String getNextLine() {
+    String next;
+    try {
+      next = this.sc.nextLine();
       return next;
     } catch (NoSuchElementException e) {
       throw new IllegalStateException("No element available.\n");
@@ -118,5 +149,23 @@ public class ProcessingController implements IProcessingController{
 
       executeCommand(command);
     }
+
+    while(sc.hasNext()) {
+      ICommand c;
+      String in = sc.next();
+
+      if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit"))
+        return;
+      Function<Scanner, ICommand> cmd =
+          knownCommands.getOrDefault(in, null);
+      if (cmd == null) {
+        throw new IllegalArgumentException();
+      } else {
+        c = cmd.apply(scan);
+        c.go(m);
+      }
+    }
+
+
   }
 }
