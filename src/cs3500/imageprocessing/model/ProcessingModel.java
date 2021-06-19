@@ -178,5 +178,10 @@ public class ProcessingModel implements IModel {
       throw new IllegalArgumentException("empty image layer");
     }
   }
+  
+  @Override 
+  public String toString() {
+    return Layer.orderedList.toString();
+  }
 
 }
