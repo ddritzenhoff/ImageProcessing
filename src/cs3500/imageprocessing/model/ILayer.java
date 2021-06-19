@@ -36,4 +36,6 @@ public interface ILayer {
    */
   String getLayerName();
 
+  Boolean getStatus();
+
 }

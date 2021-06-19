@@ -1,7 +1,9 @@
 package cs3500.imageprocessing.model;
 
+import controller.IProcessingController;
 import controller.ProcessingController;
 import java.awt.image.BufferedImage;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +14,7 @@ public class Layer implements ILayer {
   private IPixelImage image; // actual image within the layer
   static List<String> orderedList = new ArrayList<>();
   private String layerName;
+  private boolean status;
 
 
   public Layer(boolean visibility,IPixelImage image, String layerName) {
@@ -20,6 +23,7 @@ public class Layer implements ILayer {
     this.visibility = visibility;
     this.image = image;
     this.order = orderedList.indexOf(layerName);
+    this.status = (image != null);
   }
 
 
@@ -53,6 +57,10 @@ public class Layer implements ILayer {
 
     return sb.toString();
 
+  }
+
+  public Boolean getStatus() {
+    return this.status;
   }
 
 
@@ -102,6 +110,7 @@ public class Layer implements ILayer {
 
     //make a new model by loading in the saved model.
     ProcessingModel newModel = new ProcessingModel("testModelexportdominik.txt");
+    //newModel.load("testModelexportdominik.txt");
 
     newModel.addLayer("third");
     newModel.addImageToLayer("res/jpegcar.jpg");
@@ -141,7 +150,7 @@ public class Layer implements ILayer {
 
     newModel.setVisiblity("fifth", false);
 
-    newModel.exportLayer("shouldbesomething"); // does a png for now.
+    newModel.exportLayer("shouldbesomething.png"); // does a png for now.
 
     newModel.exportAll("testModelexportdominik3rdround");
 
@@ -150,13 +159,13 @@ public class Layer implements ILayer {
 
     newModel3.exportAll("testModelexportdominik4thround");
 
-    newModel3.exportLayer("shouldbesomethingsepia"); // does a png for now.
+    newModel3.exportLayer("shouldbesomethingsepia.png"); // does a png for now.
 
     Readable rd = new InputStreamReader(System.in);
 
-    IProcessingController processingController = new ProcessingController(newModel3, System.in, System.out);
+    IProcessingController processingController = new ProcessingController(newModel3, rd, System.out);
 
-    processingController.wri
+    processingController.startProcessing();
 
 
     //newModel.saveTopMostVisible("should be the blendedImage","png");

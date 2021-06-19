@@ -69,7 +69,7 @@ public class ProcessingModel implements IModel {
 //    IPixelImage newImage = ImageUtil
 //        .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
 
-    if (layers.get(this.workingLayer).getImage() != null) {
+    if (layers.get(workingLayer).getStatus()) {
       throw new IllegalArgumentException("you cannot add two images to a layer.");
     }
 
@@ -147,10 +147,9 @@ public class ProcessingModel implements IModel {
         oldLayer.getLayerName()));
   }
 
-  @Override //TODO: add type file
+  @Override
   public void exportLayer(String newFileName) {
     ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
-    validLayer(workingLayer);
     ImageUtil.saveTopMostVisibleImage(newFileName,this.layers);
 
   }
@@ -175,7 +174,7 @@ public class ProcessingModel implements IModel {
   }
 
   private void validLayer(String layerName) {
-    if (layers.get(layerName).getImage() == null) {
+    if (!layers.get(layerName).getStatus()) {
       throw new IllegalArgumentException("empty image layer");
     }
   }
