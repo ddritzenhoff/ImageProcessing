@@ -30,4 +30,9 @@ public class Greyscale implements ITransformation {
     return this.abstractDelegate.apply(oldImage);
   }
 
+  @Override
+  public String toString() {
+    return "Greyscale";
+  }
+
 }

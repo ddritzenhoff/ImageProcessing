@@ -6,6 +6,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import org.junit.Test;
 
+/**
+ * Class used to test all of the aspects of the controller.
+ */
 public class IProcessingControllerTest {
 
   @Test(expected = IllegalArgumentException.class)

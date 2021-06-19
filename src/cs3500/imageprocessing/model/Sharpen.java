@@ -28,4 +28,9 @@ public class Sharpen implements ITransformation {
   public IPixelImage apply(IPixelImage oldImage) {
     return this.abstractDelegate.apply(oldImage);
   }
+
+  @Override
+  public String toString() {
+    return "Sharpen";
+  }
 }

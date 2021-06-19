@@ -30,4 +30,8 @@ public class Blur implements ITransformation {
     return this.abstractDelegate.apply(oldImage);
   }
 
+  @Override
+  public String toString() {
+    return "Blur";
+  }
 }

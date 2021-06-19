@@ -122,4 +122,9 @@ public class Checkerboard implements IPixelImage {
   public int hashCode() {
     return Objects.hash(delegate, imageWidth, imageHeight, numTiles, pixelImage);
   }
+
+  @Override
+  public String toString() {
+    return "Checkerboard";
+  }
 }

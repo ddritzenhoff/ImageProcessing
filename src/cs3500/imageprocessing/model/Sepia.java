@@ -31,6 +31,11 @@ public class Sepia implements ITransformation {
     return abstractDelegate.apply(oldImage);
   }
 
+  @Override
+  public String toString() {
+    return "Sepia";
+  }
+
 }
 
 

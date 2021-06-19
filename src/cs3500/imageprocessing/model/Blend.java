@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class Blend implements ILayerTransformation{
 
-
   @Override
   public IPixelImage apply(ILayer layer1, ILayer layer2) {
     IPixelImage image1 = layer1.getImage();
@@ -27,5 +26,10 @@ public class Blend implements ILayerTransformation{
     IPixelImage blendedLayer = new PixelImage(mesh);
     //return new Layer(true,blendedLayer, "");
     return blendedLayer;
+  }
+
+  @Override
+  public String toString() {
+    return "Blend";
   }
 }

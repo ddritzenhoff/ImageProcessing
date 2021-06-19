@@ -68,7 +68,6 @@ public class ProcessingController implements IProcessingController {
     this.knownCommands.put("remove", s -> new RemoveLayer());
     this.knownCommands.put("save-all", s -> new ExportAll(s.next()));
     this.knownCommands.put("generate-checkerboard", s -> new CreateCheckerboard(s.nextLine()));
-    this.knownCommands.put("read-all", s -> new ReadAll(s.nextLine()));
   }
 
   /**
