@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to remove a layer the working layer.
@@ -14,7 +14,7 @@ public class RemoveLayer implements ICommand{
   public RemoveLayer() {}
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.deleteLayer();
   }
 }

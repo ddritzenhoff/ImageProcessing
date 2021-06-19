@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to add change the working layer to the specified layer.
@@ -19,7 +19,7 @@ public class SetWorkingLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.setWorkingLayer(this.layerName);
   }
 }

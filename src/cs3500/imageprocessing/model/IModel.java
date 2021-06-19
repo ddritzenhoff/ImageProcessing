@@ -1,108 +1,81 @@
 package cs3500.imageprocessing.model;
 
-import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * This interface represents the model of the ImageProcessing library. It allows for the storage and
- * transformation of images.
- */
 public interface IModel {
 
-  void addImageToLayer(String layerName, IPixelImage image);
 
-  void saveMultiLayerImage();
-
+  /**
+   * creates a new Layer with the given layerName. this layer is empty, and its visibility
+   * is set to true.
+   * @param layerName
+   */
   void addLayer(String layerName);
 
-  void deleteLayer(String layerName);
-  // void addImage(String id, IPixelImage image);
-
   /**
-   * removes the image with the given ID from the map of images.
+   * Adds an image to a layer. Supports .jpg, .png and .gif file extensions.
+   * This also supports the backwards compatibility of importing .ppm files.
    *
-   * @param id the image file name to be removed from storage.
+   * @param imageFileName t
    */
-  //void removeImage(String id);
-
-  /**
-   * replaces the IPixelImage at the given ID with the given image parameter.
-   *
-   * @param id    string id that corresponds to a IPixelImage
-   * @param image a new IPixelIamge that will take the spot of the previous id.
-   */
- // void replaceImage(String id, IPixelImage image);
+  void addImageToLayer(String imageFileName);
 
 
   /**
-   * chainTransformations performs a series of ITransformations on an IPixelImage. Currently there
-   * are two color transformations: Sepia, and Greyscale. Currently there are two filter
-   * transformations: Blur,and Sharpen.
-   *
-   * @param fileName    this is the image to be operated upon.
-   * @param transforms  this is the list of the transforms that will be performed on the IPixelImage
-   *                    correlated with the fileName.
-   * @param newFileName this is the name of the new file that has been created.
+   * sets the given LayerName as the workingLayer within the model.
+   * this allows further operations to be done on the workingLayer.
+   * @param layerName the name that will be set to the workingLayer
    */
-    void chainTransformations(List<ITransformation> transforms, String layerName);
-  //void chainTransformations(List<ITransformation> transforms, String fileName, String newFileName);
+  void setWorkingLayer(String layerName);
 
   /**
-   * applyTransformation performs a ITransformation on an IPixelImage. Currently there are two color
-   * transformations: Sepia, and Greyscale. Currently there are two filter transformations: Blur,
-   * and Sharpen.
+   * applies the given transformation to the current workingLayer.
+   * Will throw an exception if the working layer is empty.
    *
-   * @param fileName    this is the image to be operated upon.
-   * @param transform   this is the transform that will be performed on the IPixelImage correlated
-   *                    with the fileName.
-   * @param newFileName this is the name of the new file that has been created.
+   * @param transformation ITransformation that will be performed on the IPixelImage within a layer.
    */
-   void applyTransformation(ITransformation transform, String layerName);
- // void applyTransformation(ITransformation transform, String fileName, String newFileName);
+  void applyTransformation(ITransformation transformation);
 
   /**
-   * generates a checkerboard of the given sizeTile and numSquares dimensions. adds the generated
-   * checkerboard to the catalog.
+   * exports the top-most visible layer in the model as the given fileName.
+   * This method will throw an exception if no layers are visible.
+   * supports legacy exporting such as exporting a .ppm, while also exporting
+   * other file formats such as .jpg, and .png.
    *
-   * @param sizeTile    integer representing the pixel width of a tile.
-   * @param numSquares  integer representing the n, in a nxn square board.
-   * @param newFileName this is the name of the new file that has been created.
+   * @param newFileName the file name that will be sent to the file system.
    */
- // void generateCheckerboard(int sizeTile, int numSquares, String newFileName);
+  void exportLayer(String newFileName);
 
   /**
-   * imports a PPM and converts it to an IPixelImage using PPMtoPixelImage.
+   * sets the visibility of a layer to either visible(true), or invisible(false).
+   * will throw an exception if the layer does not exist.
+   * layerName does not have be be the workingLayer.
    *
-   * @param directoryName the location within the file directory where the file exists.
-   * @param fileName      the name of the file to import.
+   * @param layerName represents the layer that will
+   * @param isVisible boolean to represent the visibility. default layer visibility is true.
    */
- // void importPPM(String directoryName, String fileName);
+  void setVisiblity(String layerName, boolean isVisible);
 
   /**
-   * exports an IPixelImage as a filetype of the given fileName. Currently supports .jpg, .png, ppm
-   * extensions
+   * exports the model as a colletction of files.
+   * one txt file will indicate the status of the layers, their respective orders, and names.
+   * will also create .txt files for every IPixelImage within a layer,
+   * such that a layer can read back in to a new ProcessingModel.
    *
-   * @param fileName the name of the file to export.
+   * @param directoryName name that will be saved as the model.
    */
- // void exportPPM(String fileName);
+  void exportAll(String directoryName);
 
   /**
-   * creates a string of the keys of the current images in the registry.
-   *
-   * @return a string of a list of current images in our model.
+   * deletes the workingLayer and its contents.
    */
- // String printRegistry();
+  void deleteLayer();
 
   /**
-   * returns a copy of the IPixelImage at the given fileName.
-   *
-   * @param fileName the corresponding file name of the IPixel image
-   * @return a copy of the IPixelImage at the given file name.
+   * legacy method to support generating a checkerboard.
+   * will load this checkerboard into the working layer.
    */
-  //IPixelImage getImage(String fileName);
+  void generateCheckerboard(int sizeTile, int numSquares);
 
-  String  getModelName();
 
-  Map<String, ILayer> getLayers();
 }

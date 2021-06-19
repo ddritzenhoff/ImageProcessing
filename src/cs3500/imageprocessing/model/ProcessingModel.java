@@ -1,184 +1,177 @@
 package cs3500.imageprocessing.model;
 
-import static cs3500.imageprocessing.model.ImageUtil.*;
+import static cs3500.imageprocessing.model.ImageUtil.imageWrapperImport;
+import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
-import cs3500.imageprocessing.model.ImageUtil;
-
-
-/**
- * This class represents the model to process different images. This particular implementation lets
- * you add images to 'storage' and transform them using different operations.
- */
 public class ProcessingModel implements IModel {
 
-  private final Map<String, ILayer> layers = null;
-  // String inside the map represents the layer name. a image inside a layer has a name.
-  private String modelName;
+  private Map<String, ILayer> layers;
 
+  private String workingLayer;
 
-  //used for loading in a Processing model with a directory name.
-  public ProcessingModel(String fileName, String fileDirectory) {
-   // this(readAll(fileDirectory + fileName )); // weird bug
-    ImageUtil.requireNonNull(fileName, "Processing Model file name" );
-  }
-
-  //
-  public ProcessingModel(String modelName, Map<String, ILayer> layers) {
-    ImageUtil.requireNonNull(modelName, "Processing Model name" );
-    ImageUtil.requireNonNull(layers, "Processing Model layers " );
-    //this.layers = layers;
-    this.modelName = modelName;
+  /**
+   * default constructor of a processing model. Initializes a hash map with no contents.
+   * Initializes the working layer to null.
+   */
+  public ProcessingModel() {
+    layers = new HashMap<>();
+    workingLayer = null;
   }
 
   /**
-   * Constructs a IModel object.
+   * constructor to read in a ProcessingModel from a fileDirectory.
+   * uses the constructor below with the readAll method.
+   *
+   * @param fileDirectory
    */
-  public ProcessingModel(String modelName) {
-    this.modelName = modelName;
-    //this.layers = new HashMap<>();
+  public ProcessingModel(String fileDirectory) {
+    this(readAll(fileDirectory));
   }
-
-  private ProcessingModel(IModel processingModel){
-    ImageUtil.requireNonNull(processingModel, "Processing Model" );
-   // this.layers = processingModel.getLayers();
-    this.modelName = processingModel.getModelName();
-  }
-
 
   /**
-   * this method will do the thing:
-   * A multi-layered image can be saved simply as a collection of files:
-   * one for each layer (as regular images), and one (text) file that
-   * stores the locations of all the layer files.
+   * constructor to create a processing model from the given layers.
+   *
+   * @param layers will be passed in to this constructor from a ImageUtil method that
+   *               retrieves the layers and their respective images from the file system.
    */
-  public void saveMultiLayerImage() {
-    ImageUtil.saveAll(this.modelName,this.layers);
+  public ProcessingModel(Map<String, ILayer> layers) {
+    this.layers = layers;
   }
 
-  public void saveTopMostVisible(String name, String type) {
-    ImageUtil.requireNonNull(name, "null string name");
-    ImageUtil.requireNonNull(type, "null string type");
-    if(!layers.containsKey(name)) {
-      throw new IllegalArgumentException("layers does not contain " + name);
+
+  @Override
+  public void addLayer(String layerName) {
+    ImageUtil.requireNonNull(layerName, "addLayer null layer name");
+
+    if (layers.containsKey(layerName)) {
+      throw new IllegalArgumentException("layer already exists");
     }
-    ImageUtil.saveTopMostVisibleImage(name, this.layers);
+
+    // at this point, the layer is unique.
+
+    ILayer layer = new Layer(true, null, layerName);
+    Layer.orderedList.add(layerName);
+    layers.putIfAbsent(layerName, layer);
+    this.setWorkingLayer(layerName);
+
   }
 
-  public void toggle(String layerName) {
+  @Override
+  public void addImageToLayer(String imageFileName) {
+    ImageUtil.requireNonNull(imageFileName, "addImageToLayer image file is null");
+    ImageUtil.requireNonNull(this.workingLayer,
+        "you must create a layer before loading an image into it");
+    //todo: make this work with .ppm
+    IPixelImage newImage = imageWrapperImport(imageFileName);
+//    IPixelImage newImage = ImageUtil
+//        .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
+
+    if (layers.get(this.workingLayer).getImage() != null) {
+      throw new IllegalArgumentException("you cannot add two images to a layer.");
+    }
+
+    // at this point, you now that the working layer exists and doesn't have an image loaded into
+    // it yet.
+    ILayer currentLayer = layers.get(this.workingLayer);
+    layers.replace(this.workingLayer,
+        new Layer(currentLayer.getVisibility(),
+            newImage, currentLayer.getLayerName()));
+
+    //this.layers.put(imageFileName, newImage);
+  }
+
+  @Override
+  public void setWorkingLayer(String layerName) {
+    ImageUtil.requireNonNull(layerName, "setWorkingLayer null layer name");
+
+    if (!this.layers.containsKey(layerName)) {
+      throw new IllegalArgumentException("layer does not exist");
+    }
+
+    // at this point, you know that layerName is non-null and is a valid layer.
+
+    this.workingLayer = layerName;
+  }
+
+  public void deleteLayer() {
+    ImageUtil.requireNonNull(workingLayer,"delete layer");
+    if (!layers.containsKey(workingLayer)) {
+      throw new IllegalArgumentException("layer doesnt exist.");
+    }
+    Layer.orderedList.remove(workingLayer);
+    layers.remove(workingLayer);
+  }
+
+  /**
+   * legacy method to support generating a checkerboard. will load this checkerboard into the
+   * working layer.
+   */
+  @Override
+  public void generateCheckerboard(int sizeTile, int numSquares) {
+    if (layers.get(this.workingLayer).getImage() != null) {
+      throw new IllegalArgumentException("you cannot add two images to a layer.");
+    }
+    if (sizeTile < 1 || numSquares < 1) {
+      throw new IllegalArgumentException("invalid parameters to make a checkerboard");
+    }
+
+    // at this point, you now that the working layer exists and doesn't have an image loaded into
+    // it yet.
+    ILayer currentLayer = layers.get(this.workingLayer);
+    IPixelImage cb = new Checkerboard(sizeTile,numSquares);
+    layers.replace(this.workingLayer,
+        new Layer(currentLayer.getVisibility(),
+            cb, currentLayer.getLayerName()));
+
+
+  }
+
+  @Override
+  public void applyTransformation(ITransformation transformation) {
+    ImageUtil.requireNonNull(transformation, "applyTransformation null transformation");
+    ImageUtil.requireNonNull(this.workingLayer, "no layer exists to be worked with");
+    validLayer(workingLayer);
+    if (!this.layers.containsKey(this.workingLayer)) {
+      throw new IllegalArgumentException("no image yet loaded into the layer");
+    }
+
+    // at this point, you know that the transformation is valid, and an IPixelImage exists
+    // to be worked on.
+
+    ILayer oldLayer = this.layers.get(this.workingLayer);
+    IPixelImage newImage = transformation.apply(this.layers.get(this.workingLayer).getImage());
+    layers.replace(workingLayer, new Layer(oldLayer.getVisibility(), newImage,
+        oldLayer.getLayerName()));
+  }
+
+  @Override //TODO: add type file
+  public void exportLayer(String newFileName) {
+    ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
+    validLayer(workingLayer);
+    ImageUtil.saveTopMostVisibleImage(newFileName,this.layers);
+
+  }
+
+  @Override
+  public void setVisiblity(String layerName, boolean isVisible) {
+    ImageUtil.requireNonNull(layerName, "toggleVisibility layer name null");
+    if (!this.layers.containsKey(layerName)) {
+      throw new IllegalArgumentException("layer name does not exist");
+    }
+
     ILayer currentLayer = layers.get(layerName);
-    Boolean currentVisibility = currentLayer.getVisibility();
-    ILayer newLayer = new Layer(!currentVisibility,
+    ILayer newLayer = new Layer(isVisible,
         currentLayer.getImage(),
         currentLayer.getLayerName());
     layers.replace(layerName,newLayer);
   }
 
-  public void addLayer(String layerName) {
-    if (layers.containsKey(layerName)) {
-      throw new IllegalArgumentException(layerName + "already exists");
-    }
-    Layer.orderedList.add(layerName);
-    ILayer layer = new Layer(true, null, layerName);
-    this.layers.putIfAbsent(layerName, layer);
-  }
-
-  //TODO: change this to take in a string for the file name
-  public void addImageToLayer(String layerName, IPixelImage image) {
-    validLayer(layerName);
-    ImageUtil.requireNonNull(layerName, "addImageToLayer filename.");
-    if (layers.containsKey(layerName)) {
-      throw new IllegalArgumentException("you cannot add two images to a layer.");
-    }
-
-
-    ILayer currentLayer = layers.get(layerName);
-    layers.replace(layerName,
-        new Layer(currentLayer.getVisibility(),
-            image, currentLayer.getLayerName()));
-  }
-
-  public void deleteLayer(String layerName) {
-    ImageUtil.requireNonNull(layerName,"delete layer");
-
-    if (!layers.containsKey(layerName)) {
-      throw new IllegalArgumentException("layer doesnt exist.");
-    }
-
-    Layer.orderedList.remove(layerName);
-    layers.remove(layerName);
-  }
-
-  public void blendLayers(String layer1, String layer2, String newLayerName) {
-    ImageUtil.requireNonNull(layer1,"blend layers " +  layer1);
-    ImageUtil.requireNonNull(layer2, "blend layers " + layer2);
-    validLayer(layer1);
-    validLayer(layer2);
-    if (!layers.containsKey(layer1)) {
-      throw new IllegalArgumentException(layer1 + "doesnt exist.");
-    }
-
-    if (!layers.containsKey(layer2)) {
-      throw new IllegalArgumentException(layer2 + "doesnt exist.");
-    }
-
-    if (layers.containsKey(newLayerName)) {
-      throw new IllegalArgumentException(newLayerName + "already exists");
-    }
-
-    ILayerTransformation blend = new Blend();
-    IPixelImage newLayer =  blend.apply(layers.get(layer1),layers.get(layer2));
-    //    addLayer(newLayerName);
-    //    addImageToLayer(newLayerName,newLayer);
-    addLayer(newLayerName);
-    addImageToLayer(newLayerName, newLayer);
-    //  layers.putIfAbsent(newLayerName, newLayer);
-  }
-
-  // applies the transfomration to the layer. does not replace the layer
-  public void applyTransformation(ITransformation transform, String layerName) {
-    ImageUtil.requireNonNull(transform, "apply transformation transform");
-    ImageUtil.requireNonNull(layerName, "apply transformation layerName");
-    validLayer(layerName);
-    if (!layers.containsKey(layerName)) {
-      throw new IllegalArgumentException(layerName + "doesnt exist.");
-    }
-
-    //checkRegistry(fileName, newFileName);
-    ILayer oldLayer = layers.get(layerName);
-    IPixelImage newImage = transform.apply(oldLayer.getImage());
-    layers.replace(layerName, new Layer(oldLayer.getVisibility(), newImage,
-        oldLayer.getLayerName()));
-  }
-
-
   @Override
-  public void chainTransformations(List<ITransformation> transforms, String layerName) {
-    ImageUtil.requireNonNull(transforms, "list transforms");
-    ImageUtil.requireNonNull(layerName, "chain transformations layername");
-    validLayer(layerName);
-    if (!layers.containsKey(layerName)) {
-      throw new IllegalArgumentException(layerName + "doesnt exist.");
-    }
-
-    ILayer oldLayer = layers.get(layerName);
-    IPixelImage newImage = new ChainedTransformation(transforms).apply(oldLayer.getImage());
-    layers.replace(layerName, new Layer(oldLayer.getVisibility(), newImage,
-        oldLayer.getLayerName()));
-  }
-
-
-  public Map<String, ILayer> getLayers() {
-    return layers;
-  }
-
-  public String  getModelName() {
-    return modelName;
+  public void exportAll(String directoryName) {
+    ImageUtil.saveAll(directoryName,this.layers);
   }
 
   private void validLayer(String layerName) {
@@ -186,91 +179,5 @@ public class ProcessingModel implements IModel {
       throw new IllegalArgumentException("empty image layer");
     }
   }
-
-//  @Override // removes the image from the layer
-//  public void removeImage(String fileName) {
-//    ImageUtil.requireNonNull(fileName, "remove image");
-//    if (!images.containsKey(fileName)) {
-//      throw new IllegalArgumentException("invalid filename");
-//    }
-//    //images.size();
-//    images.remove(fileName);
-//  }
-
-//  @Override // rep
-//  public void replaceImage(String fileName, IPixelImage image) {
-//    ImageUtil.requireNonNull(fileName, "replace image fileName");
-//    ImageUtil.requireNonNull(image, "replace image IPixelImage");
-//    if (!images.containsKey(fileName)) {
-//      throw new IllegalArgumentException("invalid filename");
-//    }
-//    images.replace(fileName, image);
-//  }
-
-
-
-
-
-//  @Override
-//  public void generateCheckerboard(int sizeTile, int numSquares, String newFileName) {
-//    if (sizeTile < 1 || numSquares < 1) {
-//      throw new IllegalArgumentException("invalid parameters to make a checkerboard");
-//    }
-//
-//    if (images.containsKey(newFileName)) {
-//      throw new IllegalArgumentException("registry already has a file with this name");
-//    }
-//
-//    IPixelImage newCb = new Checkerboard(sizeTile, numSquares);
-//    this.images.putIfAbsent(newFileName,
-//        newCb);
-//  }
-
-//  // TODO: should not be dealing with fileName
-//  @Override
-//  public void importPPM(String directoryName, String fileName) {
-//    ImageUtil.requireNonNull(fileName, "import ppm filename");
-//    ImageUtil.requireNonNull(fileName, "import ppm directoryName");
-//    addImage(fileName, ImageUtil.ppmToPixelImage(directoryName));
-//  }
-
-//  // TODO: should not be dealing with fileName
-//  @Override
-//  public void exportPPM(String fileName) {
-//    ImageUtil.requireNonNull(fileName, "export ppm filename");
-//
-//    if (!images.containsKey(fileName)) {
-//      throw new IllegalArgumentException("registry does not have this file.");
-//    }
-//
-//    images.get(fileName).render("ppm", fileName);
-//  }
-
-//  public String printRegistry() {
-//    return images.keySet().toString();
-//  }
-//
-//  // TODO: self eval needs to change this???
-//  @Override
-//  public IPixelImage getImage(String fileName) {
-//    if (!images.containsKey(fileName)) {
-//      throw new IllegalArgumentException("registry does not have this file.");
-//    }
-//    return new PixelImage(images.get(fileName).getPixels());
-//  }
-
-
-//  private void checkRegistry(String fileName, String newFileName) throws IllegalArgumentException {
-//    ImageUtil.requireNonNull(fileName, "chain transformation filename");
-//    ImageUtil.requireNonNull(newFileName, "newFileName does not exist");
-//
-//    if (!images.containsKey(fileName)) {
-//      throw new IllegalArgumentException("registry does not have this file.");
-//    }
-//
-//    if (images.containsKey(newFileName)) {
-//      throw new IllegalArgumentException("registry already has a file with this name");
-//    }
-//  }
 
 }

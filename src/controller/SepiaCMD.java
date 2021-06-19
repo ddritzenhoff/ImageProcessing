@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.Sepia;
 
 /**
@@ -15,7 +15,7 @@ public class SepiaCMD implements ICommand{
   public SepiaCMD() {}
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.applyTransformation(new Sepia());
   }
 }

@@ -1,10 +1,9 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Function;
 import view.IProcessingView;
@@ -17,7 +16,7 @@ import view.ProcessingView;
 public class ProcessingController implements IProcessingController{
 
   protected final Scanner sc;
-  protected final IModel2 model;
+  protected final IModel model;
   protected final IProcessingView view;
   Map<String, Function<Scanner, ICommand>> knownCommands;
 
@@ -28,7 +27,7 @@ public class ProcessingController implements IProcessingController{
    * @param ap the appendable to which updates will be sent to the user through the view.
    * @throws IllegalArgumentException when any of the three inputs are null.
    */
-  public ProcessingController(IModel2 model, Readable rd, Appendable ap) throws IllegalArgumentException {
+  public ProcessingController(IModel model, Readable rd, Appendable ap) throws IllegalArgumentException {
 
     if (model == null) {
       throw new IllegalArgumentException("model cannot be null");

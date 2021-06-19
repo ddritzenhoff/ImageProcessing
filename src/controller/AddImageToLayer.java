@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to add an IPixelImage to a layer. This is 'triggered' with the
@@ -19,7 +19,7 @@ public class AddImageToLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.addImageToLayer(this.imageFileName);
   }
 }

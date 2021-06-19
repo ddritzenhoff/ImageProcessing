@@ -1,7 +1,7 @@
 package controller;
 
 import cs3500.imageprocessing.model.Greyscale;
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to greyscale an IPixelImage within a layer.
@@ -15,7 +15,7 @@ public class GreyscaleCMD implements ICommand {
   public GreyscaleCMD() {}
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.applyTransformation(new Greyscale());
   }
 }

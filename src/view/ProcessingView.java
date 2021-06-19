@@ -1,6 +1,6 @@
 package view;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 import java.io.IOException;
 
 /**
@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public class ProcessingView implements IProcessingView{
 
-  private final IModel2 model;
+  private final IModel model;
   private Appendable ap;
 
   /**
@@ -16,7 +16,7 @@ public class ProcessingView implements IProcessingView{
    * @param model the ProcessingModel implementation and holds the current image/layer states.
    * @param ap Appendable object to be used in the rendering.
    */
-  public ProcessingView(IModel2 model, Appendable ap) {
+  public ProcessingView(IModel model, Appendable ap) {
     this.model = model;
     // if the passed in appendable is not valid, you have to print everything to console instead.
     this.ap = (ap == null) ? System.out : ap;

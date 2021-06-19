@@ -1,7 +1,6 @@
 package controller;
 
 import cs3500.imageprocessing.model.IModel;
-import cs3500.imageprocessing.model.IModel2;
 
 /**
  * Represents a function-object to create an empty layer which can then accept an image.
@@ -20,7 +19,7 @@ public class AddLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.addLayer(layerName);
   }
 }

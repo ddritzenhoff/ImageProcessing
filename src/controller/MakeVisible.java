@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to make a layer visible.
@@ -19,7 +19,7 @@ public class MakeVisible implements ICommand {
   }
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.setVisiblity(this.layerName, true);
   }
 }

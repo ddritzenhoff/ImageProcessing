@@ -3,6 +3,10 @@ package cs3500.imageprocessing.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an ILayerTransformation layer operation. This class is specifically responsible for
+ * blending two IPixelImage layers together.
+ */
 public class Blend implements ILayerTransformation{
 
 

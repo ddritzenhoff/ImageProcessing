@@ -1,6 +1,6 @@
 package controller;
 
-import cs3500.imageprocessing.model.IModel2;
+import cs3500.imageprocessing.model.IModel;
 
 /**
  * Represents a function-object to export all of the layers within the model. This is 'triggered'
@@ -21,7 +21,7 @@ public class ExportAll implements ICommand {
   }
 
   @Override
-  public void go(IModel2 model) {
+  public void go(IModel model) {
     model.exportAll(directoryName);
   }
 }

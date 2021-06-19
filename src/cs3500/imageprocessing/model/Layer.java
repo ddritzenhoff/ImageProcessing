@@ -1,6 +1,6 @@
 package cs3500.imageprocessing.model;
 
-import controller.BlurCMD;
+import controller.ProcessingController;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +107,7 @@ public class Layer implements ILayer {
 //        t2, "gif");
 
     //instantiate testModel
-    ProcessingModel2 testModel = new ProcessingModel2();
+    ProcessingModel testModel = new ProcessingModel();
 
     //add layers to testModel
     testModel.addLayer("first");
@@ -119,7 +119,7 @@ public class Layer implements ILayer {
     testModel.exportAll("testModelexportdominik");
 
     //make a new model by loading in the saved model.
-    ProcessingModel2 newModel = new ProcessingModel2("testModelexportdominik.txt");
+    ProcessingModel newModel = new ProcessingModel("testModelexportdominik.txt");
 
     newModel.addLayer("third");
     newModel.addImageToLayer("res/jpegcar.jpg");
@@ -163,7 +163,7 @@ public class Layer implements ILayer {
 
     newModel.exportAll("testModelexportdominik3rdround");
 
-    IModel2 newModel3 = new ProcessingModel2("testModelexportdominik3rdround.txt");
+    IModel newModel3 = new ProcessingModel("testModelexportdominik3rdround.txt");
     newModel3.setVisiblity("fifth",true);
 
     newModel3.exportAll("testModelexportdominik4thround");

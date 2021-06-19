@@ -7,16 +7,15 @@ package cs3500.imageprocessing.model;
 public class Greyscale implements ITransformation {
 
   private final ITransformation abstractDelegate;
-  private final double[][] greyScaleMatrix =
-      {{.2126, .7152, .0722},
-          {.2126, .7152, .0722},
-          {.2126, .7152, .0722}};
 
   /**
    * Constructor of a Greyscale color transformation. Uses a AbstractColorTransformation named
    * abstractDelegate to abstract the procedure.
    */
   public Greyscale() {
+    double[][] greyScaleMatrix = {{.2126, .7152, .0722},
+        {.2126, .7152, .0722},
+        {.2126, .7152, .0722}};
     this.abstractDelegate = new AbstractColorTransformation(greyScaleMatrix);
   }
 
