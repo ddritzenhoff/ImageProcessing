@@ -13,13 +13,6 @@ public class Layer implements ILayer {
   static List<String> orderedList = new ArrayList<>();
   private String layerName;
 
-//  public Layer(boolean visibility,
-//      IPixelImage image, int order, String fileName, String fileLocation) {
-//  //  this.fileName = fileName;
-//    this.visibility = visibility;
-//    this.image = image;
-//    this.order = order;
-//  }
 
   public Layer(boolean visibility,IPixelImage image, String layerName) {
     //  this.fileName = fileName;
@@ -29,17 +22,6 @@ public class Layer implements ILayer {
     this.order = orderedList.indexOf(layerName);
   }
 
-
-
-
-//  public String getFileName() {
-//    return fileName;
-//  }
-
-  @Override
-//  public String getFileLocation() {
-//    return null;
-//  }
 
   public boolean getVisibility() {
     return visibility;
@@ -170,6 +152,12 @@ public class Layer implements ILayer {
 
     newModel3.exportLayer("shouldbesomethingsepia"); // does a png for now.
 
+    Readable rd = new InputStreamReader(System.in);
+
+    IProcessingController processingController = new ProcessingController(newModel3, System.in, System.out);
+
+    processingController.wri
+
 
     //newModel.saveTopMostVisible("should be the blendedImage","png");
     //newModel.addImageToLayer("third",new Sepia().apply(bufferedImagetoIPixelImage));
@@ -224,6 +212,7 @@ public class Layer implements ILayer {
 //    testGreyscale.apply("koalaTestGreyscale").render("png");
 
     // testImage.render();
+
   }
 
   public void setOrder(int order) {

@@ -20,7 +20,7 @@ import org.junit.Test;
  */
 public class ITransformationTest {
 
-  Pixel whitePixel;
+  IPixel whitePixel;
   IPixel blackPixel;
   List<List<IPixel>> testPixelArray;
   IPixelImage testPixelImage;

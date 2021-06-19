@@ -19,7 +19,8 @@ import javax.imageio.ImageIO;
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.
  * Additionally, this class has static utility methods to convert from a PPM to a IPixelImage, and
- * clamp the values of a pixel.
+ * clamp the values of a pixel. This class also has functionality to create, convert, and save
+ *  IPixelImages, bufferedImages, and ppm's, as text.
  */
 public class ImageUtil {
 
@@ -167,7 +168,16 @@ public class ImageUtil {
     }
   }
 
-  //reconstructs a ProcessingModel from two files.
+  // from two files.
+
+  /**
+   * reconstructs a ProcessingModel with the given modelFileName. Uses the modelFileName, which
+   * then provides the locations and properties of each individual layer. 
+   *
+   * @param modelFileName file name that corresponds to the
+   * @return a map of type String and ILayer, representing the name of each layer, and the specific
+   *         layer.
+   */
   static Map<String, ILayer> readAll(String modelFileName) {
     Map<String, ILayer> loadedLayers = new HashMap<>();
     String layerName;
@@ -208,7 +218,13 @@ public class ImageUtil {
   }
 
 
-  //WORKS
+  /**
+   * converts a pixelimage to a txtfile.
+   *
+   * @param fileName represents the file name.
+   * @param destinationFileLocation represents the fileLocation.
+   * @param image represents the IPixelImage.
+   */
   static void pixelImageToTxtFile(String fileName, String destinationFileLocation, IPixelImage image) {
     //currently returns a string render.
     String value = "";
@@ -252,7 +268,12 @@ public class ImageUtil {
     }
   }
 
-  //WORKS
+  /**
+   * converts a txtFile into an IPixelImage.
+   *
+   * @param layerName uses the layerName to find the txt file in the filesystem
+   * @return
+   */
   static IPixelImage txtFileToPixelImage(String layerName) {
     List<List<IPixel>> pixelCols = new ArrayList<>();
     try {
@@ -301,8 +322,12 @@ public class ImageUtil {
   }
 
 
-
-  //WORKS
+  /**
+   * converts a normal image such as a .png, or a .jpg into a buffered image.
+   *
+   * @param fileLocation string that holds the name of the file.
+   * @return a new BufferedImage.
+   */
   static BufferedImage normalImageToBufferedImage(String fileLocation) {
     ImageUtil.requireNonNull(fileLocation, "normalImagetoBufferedImage");
     BufferedImage newBufferedImage;
@@ -315,7 +340,12 @@ public class ImageUtil {
     }
   }
 
-  //WORKS
+  /**
+   * converts a buffered image to a PixelImage.   
+   *
+   * @param image a buffered image from the filesystem.
+   * @return a new IPixelImage of the BufferedImage image.
+   */
   static IPixelImage bufferedImageToIPixelImage(BufferedImage image) {
 
     List<List<IPixel>> row = new ArrayList<>();
@@ -330,7 +360,12 @@ public class ImageUtil {
     return new PixelImage(row);
   }
 
-//WORKS
+  /**
+   * converts a IPixelImage into a buffered image
+   *
+   * @param image an IPixelimage
+   * @return a buffered image of the IPixelimage image
+   */
   static BufferedImage pixelImageToBufferedImage(IPixelImage image) {
 
     int cols = image.getNumPixelsInRow();
@@ -343,15 +378,17 @@ public class ImageUtil {
         tempBufferedImage.setRGB(j,i,currentColor.getRGB());
       }
     }
-    //use set rgb.
-//    BufferedImage b_img = new BufferedImage(image.getImage().getWith(),
-//        image.getImage().getHeight(),
-//        BufferedImage.TYPE_4BYTE_ARGB);
     return tempBufferedImage;
   }
 
 
-  //WORKS
+  /**
+   * saves a buffered image into a image of type .png, .jpg, or .gif.
+   *
+   * @param fileName a new file name.
+   * @param image the buffered image to be saved
+   * @param type can be a "png", or "jpg", or "gif"
+   */
   static void saveBufferedImage(String fileName, BufferedImage image, String type) {
     File outputfile = new File("res/"+fileName +"."+type);
     try {
@@ -361,6 +398,12 @@ public class ImageUtil {
     }
   }
 
+  /**
+   * extracts a fileExtension string from the newFileName
+   *
+   * @param newFileName the total string file name.
+   * @return the extension of the file as a string.
+   */
   private static String getFileExtension(String newFileName) {
     ImageUtil.requireNonNull(newFileName, "getFileExtension file name null");
 
@@ -374,6 +417,12 @@ public class ImageUtil {
     return extension;
   }
 
+  /**
+   * takes any image file type, and uses the extension to create a IPixelImage.
+   *
+   * @param fileName file name in the directory
+   * @return a new IPixelImage from the image directory.
+   */
   static IPixelImage imageWrapperImport(String fileName) {
     String extension = ImageUtil.getFileExtension(fileName);
     IPixelImage newImage;
@@ -383,12 +432,17 @@ public class ImageUtil {
       BufferedImage temp = ImageUtil.normalImageToBufferedImage(fileName);
       newImage = ImageUtil.bufferedImageToIPixelImage(temp);
     }
-
+    return newImage;
   }
 
+  /**
+   * turns a IPixelImage into a ppm, png, or jpg, depending on the filename.
+   *
+   * @param image the IPixelImage to be converted
+   * @param newFileName its corresponding file name.
+   */
   static void imageWrapperExport(IPixelImage image, String newFileName) {
-    // TODO: change substring to handle .jpeg or a file extension that isn't 3 chars.
-//    String extension = newFileName.substring(newFileName.length()-3);
+
     String extension = ImageUtil.getFileExtension(newFileName);
     if (extension.equals(".ppm")) {
       image.render("ppm", newFileName);
@@ -400,9 +454,11 @@ public class ImageUtil {
   }
 
   /**
-   * This method will throw an exception if no layers are visible.
-   * @param name
-   * @param layers
+   * this method saves the top most visible image to the file system, with the given name.
+   * this method will throw an exception if no layers are visible.
+   *
+   * @param name name of the image to be saved
+   * @param layers layers of images from a ProcessingModel
    */
   static void saveTopMostVisibleImage(String name, Map<String, ILayer> layers) {
     List<ILayer> visibleLayers = new ArrayList<>();
@@ -426,8 +482,7 @@ public class ImageUtil {
     ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
 
     //BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
-   // ImageUtil.saveBufferedImage(name,b,type);
+    // ImageUtil.saveBufferedImage(name,b,type);
   }
-
-  }
+}
 
