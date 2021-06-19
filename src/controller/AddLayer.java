@@ -3,8 +3,8 @@ package controller;
 import cs3500.imageprocessing.model.IModel;
 
 /**
- * Represents a function-object to create an empty layer which can then accept an image.
- * This is 'triggered' with the 'create-layer' command.
+ * Represents a function-object to create an empty layer which can then accept an image. This is
+ * 'triggered' with the 'create-layer' command.
  */
 public class AddLayer implements ICommand {
 
@@ -12,6 +12,7 @@ public class AddLayer implements ICommand {
 
   /**
    * Constructs an AddLayer object.
+   *
    * @param layerName the name of the layer to be created.
    */
   public AddLayer(String layerName) {

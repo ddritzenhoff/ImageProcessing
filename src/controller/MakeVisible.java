@@ -3,8 +3,8 @@ package controller;
 import cs3500.imageprocessing.model.IModel;
 
 /**
- * Represents a function-object to make a layer visible.
- * This is 'triggered' with the 'visible' command.
+ * Represents a function-object to make a layer visible. This is 'triggered' with the 'visible'
+ * command.
  */
 public class MakeVisible implements ICommand {
 
@@ -12,6 +12,7 @@ public class MakeVisible implements ICommand {
 
   /**
    * Constructs a MakeVisible object.
+   *
    * @param layerName the name of the layer to be made visible.
    */
   public MakeVisible(String layerName) {

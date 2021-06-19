@@ -12,6 +12,7 @@ public class AddImageToLayer implements ICommand {
 
   /**
    * Constructs an AddImageToLayer object.
+   *
    * @param imageFileName the file to be loaded into the layer.
    */
   public AddImageToLayer(String imageFileName) {

@@ -178,7 +178,7 @@ public class ImageUtil {
    * @return a map of type String and ILayer, representing the name of each layer, and the specific
    *         layer.
    */
-  static Map<String, ILayer> readAll(String modelFileName) {
+  public static Map<String, ILayer> readAll(String modelFileName) {
     Map<String, ILayer> loadedLayers = new HashMap<>();
     String layerName;
     int order;

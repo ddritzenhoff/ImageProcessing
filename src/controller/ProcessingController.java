@@ -10,10 +10,10 @@ import view.IProcessingView;
 import view.ProcessingView;
 
 /**
- * Represents the Controller responsible for handling user input. Translates string commands
- * into actual changes within the model and view.
+ * Represents the Controller responsible for handling user input. Translates string commands into
+ * actual changes within the model and view.
  */
-public class ProcessingController implements IProcessingController{
+public class ProcessingController implements IProcessingController {
 
   protected final Scanner sc;
   protected final IModel model;
@@ -22,12 +22,14 @@ public class ProcessingController implements IProcessingController{
 
   /**
    * Constructs a ProcessingController object.
+   *
    * @param model the model to be worked with.
-   * @param rd the readable from which to get the commands.
-   * @param ap the appendable to which updates will be sent to the user through the view.
+   * @param rd    the readable from which to get the commands.
+   * @param ap    the appendable to which updates will be sent to the user through the view.
    * @throws IllegalArgumentException when any of the three inputs are null.
    */
-  public ProcessingController(IModel model, Readable rd, Appendable ap) throws IllegalArgumentException {
+  public ProcessingController(IModel model, Readable rd, Appendable ap)
+      throws IllegalArgumentException {
 
     if (model == null) {
       throw new IllegalArgumentException("model cannot be null");
@@ -53,18 +55,20 @@ public class ProcessingController implements IProcessingController{
    * Adds all the commands that are currently supported.
    */
   protected void initCommands() {
-    this.knownCommands.put("create-layer", s->new AddLayer(s.next()));
-    this.knownCommands.put("current", s->new SetWorkingLayer(s.next()));
-    this.knownCommands.put("load", s->new AddImageToLayer(s.next()));
-    this.knownCommands.put("blur", s->new BlurCMD());
-    this.knownCommands.put("sharpen", s->new SharpenCMD());
-    this.knownCommands.put("sepia", s->new SepiaCMD());
-    this.knownCommands.put("greyscale", s->new GreyscaleCMD());
-    this.knownCommands.put("save", s->new ExportLayer(s.next()));
-    this.knownCommands.put("invisible", s->new MakeInvisible(s.next()));
-    this.knownCommands.put("visible", s->new MakeVisible(s.next()));
-    this.knownCommands.put("remove", s->new RemoveLayer());
-    this.knownCommands.put("save-all", s->new ExportAll(s.next()));
+    this.knownCommands.put("create-layer", s -> new AddLayer(s.next()));
+    this.knownCommands.put("current", s -> new SetWorkingLayer(s.next()));
+    this.knownCommands.put("load", s -> new AddImageToLayer(s.next()));
+    this.knownCommands.put("blur", s -> new BlurCMD());
+    this.knownCommands.put("sharpen", s -> new SharpenCMD());
+    this.knownCommands.put("sepia", s -> new SepiaCMD());
+    this.knownCommands.put("greyscale", s -> new GreyscaleCMD());
+    this.knownCommands.put("save", s -> new ExportLayer(s.next()));
+    this.knownCommands.put("invisible", s -> new MakeInvisible(s.next()));
+    this.knownCommands.put("visible", s -> new MakeVisible(s.next()));
+    this.knownCommands.put("remove", s -> new RemoveLayer());
+    this.knownCommands.put("save-all", s -> new ExportAll(s.next()));
+    this.knownCommands.put("generate-checkerboard", s -> new CreateCheckerboard(s.nextLine()));
+    this.knownCommands.put("read-all", s -> new ReadAll(s.nextLine()));
   }
 
   /**
@@ -82,13 +86,14 @@ public class ProcessingController implements IProcessingController{
   }
 
   /**
-   * Tries to execute the command specified by the user. If it fails, the user is notified and
-   * asked to try again.
+   * Tries to execute the command specified by the user. If it fails, the user is notified and asked
+   * to try again.
+   *
    * @param cmd the command to be executed.
    */
   protected void executeCommand(Function<Scanner, ICommand> cmd) {
-    ICommand c = cmd.apply(sc);
     try {
+      ICommand c = cmd.apply(sc);
       c.go(this.model);
     } catch (IllegalArgumentException e) {
       write("One of the arguments was incorrect. Please try again. " + e.getMessage());

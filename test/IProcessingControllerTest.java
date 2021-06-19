@@ -4,23 +4,9 @@ import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.ProcessingModel;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Scanner;
-import org.junit.Before;
 import org.junit.Test;
-import view.IProcessingView;
 
 public class IProcessingControllerTest {
-
-  protected StringBuilder sb;
-  protected Scanner sc;
-  protected Readable rd;
-  protected IModel model;
-  protected IProcessingView view;
-
-  @Before
-  public void init() {
-    this.sc = new Scanner(rd);
-  }
 
   @Test(expected = IllegalArgumentException.class)
   public void testNullModel() {
@@ -44,11 +30,6 @@ public class IProcessingControllerTest {
     Reader input = null;
     StringBuffer output = new StringBuffer();
     IProcessingController processingController = new ProcessingController(model, input, output);
-  }
-
-  @Test
-  public void testProcessingController() {
-
   }
 
 }
