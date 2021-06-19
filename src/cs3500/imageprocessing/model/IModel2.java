@@ -14,8 +14,6 @@ public interface IModel2 {
 
   public void setVisiblity(String layerName, boolean isVisible);
 
-  public void replaceImage(IPixelImage image);
-
   public void exportAll(String directoryName);
 
 }

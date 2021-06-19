@@ -1,5 +1,7 @@
 package cs3500.imageprocessing.model;
 
+import static cs3500.imageprocessing.model.ImageUtil.readAll;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,35 +9,41 @@ import java.util.Map;
 
 public class ProcessingModel2 implements IModel2 {
 
-  private final Map<String, ILayer> layersMap;
+  private final Map<String, ILayer> layers;
 
-  Map<String, IPixelImage> deck;
-  Map<String, Boolean> isVisible;
-  List<String> layers;
   String workingLayer;
 
+
   public ProcessingModel2() {
-    deck = new HashMap<>();
-    layers = new ArrayList<>();
+    layers = new HashMap<>();
     workingLayer = null;
   }
+
+  public ProcessingModel2(String fileDirectory) {
+    this(readAll(fileDirectory));
+  }
+
+  public ProcessingModel2(Map<String, ILayer> layers) {
+    this.layers = layers;
+  }
+
 
   @Override
   public void addLayer(String layerName) {
     ImageUtil.requireNonNull(layerName, "addLayer null layer name");
 
-    if (layers.contains(layerName)) {
+    if (layers.containsKey(layerName)) {
       throw new IllegalArgumentException("layer already exists");
     }
 
     // at this point, the layer is unique.
 
-    layers.add(layerName);
-    isVisible.put(layerName, true);
 
-    if (layers.size() == 1) {
-      this.setWorkingLayer(layerName);
-    }
+    ILayer layer = new Layer(true, null, layerName);
+    Layer.orderedList.add(layerName); //TODO: figure this out
+    layers.putIfAbsent(layerName, layer);
+    this.setWorkingLayer(layerName);
+
   }
 
   @Override
@@ -47,21 +55,25 @@ public class ProcessingModel2 implements IModel2 {
     IPixelImage newImage = ImageUtil
         .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
 
-    if (deck.containsKey(workingLayer)) {
+    if (layers.containsKey(imageFileName)) {
       throw new IllegalArgumentException("you cannot add two images to a layer.");
     }
 
     // at this point, you now that the working layer exists and doesn't have an image loaded into
     // it yet.
+    ILayer currentLayer = layers.get(this.workingLayer);
+    layers.replace(this.workingLayer,
+        new Layer(currentLayer.getVisibility(),
+            newImage, currentLayer.getLayerName()));
 
-    this.deck.put(imageFileName, newImage);
+    //this.layers.put(imageFileName, newImage);
   }
 
   @Override
   public void setWorkingLayer(String layerName) {
     ImageUtil.requireNonNull(layerName, "setWorkingLayer null layer name");
 
-    if (!this.layers.contains(layerName)) {
+    if (!this.layers.containsKey(layerName)) {
       throw new IllegalArgumentException("layer does not exist");
     }
 
@@ -70,79 +82,61 @@ public class ProcessingModel2 implements IModel2 {
     this.workingLayer = layerName;
   }
 
+  public void deleteLayer() {
+    ImageUtil.requireNonNull(workingLayer,"delete layer");
+
+    if (!layers.containsKey(workingLayer)) {
+      throw new IllegalArgumentException("layer doesnt exist.");
+    }
+
+    Layer.orderedList.remove(workingLayer);
+    layers.remove(workingLayer);
+  }
+
   @Override
   public void applyTransformation(ITransformation transformation) {
     ImageUtil.requireNonNull(transformation, "applyTransformation null transformation");
     ImageUtil.requireNonNull(this.workingLayer, "no layer exists to be worked with");
 
-    if (!this.deck.containsKey(this.workingLayer)) {
+    if (!this.layers.containsKey(this.workingLayer)) {
       throw new IllegalArgumentException("no image yet loaded into the layer");
     }
 
     // at this point, you know that the transformation is valid, and an IPixelImage exists
     // to be worked on.
 
-    IPixelImage newImage = transformation.apply(this.deck.get(this.workingLayer));
-    this.replaceImage(newImage);
+    ILayer oldLayer = this.layers.get(this.workingLayer);
+    IPixelImage newImage = transformation.apply(this.layers.get(this.workingLayer).getImage());
+    layers.replace(workingLayer, new Layer(oldLayer.getVisibility(), newImage,
+        oldLayer.getLayerName()));
   }
 
-  @Override
+  @Override //TODO: add type file
   public void exportLayer(String newFileName) {
     ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
-    ImageUtil.requireNonNull(this.workingLayer, "a layer does not exist to be worked on");
+    //ImageUtil.requireNonNull(this.workingLayer, "a layer does not exist to be worked on");
+    ImageUtil.requireNonNull(layers.get(workingLayer).getImage(), "null working layer");
+    ImageUtil.saveTopMostVisibleImage(newFileName,this.layers);
 
-    if (this.isVisible.get(this.workingLayer) && this.deck.containsKey(this.workingLayer)) {
-      ImageUtil.imageWrapperExport(this.deck.get(this.workingLayer), newFileName);
-      return;
-    }
-
-    // at this point, you know that you can't use the working layer because it either doesn't
-    // have an image or is not visible. Either way, it can't be used.
-
-    List<String> tempList = new ArrayList<>(this.layers);
-    tempList.remove(this.workingLayer);
-
-    for (String s : tempList) {
-      if (this.isVisible.get(s) && this.deck.containsKey(s)) {
-        ImageUtil.imageWrapperExport(this.deck.get(s), newFileName);
-        return;
-      }
-    }
-
-    // at this point, none of the images were available to be exported.
-
-    throw new IllegalArgumentException("no images were able to be exported");
   }
 
   @Override
   public void setVisiblity(String layerName, boolean isVisible) {
     ImageUtil.requireNonNull(layerName, "toggleVisibility layer name null");
-
-    if (!this.layers.contains(layerName)) {
+    if (!this.layers.containsKey(layerName)) {
       throw new IllegalArgumentException("layer name does not exist");
     }
 
-    // toggle the visibility.
-    this.isVisible.put(layerName, isVisible);
-  }
-
-  @Override
-  public void replaceImage(IPixelImage image) {
-    ImageUtil.requireNonNull(image, "replaceImage image is null");
-    ImageUtil.requireNonNull(this.workingLayer, "no layer exists to be worked with");
-
-    if (!this.deck.containsKey(this.workingLayer)) {
-      throw new IllegalArgumentException("you must first load an image before you can replace it");
-    }
-
-    // at this point, you know that image and workinglayer are non-null, and that there exists
-    // an IPixelImage to be replaced.
-
-    this.deck.put(this.workingLayer, image);
+    ILayer currentLayer = layers.get(layerName);
+    ILayer newLayer = new Layer(isVisible,
+        currentLayer.getImage(),
+        currentLayer.getLayerName());
+    layers.replace(layerName,newLayer);
   }
 
   @Override
   public void exportAll(String directoryName) {
-    // TODO: call correct function when done.
+    ImageUtil.saveAll(directoryName,this.layers);
   }
+
 }

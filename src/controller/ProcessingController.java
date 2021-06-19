@@ -10,15 +10,24 @@ import java.util.function.Function;
 import view.IProcessingView;
 import view.ProcessingView;
 
+/**
+ * Represents the Controller responsible for handling user input. Translates string commands
+ * into actual changes within the model and view.
+ */
 public class ProcessingController implements IProcessingController{
 
   protected final Scanner sc;
   protected final IModel2 model;
   protected final IProcessingView view;
-  protected boolean hasQuit;
   Map<String, Function<Scanner, ICommand>> knownCommands;
 
-
+  /**
+   * Constructs a ProcessingController object.
+   * @param model the model to be worked with.
+   * @param rd the readable from which to get the commands.
+   * @param ap the appendable to which updates will be sent to the user through the view.
+   * @throws IllegalArgumentException when any of the three inputs are null.
+   */
   public ProcessingController(IModel2 model, Readable rd, Appendable ap) throws IllegalArgumentException {
 
     if (model == null) {
@@ -36,9 +45,15 @@ public class ProcessingController implements IProcessingController{
     this.sc = new Scanner(rd);
     this.model = model;
     this.view = new ProcessingView(this.model, ap);
-    this.hasQuit = false;
 
     this.knownCommands = new HashMap<>();
+    initCommands();
+  }
+
+  /**
+   * Adds all the commands that are currently supported.
+   */
+  protected void initCommands() {
     this.knownCommands.put("create-layer", s->new AddLayer(s.next()));
     this.knownCommands.put("current", s->new SetWorkingLayer(s.next()));
     this.knownCommands.put("load", s->new AddImageToLayer(s.next()));
@@ -46,39 +61,11 @@ public class ProcessingController implements IProcessingController{
     this.knownCommands.put("sharpen", s->new SharpenCMD());
     this.knownCommands.put("sepia", s->new SepiaCMD());
     this.knownCommands.put("greyscale", s->new GreyscaleCMD());
-    this.knownCommands.put("save", s->new AddImageToLayer(s.next()));
-
-
-  }
-
-  /**
-   * Handles getting the next element from readable.
-   *
-   * @return The string to direct the next move.
-   */
-  protected String getNext() {
-    String next;
-    try {
-      next = this.sc.next();
-      return next;
-    } catch (NoSuchElementException e) {
-      throw new IllegalStateException("No element available.\n");
-    }
-  }
-
-  /**
-   * Handles getting the next element from readable.
-   *
-   * @return The string to direct the next move.
-   */
-  protected String getNextLine() {
-    String next;
-    try {
-      next = this.sc.nextLine();
-      return next;
-    } catch (NoSuchElementException e) {
-      throw new IllegalStateException("No element available.\n");
-    }
+    this.knownCommands.put("save", s->new ExportLayer(s.next()));
+    this.knownCommands.put("invisible", s->new MakeInvisible(s.next()));
+    this.knownCommands.put("visible", s->new MakeVisible(s.next()));
+    this.knownCommands.put("remove", s->new RemoveLayer());
+    this.knownCommands.put("save-all", s->new ExportAll(s.next()));
   }
 
   /**
@@ -96,76 +83,38 @@ public class ProcessingController implements IProcessingController{
   }
 
   /**
-   * Determines whether the user is quitting the game.
-   *
-   * @param input the String input from the Readable object.
-   * @return true if the user is quitting and false otherwise.
+   * Tries to execute the command specified by the user. If it fails, the user is notified and
+   * asked to try again.
+   * @param cmd the command to be executed.
    */
-  protected boolean quitting(String input) {
-    return input.equals("q") || input.equals("Q");
-  }
-
-  protected boolean isValidCommand(String command) {
-    // TODO: there must be a better way of doing this. This is atrocious
-
-    switch (command) {
-      case "create-layer":
-      case "current":
-      case "load":
-      case "blur":
-      case "sepia":
-      case "sharpen":
-      case "greyscale":
-      case "save":
-      case "invisible":
-        return true;
-      default: return false;
+  protected void executeCommand(Function<Scanner, ICommand> cmd) {
+    ICommand c = cmd.apply(sc);
+    try {
+      c.go(this.model);
+    } catch (IllegalArgumentException e) {
+      write("One of the arguments was incorrect. Please try again. " + e.getMessage());
+    } catch (IllegalStateException e) {
+      write("Hit an invalid state. Please try again. " + e.getMessage());
     }
-  }
-
-  protected void executeCommand(String command) {
-    // at this point, we know that we have a valid string.
-    if (quitting(command)) {
-      write("Exiting.\n");
-      this.hasQuit = true;
-      return;
-    }
-
-    // TODO: use a switch case to get commands? Should you create function objects
-    //  for each command? Really not too sure how to do this.
-
   }
 
   @Override
   public void startProcessing() {
 
-    while(!hasQuit) {
-
-      String command;
-      // handling source pile
-      while (!isValidCommand(command = getNext())) {
-        write("Invalid command. Try again.\n");
-      }
-
-      executeCommand(command);
-    }
-
     while(sc.hasNext()) {
-      ICommand c;
       String in = sc.next();
 
-      if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit"))
+      if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
         return;
-      Function<Scanner, ICommand> cmd =
-          knownCommands.getOrDefault(in, null);
+      }
+
+      Function<Scanner, ICommand> cmd = knownCommands.getOrDefault(in, null);
+
       if (cmd == null) {
-        throw new IllegalArgumentException();
+        write("no such command exists. Please try again.\n");
       } else {
-        c = cmd.apply(scan);
-        c.go(m);
+        executeCommand(cmd);
       }
     }
-
-
   }
 }

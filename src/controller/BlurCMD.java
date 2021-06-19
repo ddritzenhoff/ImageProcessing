@@ -3,13 +3,19 @@ package controller;
 import cs3500.imageprocessing.model.Blur;
 import cs3500.imageprocessing.model.IModel2;
 
+/**
+ * Represents a function-object to create blur an IPixelImage within the working layer.
+ * This is 'triggered' with the 'blur' command.
+ */
 public class BlurCMD implements ICommand {
 
-  public BlurCMD() {
-  }
+  /**
+   * Constructs a BlurCMD object.
+   */
+  public BlurCMD() {}
 
   @Override
-  public void exec(IModel2 model) {
+  public void go(IModel2 model) {
     model.applyTransformation(new Blur());
   }
 }

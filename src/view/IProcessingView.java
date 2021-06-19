@@ -2,6 +2,10 @@ package view;
 
 import java.io.IOException;
 
+/**
+ * The view that the user will get exposed to when incorrect inputs are given or general updates
+ * are made.
+ */
 public interface IProcessingView {
 
   /**
