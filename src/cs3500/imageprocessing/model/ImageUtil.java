@@ -374,6 +374,18 @@ public class ImageUtil {
     return extension;
   }
 
+  static IPixelImage imageWrapperImport(String fileName) {
+    String extension = ImageUtil.getFileExtension(fileName);
+    IPixelImage newImage;
+    if(extension.equals(".ppm")) {
+      newImage = ImageUtil.ppmToPixelImage(fileName);
+    } else {
+      BufferedImage temp = ImageUtil.normalImageToBufferedImage(fileName);
+      newImage = ImageUtil.bufferedImageToIPixelImage(temp);
+    }
+
+  }
+
   static void imageWrapperExport(IPixelImage image, String newFileName) {
     // TODO: change substring to handle .jpeg or a file extension that isn't 3 chars.
 //    String extension = newFileName.substring(newFileName.length()-3);
@@ -387,6 +399,11 @@ public class ImageUtil {
 
   }
 
+  /**
+   * This method will throw an exception if no layers are visible.
+   * @param name
+   * @param layers
+   */
   static void saveTopMostVisibleImage(String name, Map<String, ILayer> layers) {
     List<ILayer> visibleLayers = new ArrayList<>();
     for (ILayer layer : layers.values()) {

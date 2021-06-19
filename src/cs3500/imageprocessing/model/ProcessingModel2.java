@@ -1,5 +1,6 @@
 package cs3500.imageprocessing.model;
 
+import static cs3500.imageprocessing.model.ImageUtil.imageWrapperImport;
 import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
 import java.util.ArrayList;
@@ -9,20 +10,35 @@ import java.util.Map;
 
 public class ProcessingModel2 implements IModel2 {
 
-  private final Map<String, ILayer> layers;
+  private Map<String, ILayer> layers;
 
-  String workingLayer;
+  private String workingLayer;
 
-
+  /**
+   * default constructor of a processing model. Initializes a hash map with no contents.
+   * Initializes the working layer to null.
+   */
   public ProcessingModel2() {
     layers = new HashMap<>();
     workingLayer = null;
   }
 
+  /**
+   * constructor to read in a ProcessingModel from a fileDirectory.
+   * uses the constructor below with the readAll method.
+   *
+   * @param fileDirectory
+   */
   public ProcessingModel2(String fileDirectory) {
     this(readAll(fileDirectory));
   }
 
+  /**
+   * constructor to create a processing model from the given layers.
+   *
+   * @param layers will be passed in to this constructor from a ImageUtil method that
+   *               retrieves the layers and their respective images from the file system.
+   */
   public ProcessingModel2(Map<String, ILayer> layers) {
     this.layers = layers;
   }
@@ -38,9 +54,8 @@ public class ProcessingModel2 implements IModel2 {
 
     // at this point, the layer is unique.
 
-
     ILayer layer = new Layer(true, null, layerName);
-    Layer.orderedList.add(layerName); //TODO: figure this out
+    Layer.orderedList.add(layerName);
     layers.putIfAbsent(layerName, layer);
     this.setWorkingLayer(layerName);
 
@@ -51,11 +66,12 @@ public class ProcessingModel2 implements IModel2 {
     ImageUtil.requireNonNull(imageFileName, "addImageToLayer image file is null");
     ImageUtil.requireNonNull(this.workingLayer,
         "you must create a layer before loading an image into it");
+    //todo: make this work with .ppm
+    IPixelImage newImage = imageWrapperImport(imageFileName);
+//    IPixelImage newImage = ImageUtil
+//        .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
 
-    IPixelImage newImage = ImageUtil
-        .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
-
-    if (layers.containsKey(imageFileName)) {
+    if (layers.get(this.workingLayer).getImage() != null) {
       throw new IllegalArgumentException("you cannot add two images to a layer.");
     }
 
@@ -84,20 +100,42 @@ public class ProcessingModel2 implements IModel2 {
 
   public void deleteLayer() {
     ImageUtil.requireNonNull(workingLayer,"delete layer");
-
     if (!layers.containsKey(workingLayer)) {
       throw new IllegalArgumentException("layer doesnt exist.");
     }
-
     Layer.orderedList.remove(workingLayer);
     layers.remove(workingLayer);
+  }
+
+  /**
+   * legacy method to support generating a checkerboard. will load this checkerboard into the
+   * working layer.
+   */
+  @Override
+  public void generateCheckerboard(int sizeTile, int numSquares) {
+    if (layers.get(this.workingLayer).getImage() != null) {
+      throw new IllegalArgumentException("you cannot add two images to a layer.");
+    }
+    if (sizeTile < 1 || numSquares < 1) {
+      throw new IllegalArgumentException("invalid parameters to make a checkerboard");
+    }
+
+    // at this point, you now that the working layer exists and doesn't have an image loaded into
+    // it yet.
+    ILayer currentLayer = layers.get(this.workingLayer);
+    IPixelImage cb = new Checkerboard(sizeTile,numSquares);
+    layers.replace(this.workingLayer,
+        new Layer(currentLayer.getVisibility(),
+            cb, currentLayer.getLayerName()));
+
+
   }
 
   @Override
   public void applyTransformation(ITransformation transformation) {
     ImageUtil.requireNonNull(transformation, "applyTransformation null transformation");
     ImageUtil.requireNonNull(this.workingLayer, "no layer exists to be worked with");
-
+    validLayer(workingLayer);
     if (!this.layers.containsKey(this.workingLayer)) {
       throw new IllegalArgumentException("no image yet loaded into the layer");
     }
@@ -114,8 +152,7 @@ public class ProcessingModel2 implements IModel2 {
   @Override //TODO: add type file
   public void exportLayer(String newFileName) {
     ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
-    //ImageUtil.requireNonNull(this.workingLayer, "a layer does not exist to be worked on");
-    ImageUtil.requireNonNull(layers.get(workingLayer).getImage(), "null working layer");
+    validLayer(workingLayer);
     ImageUtil.saveTopMostVisibleImage(newFileName,this.layers);
 
   }
@@ -137,6 +174,12 @@ public class ProcessingModel2 implements IModel2 {
   @Override
   public void exportAll(String directoryName) {
     ImageUtil.saveAll(directoryName,this.layers);
+  }
+
+  private void validLayer(String layerName) {
+    if (layers.get(layerName).getImage() == null) {
+      throw new IllegalArgumentException("empty image layer");
+    }
   }
 
 }

@@ -17,14 +17,14 @@ import cs3500.imageprocessing.model.ImageUtil;
  */
 public class ProcessingModel implements IModel {
 
-  private final Map<String, ILayer> layers;
+  private final Map<String, ILayer> layers = null;
   // String inside the map represents the layer name. a image inside a layer has a name.
   private String modelName;
 
 
   //used for loading in a Processing model with a directory name.
   public ProcessingModel(String fileName, String fileDirectory) {
-    this(readAll(fileDirectory + fileName )); // weird bug
+   // this(readAll(fileDirectory + fileName )); // weird bug
     ImageUtil.requireNonNull(fileName, "Processing Model file name" );
   }
 
@@ -32,7 +32,7 @@ public class ProcessingModel implements IModel {
   public ProcessingModel(String modelName, Map<String, ILayer> layers) {
     ImageUtil.requireNonNull(modelName, "Processing Model name" );
     ImageUtil.requireNonNull(layers, "Processing Model layers " );
-    this.layers = layers;
+    //this.layers = layers;
     this.modelName = modelName;
   }
 
@@ -41,12 +41,12 @@ public class ProcessingModel implements IModel {
    */
   public ProcessingModel(String modelName) {
     this.modelName = modelName;
-    this.layers = new HashMap<>();
+    //this.layers = new HashMap<>();
   }
 
   private ProcessingModel(IModel processingModel){
     ImageUtil.requireNonNull(processingModel, "Processing Model" );
-    this.layers = processingModel.getLayers();
+   // this.layers = processingModel.getLayers();
     this.modelName = processingModel.getModelName();
   }
 
@@ -61,14 +61,13 @@ public class ProcessingModel implements IModel {
     ImageUtil.saveAll(this.modelName,this.layers);
   }
 
-  //
   public void saveTopMostVisible(String name, String type) {
     ImageUtil.requireNonNull(name, "null string name");
     ImageUtil.requireNonNull(type, "null string type");
     if(!layers.containsKey(name)) {
       throw new IllegalArgumentException("layers does not contain " + name);
     }
-    ImageUtil.saveTopMostVisibleImage(name,type,this.layers);
+    ImageUtil.saveTopMostVisibleImage(name, this.layers);
   }
 
   public void toggle(String layerName) {

@@ -9,13 +9,8 @@ import java.util.List;
 public class Layer implements ILayer {
   private int order;
   private boolean visibility; // status of the visibility of the layer
-
-  //private String fileName; // file name for the specific image in the layer. // this might not be needed anymore.
-  //private String fileLocation; // file destination for the specific image in the layer.  // this might not be needed anymore.
   private IPixelImage image; // actual image within the layer
-
   static List<String> orderedList = new ArrayList<>();
-
   private String layerName;
 
 //  public Layer(boolean visibility,
@@ -53,7 +48,7 @@ public class Layer implements ILayer {
 
 
   public IPixelImage getImage() {
-    return image;
+    return new PixelImage(image.getPixels());
   }
 
   public int getOrder() {
