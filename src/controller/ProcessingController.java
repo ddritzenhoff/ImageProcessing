@@ -105,14 +105,14 @@ public class ProcessingController implements IProcessingController {
   @Override
   public void startProcessing() {
 
-    while(sc.hasNext()) {
-      String in = sc.next();
+    while (this.sc.hasNext()) {
+      String in = this.sc.next();
 
       if (in.equalsIgnoreCase("q") || in.equalsIgnoreCase("quit")) {
         return;
       }
 
-      Function<Scanner, ICommand> cmd = knownCommands.getOrDefault(in, null);
+      Function<Scanner, ICommand> cmd = this.knownCommands.getOrDefault(in, null);
 
       if (cmd == null) {
         write("no such command exists. Please try again.\n");
