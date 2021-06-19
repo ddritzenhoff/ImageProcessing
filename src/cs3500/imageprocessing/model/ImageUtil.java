@@ -168,7 +168,7 @@ public class ImageUtil {
   }
 
   //reconstructs a ProcessingModel from two files.
-  static ProcessingModel readAll(String modelFileName) {
+  static Map<String, ILayer> readAll(String modelFileName) {
     Map<String, ILayer> loadedLayers = new HashMap<>();
     String layerName;
     int order;
@@ -204,8 +204,9 @@ public class ImageUtil {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-    return new ProcessingModel(modelFileName, loadedLayers);
+    return loadedLayers;
   }
+
 
   //WORKS
   static void pixelImageToTxtFile(String fileName, String destinationFileLocation, IPixelImage image) {
@@ -329,7 +330,7 @@ public class ImageUtil {
     return new PixelImage(row);
   }
 
-  //WORKS
+//WORKS
   static BufferedImage pixelImageToBufferedImage(IPixelImage image) {
 
     int cols = image.getNumPixelsInRow();
@@ -386,7 +387,7 @@ public class ImageUtil {
 
   }
 
-  static void saveTopMostVisibleImage(String name, String type,  Map<String, ILayer> layers) {
+  static void saveTopMostVisibleImage(String name, Map<String, ILayer> layers) {
     List<ILayer> visibleLayers = new ArrayList<>();
     for (ILayer layer : layers.values()) {
       if(layer.getVisibility()){
@@ -405,9 +406,11 @@ public class ImageUtil {
     if (currentMaxLayer == null) {
       throw new IllegalArgumentException("all layers are toggled invisible");
     }
-    BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
-    ImageUtil.saveBufferedImage(name,b,type);
+    ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
+
+    //BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
+   // ImageUtil.saveBufferedImage(name,b,type);
   }
 
-}
+  }
 

@@ -1,5 +1,6 @@
 package cs3500.imageprocessing.model;
 
+import controller.BlurCMD;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,58 +112,100 @@ public class Layer implements ILayer {
 //        t2, "gif");
 
     //instantiate testModel
-    ProcessingModel testModel = new ProcessingModel("testModel");
+    ProcessingModel2 testModel = new ProcessingModel2();
 
     //add layers to testModel
     testModel.addLayer("first");
-    testModel.addImageToLayer("first",testCar);
+    testModel.addImageToLayer("res/jpegcar.jpg");
     testModel.addLayer("second");
-    testModel.addImageToLayer("second",bufferedImagetoIPixelImage);
+    testModel.addImageToLayer("res/jpegcar.jpg");
 
     //save testModel. saves all of the sub images in sub directories.
-    testModel.saveMultiLayerImage();
+    testModel.exportAll("testModelexportdominik");
 
     //make a new model by loading in the saved model.
-    ProcessingModel newModel = new ProcessingModel("testModel.txt","res/");
-    newModel.deleteLayer("first");
+    ProcessingModel2 newModel = new ProcessingModel2("testModelexportdominik.txt");
+
+    newModel.addLayer("third");
+    newModel.addImageToLayer("res/jpegcar.jpg");
+
+    newModel.setWorkingLayer("second");
+    newModel.deleteLayer();
+
     //save that model
-    newModel.saveMultiLayerImage();
+    newModel.exportAll("testModelexportdominik2ndround");
+
 
     //turns off the second layer
-    newModel.toggle("second");
+
+
+    newModel.setVisiblity("third", false);
+    //newModel.toggle("second");
 
     // newModel.saveTopMostVisible("savethetop!","png");
-    newModel.addLayer("third");
-    newModel.addImageToLayer("third",new Sepia().apply(bufferedImagetoIPixelImage));
+    newModel.addLayer("fourth");
+    newModel.addImageToLayer("res/jpegcar.jpg");
+
+    newModel.setVisiblity("fourth", false);
+    newModel.exportAll("testModelexportdominik3ndround");
+
+    newModel.addLayer("fifth");
+    newModel.addImageToLayer("res/jpegcar.jpg");
+    newModel.setWorkingLayer("fifth");
+    newModel.applyTransformation(new Sepia());
+
+    newModel.setWorkingLayer("fourth");
+    newModel.applyTransformation(new Greyscale());
+    newModel.applyTransformation(new Blur());
+    newModel.applyTransformation(new Blur());
+    newModel.applyTransformation(new Blur());
+    newModel.applyTransformation(new Blur());
+    newModel.setVisiblity("fourth", true);
+
+    newModel.setVisiblity("fifth", false);
+
+    newModel.exportLayer("shouldbesomething"); // does a png for now.
+
+    newModel.exportAll("testModelexportdominik3rdround");
+
+    IModel2 newModel3 = new ProcessingModel2("testModelexportdominik3rdround.txt");
+    newModel3.setVisiblity("fifth",true);
+
+    newModel3.exportAll("testModelexportdominik4thround");
+
+    newModel3.exportLayer("shouldbesomethingsepia"); // does a png for now.
+
+
+    //newModel.saveTopMostVisible("should be the blendedImage","png");
+    //newModel.addImageToLayer("third",new Sepia().apply(bufferedImagetoIPixelImage));
 
     //turns off the third layer.
-    newModel.toggle("third");
-
-    newModel.addLayer("fourth");
-    newModel.addImageToLayer("fourth",new Checkerboard(100,10));
-    //turns off the fourth layer.
-    newModel.toggle("fourth");
-    newModel.toggle("fourth");
-
-    newModel.addLayer("5");
-    newModel.addImageToLayer("5",new Sharpen().apply(sharpB));
-
-    newModel.addLayer("6");
-    newModel.addImageToLayer("6",sepiaB);
-
-
-
-    newModel.blendLayers("5","6","blended5");
-
-    newModel.saveTopMostVisible("should be the blendedImage","png");
-
-    newModel.deleteLayer("fourth");
-    newModel.deleteLayer("5");
-    newModel.saveMultiLayerImage();
-
-
-    ProcessingModel pm2 = new ProcessingModel("testModel.txt.txt","");
-    pm2.saveMultiLayerImage();
+    //newModel.toggle("third");
+//
+//    newModel.addLayer("fourth");
+//    newModel.addImageToLayer("fourth",new Checkerboard(100,10));
+//    //turns off the fourth layer.
+//    newModel.toggle("fourth");
+//    newModel.toggle("fourth");
+//
+//    newModel.addLayer("5");
+//    newModel.addImageToLayer("5",new Sharpen().apply(sharpB));
+//
+//    newModel.addLayer("6");
+//    newModel.addImageToLayer("6",sepiaB);
+//
+//
+//    newModel.blendLayers("5","6","blended5");
+//
+//    newModel.saveTopMostVisible("should be the blendedImage","png");
+//
+//    newModel.deleteLayer("fourth");
+//    newModel.deleteLayer("5");
+//    newModel.saveMultiLayerImage();
+//
+//
+//    ProcessingModel pm2 = new ProcessingModel("testModel.txt.txt","");
+//    pm2.saveMultiLayerImage();
 
 
     //back.render("ppm","final");

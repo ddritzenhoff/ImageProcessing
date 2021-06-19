@@ -16,4 +16,6 @@ public interface IModel2 {
 
   public void exportAll(String directoryName);
 
+  void deleteLayer();
+
 }
