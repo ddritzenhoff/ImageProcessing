@@ -1,0 +1,26 @@
+create-layer testLayer1
+create-layer testLayer2
+current testLayer1
+load res/greyscalecar.ppm
+blur
+sepia
+current testLayer2
+load res/jpegcar.jpg
+greyscale
+save topMostImageIsTestLayer2.jpg
+invisible testLayer2
+save topMostLayerIsTestLayer1.png
+invisible testLayer1
+create-layer testLayer3
+current testLayer2
+remove
+create-layer testLayer2
+load res/jpegcar.jpg
+current testLayer3
+load res/car.ppm
+save topMostLayerIsTestLayer3.ppm
+current testLayer2
+remove
+save-all script1Saved
+q
+

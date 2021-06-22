@@ -1,0 +1,28 @@
+create-layer s2Checkerboard
+create-layer s2testLayer2
+current s2Checkerboard
+generate-checkerboard 10 10
+blur
+sepia
+current s2testLayer2
+load res/jpegcar.jpg
+greyscale
+save s2topMostImageIsTestLayer2.jpg
+invisible s2testLayer2
+save s2topMostLayerIsTestLayer1.png
+create-layer s2testLayer3
+current s2testLayer2
+remove
+create-layer s2testLayer2
+load res/jpegcar.jpg
+current s2testLayer3
+load res/car.ppm
+save s2topMostLayerIsTestLayer3.ppm
+current s2testLayer2
+remove
+current s2testLayer3
+remove
+save s2topMostLayerIsCheckerboard.png
+save-all script2Saved
+q
+
