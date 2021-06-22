@@ -20,7 +20,7 @@ public class ExportLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.exportLayer(this.newFileName);
   }
 }

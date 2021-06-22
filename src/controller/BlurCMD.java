@@ -13,10 +13,11 @@ public class BlurCMD implements ICommand {
    * Constructs a BlurCMD object.
    */
   public BlurCMD() {
+    //none
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.applyTransformation(new Blur());
   }
 }

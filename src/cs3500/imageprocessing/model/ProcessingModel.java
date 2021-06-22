@@ -3,9 +3,17 @@ package cs3500.imageprocessing.model;
 import static cs3500.imageprocessing.model.ImageUtil.imageWrapperImport;
 import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * this class represents a specific implementation of a IModel.
+ * It centered around having a selected layer, then allowing actions to be performed
+ * on that selected layer. these layer names are stored in a hashmap of String,Layer which wraps
+ * its respective IPixelImage, order, visibility, and other properties.
+ */
 public class ProcessingModel implements IModel {
 
   private Map<String, ILayer> layers;
@@ -19,13 +27,16 @@ public class ProcessingModel implements IModel {
   public ProcessingModel() {
     layers = new HashMap<>();
     workingLayer = null;
+    Layer.orderedList.clear();
   }
 
   /**
    * constructor to read in a ProcessingModel from a fileDirectory.
    * uses the constructor below with the readAll method.
    *
-   * @param fileDirectory
+   * @param fileDirectory a string that will point to the file directory which contains a file
+   *                      with the information associated with a ProcessingModel such as the layers
+   *                      status' and IPixelImages' locations.
    */
   public ProcessingModel(String fileDirectory) {
     this(readAll(fileDirectory));
@@ -66,8 +77,6 @@ public class ProcessingModel implements IModel {
         "you must create a layer before loading an image into it");
     //todo: make this work with .ppm
     IPixelImage newImage = imageWrapperImport(imageFileName);
-//    IPixelImage newImage = ImageUtil
-//        .bufferedImageToIPixelImage(ImageUtil.normalImageToBufferedImage(imageFileName));
 
     if (layers.get(workingLayer).getStatus()) {
       throw new IllegalArgumentException("you cannot add two images to a layer.");
@@ -96,6 +105,7 @@ public class ProcessingModel implements IModel {
     this.workingLayer = layerName;
   }
 
+  @Override
   public void deleteLayer() {
     ImageUtil.requireNonNull(workingLayer,"delete layer");
     if (!layers.containsKey(workingLayer)) {
@@ -111,7 +121,7 @@ public class ProcessingModel implements IModel {
    */
   @Override
   public void generateCheckerboard(int sizeTile, int numSquares) {
-    if (layers.get(this.workingLayer).getImage() != null) {
+    if (layers.get(workingLayer).getStatus()) {
       throw new IllegalArgumentException("you cannot add two images to a layer.");
     }
     if (sizeTile < 1 || numSquares < 1) {
@@ -173,6 +183,11 @@ public class ProcessingModel implements IModel {
     ImageUtil.saveAll(directoryName,this.layers);
   }
 
+  /**
+   * this method checks the status of the given layer.
+   *
+   * @param layerName a boolean representing if the layer is populated or not.
+   */
   private void validLayer(String layerName) {
     if (!layers.get(layerName).getStatus()) {
       throw new IllegalArgumentException("empty image layer");
@@ -183,5 +198,13 @@ public class ProcessingModel implements IModel {
   public String toString() {
     return Layer.orderedList.toString();
   }
+
+//  public BufferedImage[] bufferedImages() {
+//    BufferedImage[] BI = {};
+//    BI[2] = ImageUtil.pixelImageToBufferedImage(new IPixelImage());
+//    for(ILayer l : layers.values()) {
+//      l.getImage()
+//    }
+//  }
 
 }

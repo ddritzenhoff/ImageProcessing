@@ -20,7 +20,7 @@ public class AddLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.addLayer(layerName);
   }
 }

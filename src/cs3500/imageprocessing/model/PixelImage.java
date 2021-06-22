@@ -41,7 +41,7 @@ public class PixelImage implements IPixelImage {
     try {
       System.out.println(newFileName);
       String newTitle = newFileName + "." + type;
-      fos = new FileOutputStream(newTitle);
+      fos = new FileOutputStream("res/" + newTitle);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }

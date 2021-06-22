@@ -13,10 +13,11 @@ public class SepiaCMD implements ICommand {
    * Constructs a SepiaCMD object.
    */
   public SepiaCMD() {
+    //none
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.applyTransformation(new Sepia());
   }
 }

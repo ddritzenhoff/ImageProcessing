@@ -124,21 +124,25 @@ public class Pixel implements IPixel {
     return Objects.hash(getR(), getG(), getB());
   }
 
+  /**
+   * this static method blends two pixels colors, and returns a new pixel.
+   *
+   * @param p1 pixel one
+   * @param p2 pixel two
+   * @return a new IPixel with blended colors.
+   */
   static IPixel blend(IPixel p1, IPixel p2) {
-      Color c0 = new Color( p1.getR(), p1.getG(), p1.getB());
-      Color c1 = new Color( p2.getR(), p2.getG(), p2.getB());
-      double totalAlpha = c0.getAlpha() + c1.getAlpha();
+    Color p1Color = new Color( p1.getR(), p1.getG(), p1.getB());
+    Color p2Color = new Color( p2.getR(), p2.getG(), p2.getB());
 
+    double p1Weight = .5;
+    double p2Weight = 1 - p1Weight;
 
-      double weight0 = .5;
-      double weight1 = 1-weight0;
+    double r = p1Weight * p1Color.getRed() + p2Weight * p2Color.getRed();
+    double g = p1Weight * p1Color.getGreen() + p2Weight * p2Color.getGreen();
+    double b = p1Weight * p1Color.getBlue() + p2Weight * p2Color.getBlue();
 
-      double r = weight0 * c0.getRed() + weight1 * c1.getRed();
-      double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
-      double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
-      double a = Math.max(c0.getAlpha(), c1.getAlpha()); // test commit
-
-      return new Pixel((int) r, (int) g, (int) b);
+    return new Pixel((int) r, (int) g, (int) b);
 
   }
 }

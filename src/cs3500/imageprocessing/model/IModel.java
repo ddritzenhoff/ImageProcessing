@@ -1,14 +1,19 @@
 package cs3500.imageprocessing.model;
 
-import java.util.Map;
 
+/**
+ * this interface holds the methods and requirements of our implementation of a model.
+ * Our program is centered around having a selected layer, then allowing actions to be performed
+ * on that selected layer.
+ */
 public interface IModel {
 
 
   /**
    * creates a new Layer with the given layerName. this layer is empty, and its visibility
    * is set to true.
-   * @param layerName
+   *
+   * @param layerName string that represents a new layer.
    */
   void addLayer(String layerName);
 
@@ -16,7 +21,7 @@ public interface IModel {
    * Adds an image to a layer. Supports .jpg, .png and .gif file extensions.
    * This also supports the backwards compatibility of importing .ppm files.
    *
-   * @param imageFileName t
+   * @param imageFileName string that will be used to upload the file.
    */
   void addImageToLayer(String imageFileName);
 
@@ -24,6 +29,7 @@ public interface IModel {
   /**
    * sets the given LayerName as the workingLayer within the model.
    * this allows further operations to be done on the workingLayer.
+   *
    * @param layerName the name that will be set to the workingLayer
    */
   void setWorkingLayer(String layerName);
@@ -74,6 +80,9 @@ public interface IModel {
   /**
    * legacy method to support generating a checkerboard.
    * will load this checkerboard into the working layer.
+   *
+   * @param sizeTile pixel width of a tile
+   * @param numSquares number of squares to create a numSquares x numSquares checkerboard.
    */
   void generateCheckerboard(int sizeTile, int numSquares);
 

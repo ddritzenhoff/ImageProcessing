@@ -38,7 +38,7 @@ public class CreateCheckerboard implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.generateCheckerboard(this.sizeTile, this.numSquares);
   }
 }

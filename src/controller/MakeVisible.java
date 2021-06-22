@@ -20,7 +20,7 @@ public class MakeVisible implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.setVisiblity(this.layerName, true);
   }
 }

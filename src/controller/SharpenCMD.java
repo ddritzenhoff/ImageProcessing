@@ -13,10 +13,11 @@ public class SharpenCMD implements ICommand {
    * Constructs a SharpenCMD object.
    */
   public SharpenCMD() {
+    //none
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.applyTransformation(new Sharpen());
   }
 }

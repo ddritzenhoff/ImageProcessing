@@ -6,9 +6,8 @@ import java.io.IOException;
 /**
  * Represents the ascii view of the ImageProcessing project.
  */
-public class ProcessingView implements IProcessingView{
+public class ProcessingView implements IProcessingView {
 
-  private final IModel model;
   private Appendable ap;
 
   /**
@@ -17,7 +16,6 @@ public class ProcessingView implements IProcessingView{
    * @param ap Appendable object to be used in the rendering.
    */
   public ProcessingView(IModel model, Appendable ap) {
-    this.model = model;
     // if the passed in appendable is not valid, you have to print everything to console instead.
     this.ap = (ap == null) ? System.out : ap;
   }

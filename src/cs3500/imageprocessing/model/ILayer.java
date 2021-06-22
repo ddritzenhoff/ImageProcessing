@@ -36,6 +36,11 @@ public interface ILayer {
    */
   String getLayerName();
 
+  /**
+   * gets the status of a layer.
+   * the layer status indicates if a layer has been populated with an IPixelImage.
+   * @return a boolean representing the layer status.
+   */
   Boolean getStatus();
 
 }

@@ -20,7 +20,7 @@ public class MakeInvisible implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.setVisiblity(this.layerName, false);
   }
 }

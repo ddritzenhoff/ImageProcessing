@@ -13,6 +13,6 @@ public interface ICommand {
    *
    * @param model the model containing all of the layers and IPixelImages.
    */
-  public void go(IModel model);
+  public void apply(IModel model);
 
 }

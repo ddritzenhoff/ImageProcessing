@@ -1,333 +1,308 @@
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotEquals;
-//import static org.junit.Assert.assertTrue;
-//
-//import cs3500.imageprocessing.model.Blur;
-//import cs3500.imageprocessing.model.Checkerboard;
-//import cs3500.imageprocessing.model.Greyscale;
-//import cs3500.imageprocessing.model.IModel;
-//import cs3500.imageprocessing.model.IPixel;
-//import cs3500.imageprocessing.model.IPixelImage;
-//import cs3500.imageprocessing.model.ITransformation;
-//import cs3500.imageprocessing.model.Pixel;
-//import cs3500.imageprocessing.model.PixelImage;
-//import cs3500.imageprocessing.model.ProcessingModel;
-//import cs3500.imageprocessing.model.Sepia;
-//import cs3500.imageprocessing.model.Sharpen;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-///**
-// * Tests for our model implementation.
-// * Tests all of the methods in the interface and their effects.
-// * Tests invalid inputs and outcomes of IModel manipulations.
-// */
-//public class IModelTest {
-//  IModel testModel;
-//
-//  IPixel whitePixel;
-//  IPixel blackPixel;
-//  List<List<IPixel>> testPixelArray;
-//  IPixelImage testPixelImage;
-//  List<IPixel> pixelList;
-//
-//  ITransformation sepia = new Sepia();
-//  ITransformation blur = new Blur();
-//  ITransformation greyscale = new Greyscale();
-//  ITransformation sharpen = new Sharpen();
-//
-//  List<ITransformation> commands = Arrays.asList(blur, blur, sepia);
-//
-//  @Before
-//  public void setUp() throws Exception {
-//    testModel = new ProcessingModel();
-//
-//    whitePixel = new Pixel(255,255,255);
-//    blackPixel = new Pixel(0,0,0);
-//    pixelList  = Arrays.asList(whitePixel,blackPixel,whitePixel);
-//    testPixelArray = new ArrayList<>();
-//    testPixelArray.add(pixelList);
-//    testPixelArray.add(pixelList);
-//    testPixelArray.add(pixelList);
-//
-//    testPixelImage = new PixelImage(testPixelArray);
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void addImageNullFileName() {
-//    testModel.addImage(null,testPixelImage);
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void addImageNullPixelImage() {
-//    testModel.addImage("bad!",testPixelImage);
-//    testModel.addImage("test!",null);
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void addImageInvalidIDAreadyExists() {
-//    testModel.addImage("bad!",testPixelImage);
-//    testModel.addImage("bad!",new PixelImage(testPixelArray));
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void addImageValid() {
-//    testModel.addImage("bad!",testPixelImage);
-//    testModel.generateCheckerboard(2,2, "testCheckerboard");
-//    IPixelImage testImage = testModel.getImage("testCheckerboard");
-//
-//    testModel.addImage("testCheckerboard", testImage);
-//  }
-//
-//  @Test
-//  public void addImageSeveralValid() {
-//    testModel.addImage("tpi",testPixelImage);
-//    assertEquals("[tpi]", testModel.printRegistry());
-//    IPixelImage newCb = new Checkerboard(2,2);
-//    testModel.addImage("cb1", newCb);
-//
-//    assertEquals("[cb1, tpi]", testModel.printRegistry());
-//    testModel.addImage("tpi2",testPixelImage);
-//    assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
-//    IPixelImage newCb2 = new Checkerboard(2,2);
-//    testModel.addImage("cb2",newCb2);
-//    assertEquals("[cb2, cb1, tpi2, tpi]", testModel.printRegistry());
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void removeImageInvalidFileName() {
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.removeImage("invalidKey.");
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void removeImageValidThenInvalidFileName() {
-//    testModel.addImage("tpi",testPixelImage);
-//    IPixelImage newCb = new Checkerboard(2,2);
-//    testModel.addImage("cb1",newCb);
-//    testModel.removeImage("tpi");
-//    testModel.removeImage("tpi");
-//  }
-//
-//
-//  @Test
-//  public void addImageSeveralValidRemoveSeveralValid() {
-//    // Adding images:
-//    testModel.addImage("tpi",testPixelImage);
-//    assertEquals("[tpi]", testModel.printRegistry());
-//    IPixelImage newCb = new Checkerboard(2,2);
-//    testModel.addImage("cb1",newCb);
-//    assertEquals("[cb1, tpi]", testModel.printRegistry());
-//    testModel.addImage("tpi2",testPixelImage);
-//    assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
-//    IPixelImage newCb2 = new Checkerboard(2,2);
-//    testModel.addImage("cb2",newCb2);
-//    assertEquals("[cb2, cb1, tpi2, tpi]", testModel.printRegistry());
-//
-//    // Removing images:
-//    testModel.removeImage("tpi");
-//    assertEquals("[cb2, cb1, tpi2]", testModel.printRegistry());
-//    testModel.removeImage("cb1");
-//    assertEquals("[cb2, tpi2]", testModel.printRegistry());
-//
-//  }
-//
-//  @Test
-//  public void replaceImage() {
-//    IPixelImage checkerboard = new Checkerboard(193,5);
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.replaceImage("tpi",checkerboard);
-//    assertNotEquals(testPixelImage,testModel.getImage("tpi"));
-//    assertTrue(testModel.getImage("tpi").equals(checkerboard));
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void replaceImageInvalidKey() {
-//    testModel.addImage("tpi",testPixelImage);
-//    IPixelImage cb1 = new Checkerboard(193,5);
-//    testModel.replaceImage("tpiINVALID",cb1);
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void replaceImageInvalidValue() {
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.replaceImage("tpi",null);
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void alterMapWithAlreadyPresentValuesChainedTransformation() {
-//    testModel.addImage("tpi",testPixelImage);
-//    List<ITransformation> commands = Arrays.asList(sepia, blur, sepia, blur,
-//        sharpen, greyscale, blur, sepia);
-//    testModel.chainTransformations(commands,"tpi","tpi");
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void alterMapWithAlreadyPresentValuesSingleTransformation() {
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.applyTransformation(blur, "tpi" , "tpi");
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void alterMapWithAlreadyPresentValuesCheckerboard() {
-//    testModel.generateCheckerboard(2,2,"test");
-//    testModel.generateCheckerboard(2,2,"test");
-//  }
-//
-//  @Test
-//  public void chainTransformations() {
-//    List<ITransformation> commands = Arrays.asList(sepia, sepia, sepia);
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.chainTransformations(commands, "tpi", "newtpi");
-//    IPixelImage testChained = testModel.getImage( "newtpi");
-//    assertEquals(new Pixel(255,255,236), testChained.getPixels().get(0).get(0));
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void chainTransformationsInvalidFileName() {
-//    List<ITransformation> commands = Arrays.asList(sepia, sepia, sepia);
-//    testModel.addImage("tpi2",testPixelImage);
-//    testModel.chainTransformations(commands, "tpi",  "tipi3");
-//
-//  }
-//
-//  @Test //TODO: empty list just doesnt modify any pixels.
-//  public void chainTransformationsEmptyList() {
-//    List<ITransformation> commands = Arrays.asList();
-//    testModel.addImage("tpi",testPixelImage);
-//    testModel.chainTransformations(commands, "tpi", "newtpi");
-//    IPixelImage testChained = testModel.getImage( "tpi");
-//    assertEquals(new Pixel(255,255,255), testChained.getPixels().get(0).get(0));
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void chainTransformationsInvalidListElement() {
-//    List<ITransformation> commands = Arrays.asList(sepia, null, sepia);
-//    testModel.addImage("tpi2",testPixelImage);
-//    testModel.chainTransformations(commands, "tpi","tpichained");
-//    IPixelImage testChained = testModel.getImage("tpichained");
-//    assertEquals(new Pixel(255,255,238), testChained.getPixels().get(0).get(0));
-//
-//  }
-//
-//  @Test
-//  public void applyTransformation() {
-//    IPixelImage checkerboard = new Checkerboard(193,5);
-//    testModel.addImage("tpi2",testPixelImage);
-//    testModel.addImage("checkerboard",checkerboard);
-//    testModel.applyTransformation(sepia,"tpi2", "sepiatpi2");
-//    IPixelImage newImagePostSepiaFilter =  testModel.getImage("sepiatpi2");
-//
-//    IPixel blackSepiaPixel = newImagePostSepiaFilter.getPixel(1,1);
-//    assertEquals(blackSepiaPixel, new Pixel(0,0,0));
-//
-//    IPixel whiteSepiaPixel = newImagePostSepiaFilter.getPixel(0,0);
-//    assertEquals(new Pixel(255,255,238), whiteSepiaPixel);
-//
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void generateCheckerboardInvalidName() {
-//    testModel.generateCheckerboard(100,2, "testCb");
-//    testModel.generateCheckerboard(100,2, "testCb");
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void generateCheckerboardInvalidSquares() {
-//    testModel.generateCheckerboard(100,-1, "test");
-//  }
-//
-//  @Test (expected = IllegalArgumentException.class)
-//  public void generateCheckerboardInvalidSize() {
-//    testModel.generateCheckerboard(-1,100,"test");
-//  }
-//
-//  @Test
-//  public void generateCheckerboardValid() {
-//    testModel.generateCheckerboard(100,2, "testCb");
-//    IPixelImage cb = new Checkerboard(100,2);
-//    assertEquals("[testCb]",testModel.printRegistry());
-//    assertTrue(cb.equals(testModel.getImage("testCb")));
-//  }
-//
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void importPPMInvalidFile() {
-//    testModel.importPPM("src/files/koalaINVALID.ppm", "koalaImport!");
-//    assertEquals("[koalaImport!]", testModel.printRegistry());
-//    testModel.importPPM("src/files/manhattan-small.ppm", "manhattan!");
-//
-//  }
-//
-//  @Test
-//  public void importPPMValid() {
-//    testModel.importPPM("res/car.ppm", "car");
-//    assertEquals("[car]", testModel.printRegistry());
-//    testModel.importPPM("res/car.ppm", "car2");
-//    assertEquals("[car2, car]", testModel.printRegistry());
-//  }
-//
-//  @Test(expected = IllegalArgumentException.class)
-//  public void exportPPMInvalidName() {
-//    testModel.importPPM("src/files/koala.ppm", "koalaImport!");
-//    assertEquals("[koalaImport!]", testModel.printRegistry());
-//
-//    testModel.exportPPM("koalaImport!6");
-//  }
-//
-//  @Test
-//  public void exportPPM() {
-//
-//    testModel.importPPM("res/car.ppm", "car");
-//    testModel.importPPM("res/hotairballoon.ppm", "hotairballoon");
-//
-//    testModel.applyTransformation(blur,"hotairballoon", "blurred hotairballoon");
-//    testModel.applyTransformation(sharpen,"hotairballoon", "sharpened hotairballoon");
-//    testModel.applyTransformation(sepia,"hotairballoon", "sepia hotairballoon");
-//    testModel.applyTransformation(greyscale,"hotairballoon", "greyscale hotairballoon");
-//
-//    testModel.applyTransformation(blur,"car", "blurred car");
-//    testModel.applyTransformation(sharpen,"car", "sharpened car");
-//    testModel.applyTransformation(sepia,"car", "sepia car");
-//    testModel.applyTransformation(greyscale,"car", "greyscale car");
-//
-//    testModel.exportPPM("blurred car");
-//    testModel.exportPPM("sharpened car");
-//    testModel.exportPPM("sepia car");
-//    testModel.exportPPM("greyscale car");
-//
-//    testModel.exportPPM("blurred hotairballoon");
-//    testModel.exportPPM("sharpened hotairballoon");
-//    testModel.exportPPM("sepia hotairballoon");
-//    testModel.exportPPM("greyscale hotairballoon");
-//    //testModel.exportPPM("Heavily altered manhattan");
-//    assertEquals("[greyscale car, greyscale hotairballoon, sharpened car, car, "
-//        + "sepia car, hotairballoon, blurred hotairballoon, sharpened hotairballoon, blurred car,"
-//        + " sepia hotairballoon]",testModel.printRegistry());
-//
-//  }
-//
-//  @Test
-//  public void printRegistry() {
-//    testModel.addImage("tpi",testPixelImage);
-//    assertEquals("[tpi]", testModel.printRegistry());
-//    IPixelImage newCb = new Checkerboard(2,2);
-//    testModel.addImage("cb1", newCb);
-//
-//    assertEquals("[cb1, tpi]", testModel.printRegistry());
-//    testModel.addImage("tpi2",testPixelImage);
-//    assertEquals("[cb1, tpi2, tpi]", testModel.printRegistry());
-//  }
-//
-//}
+
+import static org.junit.Assert.assertEquals;
+
+import cs3500.imageprocessing.model.Blur;
+import cs3500.imageprocessing.model.Checkerboard;
+import cs3500.imageprocessing.model.Greyscale;
+import cs3500.imageprocessing.model.IModel;
+import cs3500.imageprocessing.model.IPixel;
+import cs3500.imageprocessing.model.IPixelImage;
+import cs3500.imageprocessing.model.ITransformation;
+import cs3500.imageprocessing.model.ImageUtil;
+import cs3500.imageprocessing.model.Pixel;
+import cs3500.imageprocessing.model.PixelImage;
+import cs3500.imageprocessing.model.ProcessingModel;
+import cs3500.imageprocessing.model.Sepia;
+import cs3500.imageprocessing.model.Sharpen;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Tests for our model implementation.
+ * Tests all of the methods in the interface and their effects.
+ * Tests invalid inputs and outcomes of IModel manipulations.
+ */
+public class IModelTest {
+  IModel testModel;
+
+  IPixel whitePixel;
+  IPixel blackPixel;
+  List<List<IPixel>> testPixelArray;
+  String testPixelImage;
+  IPixelImage testPixelImage2;
+  List<IPixel> pixelList;
+
+  ITransformation sepia = new Sepia();
+  ITransformation blur = new Blur();
+  ITransformation greyscale = new Greyscale();
+  ITransformation sharpen = new Sharpen();
+
+  List<ITransformation> commands = Arrays.asList(blur, blur, sepia);
+
+  @Before
+  public void setUp() throws Exception {
+    testModel = new ProcessingModel();
+
+    whitePixel = new Pixel(255,255,255);
+    blackPixel = new Pixel(0,0,0);
+    pixelList  = Arrays.asList(whitePixel,blackPixel,whitePixel);
+    testPixelArray = new ArrayList<>();
+    testPixelArray.add(pixelList);
+    testPixelArray.add(pixelList);
+    testPixelArray.add(pixelList);
+
+    testPixelImage2 = new PixelImage(testPixelArray);
+    BufferedImage bi = ImageUtil.pixelImageToBufferedImage(testPixelImage2);
+    ImageUtil.saveBufferedImage("testImage", bi,"png");
+    testPixelImage = "res/testImage.png";
+
+  }
+
+  /**
+   * abstracts out the code of adding several images and layers to our testModel.
+   */
+  @Test
+  public void setUpImages() {
+    testModel = new ProcessingModel();
+    testModel.addLayer("testCheckerboard");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+
+
+    testModel.addLayer("jpegcar");
+    testModel.addImageToLayer("res/jpegcar.jpg");
+
+
+    testModel.addLayer("testCheckerboard3");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+
+
+    testModel.addLayer("sepia-car");
+    testModel.addImageToLayer("res/sepia car.ppm");
+    assertEquals(testModel.toString(),
+        "[testCheckerboard, jpegcar,"
+            + " testCheckerboard3, "
+            + "sepia-car]");
+
+  }
+
+
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void makeLayerNullFileName() {
+    testModel.addLayer("test");
+    testModel.addImageToLayer(null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void makeLayerNoFileNameExists() {
+    testModel.addLayer("test");
+    testModel.addImageToLayer("blahblah");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void makeLayerAlreadyExistsName() {
+    testModel.addLayer("test");
+    testModel.addLayer("test");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void addImagetoLayerNullFileName() {
+    testModel.addLayer("test");
+    testModel.addImageToLayer(null);
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void addImageNullPixelImage() {
+    testModel.addLayer("test");
+    testModel.addImageToLayer(testPixelImage);
+    testModel.addImageToLayer(null);
+
+  }
+
+  @Test
+  public void addImageValid() {
+    testModel.addLayer("testCheckerboard");
+    //testModel.generateCheckerboard(2, 2);
+    ImageUtil.saveBufferedImage("testCheckerboard",
+        ImageUtil.pixelImageToBufferedImage(new Checkerboard(2,2)), "png");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+    assertEquals("[testCheckerboard]", testModel.toString());
+  }
+
+  @Test
+  public void addImageSeveralValid() {
+    testModel.addLayer("testCheckerboard");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+    assertEquals("[testCheckerboard]", testModel.toString());
+
+
+    testModel.addLayer("testCheckerboard2");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+    assertEquals("[testCheckerboard, testCheckerboard2]", testModel.toString());
+
+    testModel.addLayer("testCheckerboard3");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+    assertEquals("[testCheckerboard, testCheckerboard2, testCheckerboard3]",
+        testModel.toString());
+
+    testModel.addLayer("testCheckerboard4");
+    testModel.addImageToLayer("res/testCheckerboard.png");
+    assertEquals("[testCheckerboard, testCheckerboard2, testCheckerboard3, "
+        + "testCheckerboard4]", testModel.toString());
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetWorkingLayerDoesntExist() {
+    testModel.setWorkingLayer("this doesnt exist!");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetWorkingLayerNull() {
+    testModel.setWorkingLayer(null);
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetWorkingLayerWasAlreadyDeleted() {
+    testModel.setWorkingLayer(null);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void removeLayerInvalidFileName() {
+    setUpImages();
+    assertEquals("[testCheckerboard, jpegcar, testCheckerboard3, sepia-car]",
+        testModel.toString());
+    testModel.setWorkingLayer("this layer doesnt exist");
+    testModel.deleteLayer();
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void removeLayerNoSelectedLayer() {
+    testModel.deleteLayer();
+  }
+
+  @Test
+  public void removeLayerOrderPreserved() {
+    setUpImages();
+    assertEquals("[testCheckerboard, jpegcar, testCheckerboard3, sepia-car]",
+        testModel.toString());
+    testModel.setWorkingLayer("jpegcar");
+    testModel.deleteLayer();
+    assertEquals("[testCheckerboard, testCheckerboard3, sepia-car]",
+        testModel.toString());
+  }
+
+  @Test
+  public void removeLayerOrderPreservedAddNewLayer() {
+    setUpImages();
+    assertEquals("[testCheckerboard, jpegcar, testCheckerboard3, sepia-car]",
+        testModel.toString());
+    testModel.setWorkingLayer("jpegcar");
+    testModel.deleteLayer();
+    assertEquals("[testCheckerboard, testCheckerboard3, sepia-car]",
+        testModel.toString());
+    testModel.addLayer("add jpeg car");
+    testModel.addImageToLayer("res/sepia car.ppm");
+    assertEquals("[testCheckerboard, testCheckerboard3, sepia-car, add jpeg car]",
+        testModel.toString());
+  }
+
+  @Test
+  public void applyTransformation() {
+    IPixelImage checkerboard = new Checkerboard(193,5);
+
+    testModel.addLayer("testPixelImage");
+    testModel.addImageToLayer(testPixelImage);
+    testModel.applyTransformation(sepia);
+    testModel.exportLayer("topMostSepia.png");
+    IPixelImage topMostSepia = ImageUtil.bufferedImageToIPixelImage(
+        ImageUtil.normalImageToBufferedImage("res/topMostSepia.png"));
+    IPixelImage newImagePostSepiaFilter =  topMostSepia;
+
+    IPixel blackSepiaPixel = newImagePostSepiaFilter.getPixel(1,1);
+    assertEquals(blackSepiaPixel, new Pixel(0,0,0));
+
+    IPixel whiteSepiaPixel = newImagePostSepiaFilter.getPixel(0,0);
+    assertEquals(new Pixel(255,255,238), whiteSepiaPixel);
+
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void generateCheckerboardInvalidSquares() {
+    testModel.addLayer("testcheckerboard");
+    testModel.generateCheckerboard(100,-1);
+  }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void generateCheckerboardInvalidSize() {
+    testModel.addLayer("testcheckerboard");
+    testModel.generateCheckerboard(-1,100);
+  }
+
+  @Test
+  public void generateCheckerboardValid() {
+    ProcessingModel testModel2 = new ProcessingModel();
+    testModel2.addLayer("testcheckerboard");
+    testModel2.generateCheckerboard(100,2);
+    IPixelImage cb = new Checkerboard(100,2);
+    assertEquals("[testcheckerboard]",testModel2.toString());
+  }
+
+  @Test
+  public void testVisibility() {
+    setUpImages();
+
+    testModel.addLayer("testPixelImage");
+    testModel.addImageToLayer(testPixelImage);
+    testModel.applyTransformation(sepia);
+    testModel.setVisiblity("testPixelImage", false);
+    testModel.exportLayer("topMostSepia.png");
+    IPixelImage topMostSepia = ImageUtil.bufferedImageToIPixelImage(
+        ImageUtil.normalImageToBufferedImage("res/topMostSepia.png"));
+    IPixelImage newImagePostSepiaFilter =  topMostSepia;
+
+    //this is simply to show that the new top layer is not the layer "testPixelImage"
+
+    IPixel newSepiaPixel = newImagePostSepiaFilter.getPixel(1,1);
+    assertEquals(newSepiaPixel, new Pixel(174,155,120));
+
+  }
+
+
+  @Test
+  public void testToString() {
+    IModel testModel2 = new ProcessingModel();
+    testModel2.addLayer("testCheckerboard");
+    testModel2.addImageToLayer("res/testCheckerboard.png");
+    assertEquals(testModel.toString(),
+        "[testCheckerboard]");
+
+
+    testModel2.addLayer("jpegcar");
+    testModel2.addImageToLayer("res/jpegcar.jpg");
+    assertEquals(testModel.toString(),"[testCheckerboard, jpegcar]");
+
+
+    testModel2.addLayer("testCheckerboard3");
+    testModel2.addImageToLayer("res/testCheckerboard.png");
+    assertEquals(testModel2.toString(),"[testCheckerboard, jpegcar," + " testCheckerboard3]");
+
+    testModel2.addLayer("sepia-car");
+    testModel2.addImageToLayer("res/sepia car.ppm");
+    assertEquals(testModel2.toString(),
+        "[testCheckerboard, jpegcar,"
+            + " testCheckerboard3, "
+            + "sepia-car]");
+
+  }
+
+}

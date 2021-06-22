@@ -20,7 +20,7 @@ public class AddImageToLayer implements ICommand {
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.addImageToLayer(this.imageFileName);
   }
 }

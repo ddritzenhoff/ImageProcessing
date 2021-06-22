@@ -93,7 +93,7 @@ public class ProcessingController implements IProcessingController {
   protected void executeCommand(Function<Scanner, ICommand> cmd) {
     try {
       ICommand c = cmd.apply(sc);
-      c.go(this.model);
+      c.apply(this.model);
     } catch (IllegalArgumentException e) {
       write("One of the arguments was incorrect. Please try again. " + e.getMessage());
     } catch (IllegalStateException e) {

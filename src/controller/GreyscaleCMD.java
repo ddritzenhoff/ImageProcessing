@@ -13,10 +13,11 @@ public class GreyscaleCMD implements ICommand {
    * Constructs a GreyscaleCMD object.
    */
   public GreyscaleCMD() {
+    //none
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.applyTransformation(new Greyscale());
   }
 }

@@ -62,6 +62,7 @@ public class MockModel implements IModel {
 
   @Override
   public void generateCheckerboard(int sizeTile, int numSquares) {
-    log.append(String.format("generateCheckerboard: sizeTile = %d, numSquares = %d", sizeTile, numSquares));
+    log.append(String.format("generateCheckerboard: sizeTile = %d, numSquares = %d", sizeTile,
+        numSquares));
   }
 }

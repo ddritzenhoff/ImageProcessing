@@ -12,10 +12,11 @@ public class RemoveLayer implements ICommand {
    * Constructs a RemoveLayer object.
    */
   public RemoveLayer() {
+    //empty
   }
 
   @Override
-  public void go(IModel model) {
+  public void apply(IModel model) {
     model.deleteLayer();
   }
 }
