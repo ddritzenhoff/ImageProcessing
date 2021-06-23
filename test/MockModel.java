@@ -1,5 +1,7 @@
 import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.ITransformation;
+import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -64,5 +66,20 @@ public class MockModel implements IModel {
   public void generateCheckerboard(int sizeTile, int numSquares) {
     log.append(String.format("generateCheckerboard: sizeTile = %d, numSquares = %d", sizeTile,
         numSquares));
+  }
+
+  @Override
+  public List<String> list() {
+    return null; // stub
+  }
+
+  @Override
+  public BufferedImage layerImage(String layerName) {
+    return null;
+  }
+
+  @Override
+  public BufferedImage topLayerImage() {
+    return null;
   }
 }

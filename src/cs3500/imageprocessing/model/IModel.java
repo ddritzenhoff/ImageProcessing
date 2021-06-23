@@ -1,6 +1,9 @@
 package cs3500.imageprocessing.model;
 
 
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 /**
  * this interface holds the methods and requirements of our implementation of a model.
  * Our program is centered around having a selected layer, then allowing actions to be performed
@@ -86,5 +89,10 @@ public interface IModel {
    */
   void generateCheckerboard(int sizeTile, int numSquares);
 
+  //temp
+  List<String> list();
+
+  BufferedImage layerImage(String layerName);
+  BufferedImage topLayerImage();
 
 }

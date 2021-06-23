@@ -5,6 +5,7 @@ import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -172,10 +173,12 @@ public class ProcessingModel implements IModel {
     }
 
     ILayer currentLayer = layers.get(layerName);
-    ILayer newLayer = new Layer(isVisible,
-        currentLayer.getImage(),
-        currentLayer.getLayerName());
-    layers.replace(layerName,newLayer);
+    if (currentLayer.getStatus()) {
+      ILayer newLayer = new Layer(isVisible,
+          currentLayer.getImage(),
+          currentLayer.getLayerName());
+      layers.replace(layerName, newLayer);
+    }
   }
 
   @Override
@@ -197,6 +200,19 @@ public class ProcessingModel implements IModel {
   @Override 
   public String toString() {
     return Layer.orderedList.toString();
+  }
+
+  public List<String> list() {
+    return Layer.orderedList;
+  }
+
+  @Override
+  public BufferedImage layerImage(String layerName) {
+    return ImageUtil.pixelImageToBufferedImage(layers.get(layerName).getImage());
+  }
+
+  public BufferedImage topLayerImage() {
+    return ImageUtil.bufferedImageTopMostVisibleImage(layers);
   }
 
 //  public BufferedImage[] bufferedImages() {

@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.image.BufferedImage;
+
 public interface IView {
   void registerViewEventListener(IViewListener listener);
   void setText(String text);
@@ -7,4 +9,10 @@ public interface IView {
   void askForFocus();
 
   void setMenu(String[] s);
+  String getClickedLayer();
+  String getFileDest();
+
+  void setImage(BufferedImage bufferedImage);
+
+  Boolean[] getVisibility();
 }

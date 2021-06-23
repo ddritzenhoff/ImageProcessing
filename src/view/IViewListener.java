@@ -1,8 +1,16 @@
 package view;
 
 public interface IViewListener {
-  void handleBlurEvent(IViewEvent event);
+  void handleBlurEvent();
   void handleSepiaEvent();
-  void handleLoadEvent(IViewEvent event);
-  void handleWorkingLayerEvent(IViewEvent event);
+  void handleGreyscaleEvent();
+  void handleSharpenEvent();
+
+  void handleLoadEvent();
+  void handleWorkingLayerEvent();
+  void handleAddLayerEvent();
+  void handleAddImageToLayerEvent();
+  void handleVisibilityEvent();
+
+  void showTopMostVisibleImageLayerEvent();
 }

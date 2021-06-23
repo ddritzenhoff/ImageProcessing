@@ -493,5 +493,28 @@ public class ImageUtil {
     //BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
     // ImageUtil.saveBufferedImage(name,b,type);
   }
+
+  public static BufferedImage bufferedImageTopMostVisibleImage(Map<String, ILayer> layers) {
+    List<ILayer> visibleLayers = new ArrayList<>();
+    for (ILayer layer : layers.values()) {
+      if (layer.getVisibility() && layer.getStatus()) {
+        visibleLayers.add(layer);
+      }
+    }
+    ILayer currentMaxLayer = null;
+    int currentIntMax = -1;
+    for (ILayer layer: visibleLayers) {
+      int curr = layer.getOrder();
+      if (curr > currentIntMax) {
+        currentIntMax = curr;
+        currentMaxLayer = layer;
+      }
+    }
+    if (currentMaxLayer == null) {
+      throw new IllegalArgumentException("all layers are toggled invisible");
+    }
+   return ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
+    //ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
+  }
 }
 
