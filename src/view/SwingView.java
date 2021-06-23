@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -32,11 +35,9 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SwingView  extends JFrame implements ActionListener, IView {
-  private final JButton blurButton;
-  private final JButton sepiaButton;
-  private final JButton greyscaleButton;
-  private final JButton sharpenButton;
+
   private final JButton loadFromModelButton;
+  private final JButton deleteLayerButton;
   private final JTextField jTextField;
   //  private final JLabel jLabel;
   private JLabel clickableImageLabel;
@@ -44,6 +45,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   private final List<IViewListener> viewListners;
   private String[] layerList = {};
 
+  private JPanel imagePanel;
+  private JScrollPane imageScrollPane;
 
   //Radio panels for layer selection
   private JPanel radioPanel;
@@ -81,11 +84,80 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   public SwingView() {
     super();
 
+    setTitle("OOD Image Processing");
+    setSize( new Dimension(600,1000));
+    setDefaultCloseOperation( EXIT_ON_CLOSE );
+    setLayout( new FlowLayout() );
+
     // layerList = new String[]{""};
 
+    JMenuBar menuBar = new JMenuBar();
 
-    setTitle("OOD Image Processing");
-    setSize( new Dimension(800,1000));
+// creating menu 1
+    JMenu file = new JMenu("File");
+    JMenuItem m1 = new JMenuItem("Save");
+    JMenuItem m2 = new JMenuItem("Save All");
+    JMenuItem m3 = new JMenuItem("Export");
+    JMenuItem m4 = new JMenuItem("Open");
+    m1.setActionCommand("save-top");
+    m3.setActionCommand("export");
+     //these are the same^ ?
+
+    m2.setActionCommand("save-all");
+    m4.setActionCommand("load-all");
+
+    m1.addActionListener(this);
+    m2.addActionListener(this);
+    m3.addActionListener(this);
+    m4.addActionListener(this);
+    file.add(m1);
+    file.add(m2);
+    file.add(m3);
+    file.add(m4);
+    menuBar.add(file);
+// creating menu 2
+    JMenu operation = new JMenu("Transform");
+    JMenuItem op1 = new JMenuItem("Blur");
+    JMenuItem op2 = new JMenuItem("Sepia");
+    JMenuItem op3 = new JMenuItem("Greyscale");
+    JMenuItem op4 = new JMenuItem("Sharpen");
+    op1.setActionCommand("Blur");
+    op2.setActionCommand("Sepia");
+    op3.setActionCommand("Greyscale");
+    op4.setActionCommand("Sharpen");
+    op1.addActionListener(this);
+    op2.addActionListener(this);
+    op3.addActionListener(this);
+    op4.addActionListener(this);
+    operation.add(op1);
+    operation.add(op2);
+    operation.add(op3);
+    operation.add(op4);
+
+    menuBar.add(operation);
+
+    this.setJMenuBar(menuBar);
+
+
+    //dialog boxes
+
+
+    dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Dialog boxes"));
+    dialogBoxesPanel.setLayout(new BoxLayout(dialogBoxesPanel, BoxLayout.PAGE_AXIS));
+    this.add(dialogBoxesPanel);
+
+    imagePanel = new JPanel();
+    imagePanel.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
+    imagePanel.setPreferredSize(new Dimension(500, 600));
+    imageScrollPane = new JScrollPane();
+    imagePanel.add(imageScrollPane);
+    add(imagePanel);
+
+    deleteLayerButton = new JButton("Delete Layer");
+    deleteLayerButton.setActionCommand("delete-layer");
+    deleteLayerButton.addActionListener(this);
+    add(deleteLayerButton);
+
 
     // mainPanel = new JPanel();
     //setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -93,15 +165,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     this.viewListners = new ArrayList<>();
 
 
-    setDefaultCloseOperation( EXIT_ON_CLOSE );
-
-    // setLayout(new BoxLayout())
-    setLayout( new FlowLayout() );
-
-    blurButton = new JButton("Blur Image");
-    sharpenButton = new JButton("Greyscale Image");
-    sepiaButton = new JButton("Sepia Image");
-    greyscaleButton = new JButton("Sharpen Image");
+     //setLayout(new GridLayout(1,1));
 
 
     loadFromModelButton = new JButton("Load model file");
@@ -114,18 +178,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     jTextField = new JTextField(30);
 
 
-    blurButton.setActionCommand("Blur");
-    sepiaButton.setActionCommand("Sepia");
-    greyscaleButton.setActionCommand("Greyscale");
-    sharpenButton.setActionCommand("Sharpen");
-
     loadFromModelButton.setActionCommand("load");
     addLayerButton.setActionCommand("add layer");
-
-    blurButton.addActionListener( this );
-    sepiaButton.addActionListener( this );
-    greyscaleButton.addActionListener( this );
-    sharpenButton.addActionListener( this );
 
     loadFromModelButton.addActionListener(this);
     addLayerButton.addActionListener(this);
@@ -138,73 +192,72 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     fileopenPanel.setLayout(new FlowLayout());
     dialogBoxesPanel.add(fileopenPanel);
     JButton fileOpenButton = new JButton("Add Image to Layer");
-    fileOpenButton.setActionCommand("Open file");
+    fileOpenButton.setActionCommand("add image to layer");
     fileOpenButton.addActionListener(this);
     fileopenPanel.add(fileOpenButton);
     fileOpenDisplay = new JLabel("File path will appear here");
     fileopenPanel.add(fileOpenDisplay);
 
     ////////////
-    //dialog boxes
 
-
-    dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Dialog boxes"));
-    dialogBoxesPanel.setLayout(new BoxLayout(dialogBoxesPanel, BoxLayout.PAGE_AXIS));
-    this.add(dialogBoxesPanel);
-
-
-
-
-
-    //    actionPerformed();
-
-    JPanel comboboxPanel = new JPanel();
-    comboboxPanel.setBorder(BorderFactory.createTitledBorder("Select Layer"));
-    comboboxPanel.setLayout(new BoxLayout(comboboxPanel, BoxLayout.PAGE_AXIS));
-    add(comboboxPanel);
-
-    layerBoxDisplay = new JLabel("Choose the layer you wish to work on.");
-    comboboxPanel.add(layerBoxDisplay);
-
-    String[] options = {"Like it", "Love it", "Gotta have it"};
-    JComboBox<String> combobox = new JComboBox<String>();
-    //the event listener when an option is selected
-    combobox.setActionCommand("Size options");
-    combobox.addActionListener(this);
-
-    for (int i = 0; i < options.length; i++) {
-      combobox.addItem(options[i]);
-    }
-    comboboxPanel.add(combobox);
+    //file save
+    JPanel filesavePanel = new JPanel();
+    filesavePanel.setLayout(new FlowLayout());
+    dialogBoxesPanel.add(filesavePanel);
+    JButton fileSaveButton = new JButton("Save a file");
+    fileSaveButton.setActionCommand("save-all");
+    fileSaveButton.addActionListener(this);
+    filesavePanel.add(fileSaveButton);
+    fileSaveDisplay = new JLabel("");
+    filesavePanel.add(fileSaveDisplay);
 
 
 
-
-
-//
 //
 //    //adding images
 //    //show an image with a scrollbar
-//    JPanel imagePanel = new JPanel();
+//    imagePanel = new JPanel();
 //    //a border around the panel with a caption
-//    imagePanel.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
-//    imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
+     imagePanel.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
+//    imagePanel.setLayout( new FlowLayout());
+//    //imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
+//    this.add(imagePanel);
+//
+//    imageScrollPane = new JScrollPane();
+//    imageScrollPane.setPreferredSize(new Dimension(500, 600));
+//    imageScrollPane.setVisible(true);
+//    clickableImageLabel = new JLabel();
+//    imageScrollPane.add(clickableImageLabel);
+//    clickableImageLabel.setIcon( new ImageIcon(ImageUtil.pixelImageToBufferedImage(
+//    ImageUtil.imageWrapperImport("res/car.ppm"))));
+//
+//    //his.add(imageScrollPane);
+//  //  imageScrollPane.add(clickableImageLabel);
+//    imagePanel.add(imageScrollPane);
 //    //imagePanel.setMaximumSize(null);
 //    add(imagePanel);
-//
-//    //these will be the IPixelImages converted to bufferedImages.
+
+    //these will be the IPixelImages converted to bufferedImages.
 //    String[] images = {"res/jpegcar.jpg", "res/jpegcar.jpg"};
 //    JLabel[] imageLabel = new JLabel[images.length];
 //    JScrollPane[] imageScrollPane = new JScrollPane[images.length];
 //
-//    for (int i = 0; i < imageLabel.length; i++) {
-//      imageLabel[i] = new JLabel();
-//      imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-//      imageLabel[i].setIcon(new ImageIcon(images[i]));
-//      imageScrollPane[i].setPreferredSize(new Dimension(400, 600));
-//      imagePanel.add(imageScrollPane[i]);
-//    }
-///////
+////    for (int i = 0; i < imageLabel.length; i++) {
+////      imageLabel[i] = new JLabel();
+////      imageScrollPane[i] = new JScrollPane(imageLabel[i]);
+////      imageLabel[i].setIcon(new ImageIcon(images[i]));
+////      imageScrollPane[i].setPreferredSize(new Dimension(500, 600));
+////      imagePanel.add(imageScrollPane[i]);
+////    }
+
+//    JPanel imagePanel2 = new JPanel();
+//    //a border around the panel with a caption
+//    imagePanel2.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
+//    imagePanel2.setLayout(new GridLayout(1, 0, 10, 10));
+//    //imagePanel.setMaximumSize(null);
+//    add(imagePanel2);
+
+/////
 
 
     //test.setActionCommand("working layer");
@@ -223,10 +276,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     // clickableImageLabel.addMouseListener(this);
 //
 
-    add(blurButton);
-    add(sharpenButton);
-    add(greyscaleButton);
-    add(sepiaButton);
+
     add(jTextField);
 
     add(loadFromModelButton);
@@ -336,7 +386,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   @Override
   public void setMenu(String[] s) {
-    layerList = s;
+    layerList = s.clone();
     System.out.println(s.length);
   }
 
@@ -370,13 +420,6 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     }
   }
 
-
-  protected void emitLoadEvent(){
-//    for ( IViewListener listener : this.viewListners ){
-//      listener.handleLoadEvent();
-//    }
-  }
-
   protected void emitWorkingLayerEvent() {
 
     for (IViewListener listener : this.viewListners) {
@@ -402,6 +445,12 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 //    this.repaint();
   }
 
+  protected void emitDeleteLayerEvent() {
+    for (IViewListener listener : this.viewListners ){
+      listener.handleDeleteLayerEvent();
+    }
+  }
+
   protected void emitAddImageToLayerEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
     FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -415,6 +464,32 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     for (IViewListener listener : this.viewListners ){
       listener.handleAddImageToLayerEvent();
     }
+
+  }
+
+  protected void emitLoadAllEvent() {
+    for (IViewListener listener : this.viewListners ){
+      listener.handleLoadAllEvent();
+    }
+  }
+
+  protected void emitSaveAllEvent() {
+    final JFileChooser fchooser = new JFileChooser(".");
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "TXT File", "txt");
+    fchooser.setFileFilter(filter);
+    int retvalue = fchooser.showSaveDialog(this);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      fileSaveDisplay.setText(f.getAbsolutePath());
+    }
+    for (IViewListener listener : this.viewListners ){
+      listener.handleSaveAllEvent();
+    }
+  }
+
+  public String getSaveAllFilePath() {
+    return fileSaveDisplay.getText();
 
   }
 
@@ -462,23 +537,29 @@ public class SwingView  extends JFrame implements ActionListener, IView {
         emitVisibilityEvent();
         emitShowTopMostVisibleImageLayerEvent();
         break;
-//      case "load":
-//        emitLoadEvent();
-//        break;
       case "current working layer":
         emitWorkingLayerEvent();
         //emitShowTopMostVisibleImageLayerEvent();
-
         break;
       case "add layer":
         emitAddLayerEvent();
         updateFrame();
         break;
-
-      case "Open file": {
+      case "add image to layer":
         emitAddImageToLayerEvent();
         emitShowTopMostVisibleImageLayerEvent();
-      }
+        break;
+      case "delete-layer" :
+        emitDeleteLayerEvent();
+        emitShowTopMostVisibleImageLayerEvent();
+        updateFrame();
+        break;
+      case "save-all" :
+        emitSaveAllEvent();
+        break;
+      case "load-all":
+        emitLoadAllEvent();
+        break;
 
 
 
@@ -522,16 +603,21 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   //TODO: fix to work with visibility.
 
   public void setImage(BufferedImage bufferedImage) {
-    //BufferedImage b = new JLabel(new ImageIcon());
-    remove(clickableImageLabel);
-    //clickableImageLabel.removeAll();
-    clickableImageLabel = new JLabel(new ImageIcon(bufferedImage));
 
-    this.add(clickableImageLabel);
-    this.validate();
-    this.repaint();
-//    clickableImageLabel = new JLabel (new ImageIcon(ImageUtil.pixelImageToBufferedImage(
-//        ImageUtil.imageWrapperImport("res/car.ppm"))));
+    this.imagePanel.removeAll();
+
+    imageScrollPane.removeAll();
+
+
+    JLabel imageLabel = new JLabel(new ImageIcon(bufferedImage));
+    JScrollPane imageScrollPane = new JScrollPane(imageLabel);
+    imageScrollPane.setPreferredSize(new Dimension(500, 600));
+    imagePanel.add(imageScrollPane);
+
+
+    imagePanel.validate();
+    imagePanel.repaint();
+
   }
 
   public void setVisibility() {

@@ -146,9 +146,10 @@ public class ImageUtil {
 
     try {
 
-      System.out.println("res/" + modelFileName);
-      String newTitle = "res/" + modelFileName + "." + "txt";
-      fos = new FileOutputStream(newTitle);
+//      System.out.println("res/" + modelFileName);
+//      String newTitle = "res/" + modelFileName + "." + "txt";
+
+      fos = new FileOutputStream(modelFileName);
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -499,8 +500,11 @@ public class ImageUtil {
     for (ILayer layer : layers.values()) {
       if (layer.getVisibility() && layer.getStatus()) {
         visibleLayers.add(layer);
+        System.out.println("layer status: " + layer.getStatus());
       }
     }
+
+
     ILayer currentMaxLayer = null;
     int currentIntMax = -1;
     for (ILayer layer: visibleLayers) {
@@ -510,8 +514,10 @@ public class ImageUtil {
         currentMaxLayer = layer;
       }
     }
-    if (currentMaxLayer == null) {
-      throw new IllegalArgumentException("all layers are toggled invisible");
+
+    if (currentMaxLayer == null ) {
+      return new BufferedImage(200,200,2);
+      //throw new IllegalArgumentException("all layers are toggled invisible");
     }
    return ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
     //ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);

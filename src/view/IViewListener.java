@@ -6,11 +6,15 @@ public interface IViewListener {
   void handleGreyscaleEvent();
   void handleSharpenEvent();
 
-  void handleLoadEvent();
+
   void handleWorkingLayerEvent();
   void handleAddLayerEvent();
   void handleAddImageToLayerEvent();
   void handleVisibilityEvent();
+  void handleDeleteLayerEvent();
+
+  void handleSaveAllEvent();
+  void handleLoadAllEvent();
 
   void showTopMostVisibleImageLayerEvent();
 }

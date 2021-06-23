@@ -1,8 +1,10 @@
 package controller;
 
 import cs3500.imageprocessing.model.Blur;
+import cs3500.imageprocessing.model.Greyscale;
 import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.ImageUtil;
+import cs3500.imageprocessing.model.ProcessingModel;
 import cs3500.imageprocessing.model.Sepia;
 import cs3500.imageprocessing.model.Sharpen;
 import java.awt.image.BufferedImage;
@@ -45,26 +47,10 @@ public class SwingController implements IProcessingController, IViewListener {
   public void handleGreyscaleEvent() {
     //  String text = model.getData();
     // view.setText(text);
-    model.applyTransformation(new Sharpen());
+    model.applyTransformation(new Greyscale());
     showTopMostVisibleImageLayerEvent();
 
   }
-
-  @Override
-  public void handleLoadEvent() {
-
-//    model.addImageToLayer(view.getText());
-//    showTopMostVisibleImageLayerEvent();
-
-  }
-
-  @Override
-  public void handleWorkingLayerEvent() {
-    String s = this.view.getClickedLayer();//"current working layer"
-    System.out.println("current working layer: " + s);
-    model.setWorkingLayer(s);
-  }
-
   @Override
   public void handleBlurEvent() {
     model.applyTransformation(new Blur());
@@ -75,10 +61,16 @@ public class SwingController implements IProcessingController, IViewListener {
     //view.askForFocus();
   }
 
-//  @Override
-//  public void handleToUpperCaseEvent(IViewEvent event) {
-//    view.setText( view.getText().toUpperCase());
-//  }
+
+
+
+  @Override
+  public void handleWorkingLayerEvent() {
+    String s = this.view.getClickedLayer();//"current working layer"
+    System.out.println("current working layer: " + s);
+    model.setWorkingLayer(s);
+  }
+
 
   public void updateLayerList() {
     List<String> layers = model.list();
@@ -99,7 +91,6 @@ public class SwingController implements IProcessingController, IViewListener {
   @Override
   public void handleAddImageToLayerEvent() {
     model.addImageToLayer(view.getFileDest());
-
   }
 
 
@@ -110,12 +101,35 @@ public class SwingController implements IProcessingController, IViewListener {
     }
   }
 
+  @Override
+  public void handleDeleteLayerEvent() {
+    model.deleteLayer();
+    updateLayerList();
+  }
+
   //controller ->  model - > controller -> image -> view
   public void showTopMostVisibleImageLayerEvent() {
-    BufferedImage b = model.topLayerImage();
+    BufferedImage b;
+
+      b = model.topLayerImage();
       view.setImage(b);
+  }
+
+  @Override
+  public void handleLoadAllEvent() {
+
+//    model.addImageToLayer(view.getText());
+//    showTopMostVisibleImageLayerEvent();
+    //TODO: use model constructor? or method?
+    //model = new ProcessingModel(view.getLoadAllFilePath);
 
 
+  }
+
+
+  @Override
+  public void handleSaveAllEvent() {
+    model.exportAll(view.getSaveAllFilePath());
   }
 
   /**

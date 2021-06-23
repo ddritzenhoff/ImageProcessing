@@ -15,4 +15,5 @@ public interface IView {
   void setImage(BufferedImage bufferedImage);
 
   Boolean[] getVisibility();
+  String getSaveAllFilePath();
 }
