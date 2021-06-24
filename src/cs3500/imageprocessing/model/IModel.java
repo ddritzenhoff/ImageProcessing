@@ -92,8 +92,8 @@ public interface IModel {
   //temp
   List<String> list();
 
-  BufferedImage layerImage(String layerName);
   BufferedImage topLayerImage();
   void loadModel(String fileDirectory);
   List<Boolean> getVisibility();
+  void exportDirectory(String fileDirectory);
 }

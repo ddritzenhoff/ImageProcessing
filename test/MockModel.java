@@ -72,11 +72,7 @@ public class MockModel implements IModel {
   public List<String> list() {
     return null; // stub
   }
-
-  @Override
-  public BufferedImage layerImage(String layerName) {
-    return null;
-  }
+  
 
   @Override
   public BufferedImage topLayerImage() {
@@ -91,5 +87,10 @@ public class MockModel implements IModel {
   @Override
   public List<Boolean> getVisibility() {
     return null;
+  }
+
+  @Override
+  public void exportDirectory(String fileDirectory) {
+
   }
 }

@@ -218,11 +218,6 @@ public class ProcessingModel implements IModel {
     return Layer.orderedList;
   }
 
-  @Override
-  public BufferedImage layerImage(String layerName) {
-    return ImageUtil.pixelImageToBufferedImage(layers.get(layerName).getImage());
-  }
-
   public BufferedImage topLayerImage() {
     return ImageUtil.bufferedImageTopMostVisibleImage(layers);
   }
@@ -239,13 +234,23 @@ public class ProcessingModel implements IModel {
       System.out.println(l.loadedOrder());
       for (int i = 0 ; i < layers.size() ; i++) {
         if (l.loadedOrder() == i) {
-          System.out.println("layername: "+ l.getLayerName() );
+          System.out.println("layername: "+ l.getLayerName() + " " + i );
           tempList.add(l.getLayerName());
         }
       }
     }
     Layer.orderedList.addAll(tempList);
     this.workingLayer = null;
+
+  }
+
+
+  public void exportDirectory(String fileDirectory) {
+    BufferedImage bi = topLayerImage();
+    IPixelImage pi = ImageUtil.bufferedImageToIPixelImage(bi);
+    ImageUtil.exportDirectory(pi,fileDirectory);
+    //imageWrapperExport(pi,fileDirectory);
+    //ImageUtil.saveBufferedImage(bi,fileDirectory,);
 
   }
 

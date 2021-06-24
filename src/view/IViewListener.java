@@ -15,7 +15,12 @@ public interface IViewListener {
 
   void handleSaveAllEvent();
   void handleLoadAllEvent();
+  void handleExportEvent();
+
+  void handleLoadScriptEvent();
+
   void loadVisibility();
+
 
   void showTopMostVisibleImageLayerEvent();
 }

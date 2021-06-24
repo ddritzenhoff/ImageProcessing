@@ -60,7 +60,18 @@ public class Layer implements ILayer {
 
 
   public IPixelImage getImage() {
-    return new PixelImage(image.getPixels());
+    if(status){
+      return new PixelImage(image.getPixels());
+    } else {
+      List<List<IPixel>> tempImage = new ArrayList<>();
+      List<IPixel> tempRow = new ArrayList<>();
+      IPixel tempPixel = new Pixel(255,255,255);
+      tempRow.add(tempPixel);
+      tempImage.add(tempRow);
+      return new PixelImage(tempImage);
+
+    }
+
   }
 
   public int getOrder() {

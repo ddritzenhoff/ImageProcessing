@@ -146,10 +146,9 @@ public class ImageUtil {
 
     try {
 
-//      System.out.println("res/" + modelFileName);
-//      String newTitle = "res/" + modelFileName + "." + "txt";
-
-      fos = new FileOutputStream(modelFileName);
+      System.out.println("res/" + modelFileName);
+      String newTitle = "res/" + modelFileName + "." + "txt";
+      fos = new FileOutputStream(newTitle);
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -196,8 +195,8 @@ public class ImageUtil {
     // String fileLocation;
 
     try {
-     // File myObj = new File("res/" + modelFileName);
-      File myObj = new File( modelFileName);
+      //took out the res here.
+      File myObj = new File("" + modelFileName);
       Scanner scanner = new Scanner(myObj);
       while (scanner.hasNextLine()) {
         String data = scanner.nextLine();
@@ -223,6 +222,7 @@ public class ImageUtil {
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("res/" + modelFileName + "file was not found");
     }
+    //commenting out res for now
     return loadedLayers;
   }
 
@@ -523,5 +523,28 @@ public class ImageUtil {
    return ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
     //ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
   }
+
+
+  static void exportDirectory(IPixelImage image, String newFileName) {
+    String extension = ImageUtil.getFileExtension(newFileName);
+    if (extension.equals("ppm")) {
+      newFileName = newFileName.replace("." + extension, "");
+      image.render("ppm", newFileName);
+    } else {
+      newFileName = newFileName.replace("." + extension, "");
+      BufferedImage bi = ImageUtil.pixelImageToBufferedImage(image);
+      //saveBufferedImage(newFileName, ImageUtil.pixelImageToBufferedImage(image), extension);
+      File outputfile = new File(newFileName + "." + extension);
+      try {
+        ImageIO.write(bi, extension, outputfile);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+
+    }
+  }
+
+
 }
 

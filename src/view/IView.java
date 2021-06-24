@@ -20,8 +20,11 @@ public interface IView {
   String getLoadedModelFileDest();
 
   void setVisibility(List<Boolean> b);
-  void addCheckBox(String layerName);
-  void updateButton();
 
-  void updateCheckBoxes();
+  void addLayer(String layerName);
+
+  void removeLayer(String layerName);
+
+  String getScript();
+
 }
