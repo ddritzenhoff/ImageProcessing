@@ -1,6 +1,7 @@
 package view;
 
 import cs3500.imageprocessing.model.ImageUtil;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,18 +36,19 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class SwingView  extends JFrame implements ActionListener, IView {
+public class SwingView  extends JFrame implements ActionListener, IView{
 
   private final JButton loadFromModelButton;
   private final JButton deleteLayerButton;
   private final JTextField jTextField;
   //  private final JLabel jLabel;
-  private JLabel clickableImageLabel;
+
   private final JButton  addLayerButton;
   private final List<IViewListener> viewListners;
-  private String[] layerList = {};
+  private List<String> layerList;
 
   private JPanel imagePanel;
   private JScrollPane imageScrollPane;
@@ -56,8 +61,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   //check boxes
   private JPanel checkBoxPanel;
-  private JCheckBox[] checkBoxes;
+  private List<JCheckBox> checkBoxes;
 
+  JPanel line_end_panel;;
+  JPanel page_end_panel;
 
   //dialog boxes
   private JPanel dialogBoxesPanel = new JPanel();
@@ -66,6 +73,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   //Opening files.
   private JLabel fileOpenDisplay;
   private JLabel fileSaveDisplay;
+
+  private JLabel modelFileDisplay;
 
 
 
@@ -83,11 +92,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   //TODO: add layer : layerName text field
   public SwingView() {
     super();
+    layerList= new ArrayList<>();
 
     setTitle("OOD Image Processing");
-    setSize( new Dimension(600,1000));
+    setSize( new Dimension(1000,1000));
     setDefaultCloseOperation( EXIT_ON_CLOSE );
     setLayout( new FlowLayout() );
+    setLayout(new BorderLayout(10,10));
 
     // layerList = new String[]{""};
 
@@ -144,19 +155,20 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Dialog boxes"));
     dialogBoxesPanel.setLayout(new BoxLayout(dialogBoxesPanel, BoxLayout.PAGE_AXIS));
-    this.add(dialogBoxesPanel);
+    this.add(dialogBoxesPanel, BorderLayout.PAGE_END);
 
     imagePanel = new JPanel();
-    imagePanel.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
+    imagePanel.setBorder(BorderFactory.createTitledBorder("Image Panel"));
     imagePanel.setPreferredSize(new Dimension(500, 600));
     imageScrollPane = new JScrollPane();
     imagePanel.add(imageScrollPane);
-    add(imagePanel);
+    imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
+    add(imagePanel, BorderLayout.CENTER);
 
     deleteLayerButton = new JButton("Delete Layer");
     deleteLayerButton.setActionCommand("delete-layer");
     deleteLayerButton.addActionListener(this);
-    add(deleteLayerButton);
+    add(deleteLayerButton, BorderLayout.PAGE_START);
 
 
     // mainPanel = new JPanel();
@@ -171,9 +183,17 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     loadFromModelButton = new JButton("Load model file");
     addLayerButton = new JButton("Add Layer");
 
-    radioPanel = new JPanel();
 
+    radioPanel = new JPanel();
     checkBoxPanel = new JPanel();
+    checkBoxPanel.setBorder(BorderFactory.createTitledBorder("Visibility Checkboxes"));
+    checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.PAGE_AXIS));
+    checkBoxes = new ArrayList<>();
+
+     line_end_panel = new JPanel(new GridLayout(3,1,50,10));
+    line_end_panel.add(radioPanel);
+    line_end_panel.add(checkBoxPanel);
+    line_end_panel.setPreferredSize(new Dimension(200,500));
 
     jTextField = new JTextField(30);
 
@@ -184,7 +204,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     loadFromModelButton.addActionListener(this);
     addLayerButton.addActionListener(this);
 
-
+    this.add(line_end_panel, BorderLayout.LINE_END);
 
 /////////////// opening file
     //file open
@@ -212,89 +232,33 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     filesavePanel.add(fileSaveDisplay);
 
 
-
-//
-//    //adding images
-//    //show an image with a scrollbar
-//    imagePanel = new JPanel();
-//    //a border around the panel with a caption
-     imagePanel.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
-//    imagePanel.setLayout( new FlowLayout());
-//    //imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
-//    this.add(imagePanel);
-//
-//    imageScrollPane = new JScrollPane();
-//    imageScrollPane.setPreferredSize(new Dimension(500, 600));
-//    imageScrollPane.setVisible(true);
-//    clickableImageLabel = new JLabel();
-//    imageScrollPane.add(clickableImageLabel);
-//    clickableImageLabel.setIcon( new ImageIcon(ImageUtil.pixelImageToBufferedImage(
-//    ImageUtil.imageWrapperImport("res/car.ppm"))));
-//
-//    //his.add(imageScrollPane);
-//  //  imageScrollPane.add(clickableImageLabel);
-//    imagePanel.add(imageScrollPane);
-//    //imagePanel.setMaximumSize(null);
-//    add(imagePanel);
-
-    //these will be the IPixelImages converted to bufferedImages.
-//    String[] images = {"res/jpegcar.jpg", "res/jpegcar.jpg"};
-//    JLabel[] imageLabel = new JLabel[images.length];
-//    JScrollPane[] imageScrollPane = new JScrollPane[images.length];
-//
-////    for (int i = 0; i < imageLabel.length; i++) {
-////      imageLabel[i] = new JLabel();
-////      imageScrollPane[i] = new JScrollPane(imageLabel[i]);
-////      imageLabel[i].setIcon(new ImageIcon(images[i]));
-////      imageScrollPane[i].setPreferredSize(new Dimension(500, 600));
-////      imagePanel.add(imageScrollPane[i]);
-////    }
-
-//    JPanel imagePanel2 = new JPanel();
-//    //a border around the panel with a caption
-//    imagePanel2.setBorder(BorderFactory.createTitledBorder("Before and After Image"));
-//    imagePanel2.setLayout(new GridLayout(1, 0, 10, 10));
-//    //imagePanel.setMaximumSize(null);
-//    add(imagePanel2);
-
-/////
-
-
-    //test.setActionCommand("working layer");
-
-
-    //clickableImageLabel = new JLabel(new ImageIcon("res/"));
-    clickableImageLabel = new JLabel();
-//    clickableImageLabel = new JLabel (new ImageIcon(ImageUtil.pixelImageToBufferedImage(
-//        ImageUtil.imageWrapperImport("res/car.ppm"))));
+    modelFileDisplay =  new JLabel("");
 
 
 
 
-//    addKeyListener(this);
-//    addMouseListener(this);
-    // clickableImageLabel.addMouseListener(this);
-//
+    page_end_panel = new JPanel(new GridLayout(3,2,10,0));
+    page_end_panel.setMaximumSize(new Dimension (200,500));
 
+    page_end_panel.add(jTextField);
+    page_end_panel.add(loadFromModelButton);
+    page_end_panel.add(addLayerButton);
+    page_end_panel.add(fileOpenButton);
+    page_end_panel.add(dialogBoxesPanel);
 
-    add(jTextField);
+    add(page_end_panel,BorderLayout.PAGE_END);
 
-    add(loadFromModelButton);
-    add(addLayerButton);
-    add(clickableImageLabel);
-
-    add(fileOpenButton);
 
 
     this.setVisible(true);
     setFocusable(true);
     requestFocus();
 
-    updateButton();
-    updateCheckBoxes();
+   // updateButton();
+    //updateCheckBoxes();
 
 
-    //pack();
+    pack();
   }
 
   public void registerViewEventListener(IViewListener listener){
@@ -318,13 +282,14 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   public void updateButton() {
     //radio buttons
-    this.remove(radioPanel);
+
+    line_end_panel.remove(radioPanel);
     radioPanel = new JPanel();
     radioPanel.setBorder(BorderFactory.createTitledBorder("Layer Choices"));
 
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-    radioButtons = new JRadioButton[layerList.length];
+    radioButtons = new JRadioButton[layerList.size()];
 
     //buttons groups are used to combine radio buttons. Only one radio
     // button in each group can be selected.
@@ -332,7 +297,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     for (int i = 0; i < radioButtons.length; i++) {
 
-      radioButtons[i] = new JRadioButton(layerList[i]);
+      radioButtons[i] = new JRadioButton(layerList.get(i));
 
       radioButtons[i].setActionCommand("current working layer");
       radioButtons[i].addActionListener(this);
@@ -344,50 +309,72 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     //radioPanel.add(radioDisplay);
 //      radioPanel.validate();
 //      radioPanel.repaint();
-
-
-    this.add(radioPanel);
-    this.validate();
-    this.repaint();
+    line_end_panel.add(radioPanel);
+    line_end_panel.validate();
+    line_end_panel.repaint();
 
   }
 
-  void updateCheckBoxes() {
+  public void updateCheckBoxes() {
 
-    this.remove(checkBoxPanel);
+    line_end_panel.remove(checkBoxPanel);
 
-    checkBoxPanel = new JPanel();
-    checkBoxPanel.setBorder(BorderFactory.createTitledBorder("Visibility Checkboxes"));
-
+    checkBoxPanel.removeAll();
     checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.PAGE_AXIS));
 
-    checkBoxes = new JCheckBox[layerList.length];
-    ButtonGroup group = new ButtonGroup();
-    for (int i = 0; i < checkBoxes.length; i++) {
-      checkBoxes[i] = new JCheckBox(layerList[i]);
-      checkBoxes[i].setSelected(true);
-      checkBoxes[i].setActionCommand("visibility");
+    JCheckBox[] newBoxes;
+    JCheckBox[] oldBoxes = new JCheckBox[checkBoxes.size()];
+
+    for(int i = 0 ; i < checkBoxes.size() ; i ++ ) {
+      oldBoxes[i] = new JCheckBox(checkBoxes.get(i).getText(),checkBoxes.get(i).isSelected() );
+    }
+    newBoxes = new JCheckBox[layerList.size()];
+
+    for (int i = 0; i < layerList.size(); i++) {
+      newBoxes[i] = new JCheckBox(layerList.get(i));
+      newBoxes[i].setSelected(false);
+      newBoxes[i].setActionCommand("visibility");
       //checkBoxes[i].addItemListener(this);
-      checkBoxes[i].addActionListener(this);
+      newBoxes[i].addActionListener(this);
 
       //	group.add(checkBoxes[i]);
-      checkBoxPanel.add(checkBoxes[i]);
+      checkBoxPanel.add(newBoxes[i]);
     }
 
-    JLabel checkboxDisplay = new JLabel("Which one did the user touch?");
+    JLabel checkboxDisplay = new JLabel("Current Layer Selected");
     checkBoxPanel.add(checkboxDisplay);
-//    checkBoxPanel.invalidate();
-//    checkBoxPanel.revalidate();
-//    checkBoxPanel.repaint();
-    this.add(checkBoxPanel);
-    this.validate();
-    this.repaint();
+    checkBoxPanel.invalidate();
+    checkBoxPanel.revalidate();
+    checkBoxPanel.repaint();
+    line_end_panel.add(checkBoxPanel);
+    line_end_panel.validate();
+    line_end_panel.repaint();
+  }
+
+
+  public void addCheckBox(String layerName) {
+
+//    /line_end_panel.remove(checkBoxPanel);
+    JCheckBox newBox =  new JCheckBox(layerName, true);
+    newBox.setActionCommand("visibility");
+    newBox.addActionListener(this);
+    checkBoxes.add(newBox);
+    checkBoxPanel.add(newBox);
+
+    checkBoxPanel.invalidate();
+    checkBoxPanel.revalidate();
+    checkBoxPanel.repaint();
+
   }
 
   @Override
-  public void setMenu(String[] s) {
-    layerList = s.clone();
-    System.out.println(s.length);
+  public void setMenu(List<String> s) {
+    layerList.clear();
+    for(String string : s){
+      layerList.add(string);
+    }
+    //layerList = s.clone();
+    System.out.println(s.size());
   }
 
   protected void emitSepiaEvent(){
@@ -417,6 +404,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   protected void emitVisibilityEvent(){
     for ( IViewListener listener : this.viewListners ){
       listener.handleVisibilityEvent();
+     // listener.loadVisibility();
     }
   }
 
@@ -441,6 +429,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     for (IViewListener listener : this.viewListners ){
       listener.showTopMostVisibleImageLayerEvent();
     }
+    imagePanel.validate();
+    imagePanel.repaint();
+    this.validate();
+    this.repaint();
 //    this.validate();
 //    this.repaint();
   }
@@ -468,6 +460,15 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   }
 
   protected void emitLoadAllEvent() {
+    final JFileChooser fchooser = new JFileChooser(".");
+    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "load model .txt file", "txt");
+    fchooser.setFileFilter(filter);
+    int retvalue = fchooser.showOpenDialog(this);
+    if (retvalue == JFileChooser.APPROVE_OPTION) {
+      File f = fchooser.getSelectedFile();
+      modelFileDisplay.setText(f.getAbsolutePath());
+    }
     for (IViewListener listener : this.viewListners ){
       listener.handleLoadAllEvent();
     }
@@ -493,6 +494,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   }
 
+
+
   protected void updateJLabel() {
 
 
@@ -500,7 +503,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   protected void updateFrame() {
     updateButton();
-    updateCheckBoxes();
+    //updateCheckBoxes();
 
   }
 
@@ -559,9 +562,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
         break;
       case "load-all":
         emitLoadAllEvent();
+        updateButton();
+        //updateFrame();
+      //  emitShowTopMostVisibleImageLayerEvent();
+       // updateFrame();
+        this.validate();
+        this.repaint();
         break;
-
-
 
     }
     this.askForFocus();
@@ -581,12 +588,14 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   }
 
   //return a map of booleans for every single box.
-  public Boolean[] getVisibility() {
-    Boolean[] arr = new Boolean[checkBoxes.length];
+  public List<Boolean> getVisibility() {
+    List<Boolean> arr = new ArrayList<>();
     //JRadioButton j;
-    for (int i = 0 ; i < checkBoxes.length ; i++) {
-      arr[i] = checkBoxes[i].isSelected();
+    for (int i = 0 ; i < checkBoxes.size() ; i++) {
+      arr.add( checkBoxes.get(i).isSelected());
+      System.out.print(arr.get(i));
     }
+
     return arr;
 
   }
@@ -594,6 +603,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   @Override
   public String getFileDest() {
     return fileOpenDisplay.getText();
+  }
+
+  public String getLoadedModelFileDest() {
+    return modelFileDisplay.getText();
   }
 
   public void openFile() {
@@ -620,10 +633,34 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   }
 
-  public void setVisibility() {
+  public void setVisibility(List<Boolean> b) {
+    //JRadioButton j;
+    System.out.print("LIst: " + b);
+    checkBoxes = new ArrayList<>();
+    checkBoxPanel.removeAll();
+
+    for (int i = 0 ; i < b.size() ; i++) {
+      JCheckBox oldBox = new JCheckBox( layerList.get(i),b.get(i));
+//      addCheckBox()
+     // checkBoxes = new ArrayList<>(b.size());
+     // checkBoxes.add
+     // oldBox.setSelected(b.get(i));
+      checkBoxes.add(oldBox);
+      checkBoxPanel.add(oldBox);
+    //  checkBoxes.set(i,  )
+   //   checkBoxes[i].setSelected(b.get(i));
+
+
+      //updateCheckBoxes();
+      //checkBoxes[i].doClick();
+    }
+    checkBoxPanel.revalidate();
+    checkBoxPanel.repaint();
+
 
 
   }
+
 
 
 }

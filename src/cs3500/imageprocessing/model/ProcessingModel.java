@@ -4,6 +4,8 @@ import static cs3500.imageprocessing.model.ImageUtil.imageWrapperImport;
 import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,6 +183,16 @@ public class ProcessingModel implements IModel {
     }
   }
 
+  public List<Boolean> getVisibility() {
+    List<Boolean> temp = new ArrayList<>();
+    for(ILayer l : layers.values() ) {
+      temp.add(l.getVisibility());
+    }
+
+    return temp;
+
+  }
+
   @Override
   public void exportAll(String directoryName) {
     ImageUtil.saveAll(directoryName,this.layers);
@@ -196,8 +208,8 @@ public class ProcessingModel implements IModel {
       throw new IllegalArgumentException("empty image layer");
     }
   }
-  
-  @Override 
+
+  @Override
   public String toString() {
     return Layer.orderedList.toString();
   }
@@ -213,6 +225,28 @@ public class ProcessingModel implements IModel {
 
   public BufferedImage topLayerImage() {
     return ImageUtil.bufferedImageTopMostVisibleImage(layers);
+  }
+
+  public void loadModel(String fileDirectory) {
+    //this.layers.clear();
+    Layer.orderedList.clear();
+    this.layers = ImageUtil.readAll(fileDirectory);
+    //Layer.orderedList = new ArrayList<>(layers.size());
+    List<String> tempList;
+    tempList = new ArrayList<>();
+
+    for(ILayer l : layers.values()) {
+      System.out.println(l.loadedOrder());
+      for (int i = 0 ; i < layers.size() ; i++) {
+        if (l.loadedOrder() == i) {
+          System.out.println("layername: "+ l.getLayerName() );
+          tempList.add(l.getLayerName());
+        }
+      }
+    }
+    Layer.orderedList.addAll(tempList);
+    this.workingLayer = null;
+
   }
 
 //  public BufferedImage[] bufferedImages() {

@@ -15,6 +15,7 @@ public interface IViewListener {
 
   void handleSaveAllEvent();
   void handleLoadAllEvent();
+  void loadVisibility();
 
   void showTopMostVisibleImageLayerEvent();
 }

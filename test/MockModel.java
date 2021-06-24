@@ -82,4 +82,14 @@ public class MockModel implements IModel {
   public BufferedImage topLayerImage() {
     return null;
   }
+
+  @Override
+  public void loadModel(String fileDirectory) {
+
+  }
+
+  @Override
+  public List<Boolean> getVisibility() {
+    return null;
+  }
 }

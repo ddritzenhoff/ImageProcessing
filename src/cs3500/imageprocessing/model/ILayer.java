@@ -43,4 +43,6 @@ public interface ILayer {
    */
   Boolean getStatus();
 
+  int loadedOrder();
+
 }

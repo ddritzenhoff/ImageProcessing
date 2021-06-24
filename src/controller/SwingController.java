@@ -8,6 +8,7 @@ import cs3500.imageprocessing.model.ProcessingModel;
 import cs3500.imageprocessing.model.Sepia;
 import cs3500.imageprocessing.model.Sharpen;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import view.IView;
@@ -27,8 +28,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   @Override
   public void handleSepiaEvent() {
-  //  String text = model.getData();
-   // view.setText(text);
+
     model.applyTransformation(new Sepia());
     showTopMostVisibleImageLayerEvent();
 
@@ -36,8 +36,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   @Override
   public void handleSharpenEvent() {
-    //  String text = model.getData();
-    // view.setText(text);
+
     model.applyTransformation(new Sharpen());
     showTopMostVisibleImageLayerEvent();
 
@@ -45,8 +44,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   @Override
   public void handleGreyscaleEvent() {
-    //  String text = model.getData();
-    // view.setText(text);
+
     model.applyTransformation(new Greyscale());
     showTopMostVisibleImageLayerEvent();
 
@@ -56,13 +54,7 @@ public class SwingController implements IProcessingController, IViewListener {
     model.applyTransformation(new Blur());
     showTopMostVisibleImageLayerEvent();
 
-    //model.setData(textToSave);
-    //model.setData("test");
-    //view.askForFocus();
   }
-
-
-
 
   @Override
   public void handleWorkingLayerEvent() {
@@ -73,18 +65,22 @@ public class SwingController implements IProcessingController, IViewListener {
 
 
   public void updateLayerList() {
-    List<String> layers = model.list();
-    String[] s = new String[layers.size()];
-    for(int i = 0 ; i < layers.size() ; i ++) {
-      s[i] = layers.get(i);
-    }
-    view.setMenu(s);
+    List<String> layers = List.copyOf(model.list());
+    //String[] s = new String[layers.size()];
+//    for(int i = 0 ; i < layers.size() ; i ++) {
+//      s[i] = layers.get(i);
+//    }
+    view.setMenu(layers);
+    //showTopMostVisibleImageLayerEvent();
   }
 
   public void handleAddLayerEvent() {
     model.addLayer(view.getText());
     System.out.println("Layer name " + view.getText() + " created ");
     updateLayerList();
+    view.addCheckBox(view.getText());
+    //handleVisibilityEvent();
+
 
   }
 
@@ -95,10 +91,17 @@ public class SwingController implements IProcessingController, IViewListener {
 
 
   public void handleVisibilityEvent() {
-  Boolean[] arr = view.getVisibility();
-      for (int i = 0 ; i < model.list().size() ; i++) {
-      model.setVisiblity(model.list().get(i),arr[i]);
+    List<Boolean> arr = view.getVisibility();
+    for (int i = 0 ; i < model.list().size() ; i++) {
+      //System.out.println(model.list().size());
+      model.setVisiblity(model.list().get(i),arr.get(i));
+
     }
+  }
+
+  public void loadVisibility() {
+    view.setVisibility(model.getVisibility());
+
   }
 
   @Override
@@ -111,19 +114,25 @@ public class SwingController implements IProcessingController, IViewListener {
   public void showTopMostVisibleImageLayerEvent() {
     BufferedImage b;
 
-      b = model.topLayerImage();
-      view.setImage(b);
+    b = model.topLayerImage();
+    view.setImage(b);
   }
 
   @Override
   public void handleLoadAllEvent() {
 
-//    model.addImageToLayer(view.getText());
-//    showTopMostVisibleImageLayerEvent();
-    //TODO: use model constructor? or method?
-    //model = new ProcessingModel(view.getLoadAllFilePath);
+    model.loadModel(view.getLoadedModelFileDest());
 
 
+    updateLayerList();
+    loadVisibility();
+
+    view.updateButton();
+    //view.updateCheckBoxes();
+
+    //loadVisibility();
+    System.out.println("model list: " + model.list());
+    //showTopMostVisibleImageLayerEvent();
   }
 
 

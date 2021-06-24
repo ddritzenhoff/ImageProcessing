@@ -196,7 +196,8 @@ public class ImageUtil {
     // String fileLocation;
 
     try {
-      File myObj = new File("res/" + modelFileName);
+     // File myObj = new File("res/" + modelFileName);
+      File myObj = new File( modelFileName);
       Scanner scanner = new Scanner(myObj);
       while (scanner.hasNextLine()) {
         String data = scanner.nextLine();
@@ -211,7 +212,7 @@ public class ImageUtil {
         //     ImageUtil.txtFileToPixelImage(fileName);
         IPixelImage tempImage =
             ImageUtil.txtFileToPixelImage(layerName);
-        ILayer tempLayer = new Layer(visibility,tempImage,layerName);
+        ILayer tempLayer = new Layer(visibility,tempImage,order,layerName);
 
         //[order,   visibility,    fileName, fileLocation ]
         //-> model    -> model     -> txtFileToPixelImage

@@ -23,6 +23,7 @@ public class Layer implements ILayer {
   static List<String> orderedList = new ArrayList<>();
   private String layerName;
   private boolean status;
+  private int order;
 
 
   /**
@@ -38,7 +39,16 @@ public class Layer implements ILayer {
     this.layerName = layerName;
     this.visibility = visibility;
     this.image = image;
-    int order = orderedList.indexOf(layerName);
+    this.order = orderedList.indexOf(layerName);
+    this.status = (image != null);
+  }
+
+  public Layer(boolean visibility,IPixelImage image, int order, String layerName) {
+    //  this.fileName = fileName;
+    this.layerName = layerName;
+    this.visibility = visibility;
+    this.image = image;
+    this.order = order;
     this.status = (image != null);
   }
 
@@ -74,6 +84,10 @@ public class Layer implements ILayer {
 
   public Boolean getStatus() {
     return this.status;
+  }
+
+  public int loadedOrder() {
+    return order;
   }
 
 
