@@ -35,6 +35,10 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Represents the GUI version of the view. The user may interact with buttons to make changes
+ * to the project.
+ */
 public class SwingView  extends JFrame implements ActionListener, IView {
 
   private final JButton loadFromModelButton;
@@ -90,6 +94,10 @@ private  JPanel errorPanel;
   //TODO: load txt -> look at the given code "loading and executing a script from a file"
   //TODO: load images -> look at the given code
   //TODO: add layer : layerName text field
+
+  /**
+   * Constructs a SwingView object.
+   */
   public SwingView() {
     super();
     layerList= new ArrayList<>();

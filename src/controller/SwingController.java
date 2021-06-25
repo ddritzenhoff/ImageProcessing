@@ -15,11 +15,21 @@ import java.util.Objects;
 import view.IView;
 import view.IViewListener;
 
+/**
+ * Represents the Controller responsible for handling GUI input. Translates button actions into
+ * actual changes within the model and view.
+ */
 public class SwingController implements IProcessingController, IViewListener {
 
   private final IModel model;
-  private final IView view; // no interface yet, but we'll get there.
+  private final IView view;
 
+  /**
+   * Constructs a SwingController object.
+   *
+   * @param model the model to be worked with.
+   * @param view  the gui view.
+   */
   public SwingController(IModel model, IView view) {
     this.model = Objects.requireNonNull(model);
     this.view = Objects.requireNonNull(view);
@@ -49,6 +59,7 @@ public class SwingController implements IProcessingController, IViewListener {
     showTopMostVisibleImageLayerEvent();
 
   }
+
   @Override
   public void handleBlurEvent() {
     model.applyTransformation(new Blur());
@@ -59,37 +70,39 @@ public class SwingController implements IProcessingController, IViewListener {
   @Override
   public void handleWorkingLayerEvent() {
 
-    String s = this.view.getClickedLayer();//"current working layer"
+    String s = this.view.getClickedLayer();
     System.out.println("current working layer: " + s);
     model.setWorkingLayer(s);
   }
 
-
+  /**
+   * Updates the list of layers within the view.
+   */
   public void updateLayerList() {
     List<String> layers = List.copyOf(model.list());
     view.setMenu(layers);
-    //showTopMostVisibleImageLayerEvent();
   }
 
-
-
+  @Override
   public void handleExportEvent() {
     model.exportDirectory(view.getSaveAllFilePath());
   }
+
   @Override
   public void handleAddImageToLayerEvent() {
     model.addImageToLayer(view.getFileDest());
   }
 
+  @Override
   public void handleVisibilityEvent() {
     List<Boolean> arr = view.getVisibility();
-    for (int i = 0 ; i < model.list().size() ; i++) {
-      //System.out.println(model.list().size());
-      model.setVisiblity(model.list().get(i),arr.get(i));
+    for (int i = 0; i < model.list().size(); i++) {
+      model.setVisiblity(model.list().get(i), arr.get(i));
 
     }
   }
 
+  @Override
   public void loadVisibility() {
     view.setVisibility(model.getVisibility());
   }
@@ -106,6 +119,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   }
 
+  @Override
   public void handleLoadScriptEvent() {
     IModel testModel = new ProcessingModel();
 
@@ -121,6 +135,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   }
 
+  @Override
   public void handleAddLayerEvent() {
     model.addLayer(view.getText());
     System.out.println("Layer name " + view.getText() + " created ");
@@ -131,7 +146,7 @@ public class SwingController implements IProcessingController, IViewListener {
 
   }
 
-  //controller ->  model - > controller -> image -> view
+  @Override
   public void showTopMostVisibleImageLayerEvent() {
     BufferedImage b;
     b = model.topLayerImage();
@@ -148,15 +163,12 @@ public class SwingController implements IProcessingController, IViewListener {
 
   }
 
-
   @Override
   public void handleSaveAllEvent() {
     model.exportAll(view.getSaveAllFilePath());
   }
 
-  /**
-   * Keep processing layers and IPixelImages until the user quits.
-   */
+
   @Override
   public void startProcessing() {
     updateLayerList();

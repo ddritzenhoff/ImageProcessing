@@ -43,6 +43,10 @@ public interface ILayer {
    */
   Boolean getStatus();
 
+  /**
+   * Gets the order of the layer with respect to all the other layers.
+   * @return the order of the layer.
+   */
   int loadedOrder();
 
 }

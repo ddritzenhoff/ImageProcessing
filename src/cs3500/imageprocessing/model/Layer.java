@@ -30,8 +30,8 @@ public class Layer implements ILayer {
    * constructor for a layer that initializes the visibility, image, and layer name. Initializes
    * the order and status depending on how the layer is initialized.
    *
-   * @param visibility if the layer is visible or not
-   * @param image an IPixelImage that will be visible or not
+   * @param visibility if the layer is visible or not.
+   * @param image an IPixelImage that will be visible or not.
    * @param layerName string representing the corresponding layer name.
    */
   public Layer(boolean visibility,IPixelImage image, String layerName) {
@@ -43,6 +43,14 @@ public class Layer implements ILayer {
     this.status = (image != null);
   }
 
+  /**
+   * constructor for a layer that initializes the visibility, image, and layer name. Initializes
+   * the order and status depending on how the layer is initialized.
+   * @param visibility if the layer is visible or not.
+   * @param image an IPixelImage that will be visible or not.
+   * @param order the order of the layer.
+   * @param layerName string representing the corresponding layer name.
+   */
   public Layer(boolean visibility,IPixelImage image, int order, String layerName) {
     //  this.fileName = fileName;
     this.layerName = layerName;
