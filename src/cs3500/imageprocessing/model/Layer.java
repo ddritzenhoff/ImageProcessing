@@ -123,6 +123,7 @@ public class Layer implements ILayer {
     IProcessingController processingControllerSystemInput = new ProcessingController(testModel, rdd,
         System.out);
 
+    processingControllerSystemInput.startProcessing();
 
     try {
       rd = new InputStreamReader(new FileInputStream("res/script1.txt"));
