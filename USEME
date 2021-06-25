@@ -1,0 +1,60 @@
+Authors: Ben-oni Vainqueur and Dominik Ritzenhoff
+
+Our controller has the following commands. the command will be followed by an example.
+
+The jar file only works from its current positioning in the root submission folder.
+
+"create-layer"(must say layer name after)
+- create-layer s2testLayer3
+
+"current" (must say layer name after)
+
+the following actions must be preceded with a "current layerNameHere", and the layer must exist.
+
+"load"
+- current testLayer1
+  load res/jpegcar.jpg
+
+"blur"
+- current testLayer1
+  blur
+
+"sepia"
+- current testLayer1
+  sepia
+
+"greyscale"
+- current testLayer1
+  greyscale
+
+"sharpen"
+- current testLayer1
+  sharpen
+
+"remove"(you can only remove a layer that you have previously created)
+- current testLayer1
+  remove
+
+
+the command "save" requires a filename such as "testimage.png" and will save the
+top-most visible layer as a .png file. this supports .ppm also.
+
+Note: you can set a layer invisible, even if there is no image in it.
+You can only perform transformations (blur, sepia, ... etc) if there is a loaded image to the layer.
+
+"save-all" ( requires a name for the file you will save. will create a .txt file that will wrap
+all of the layer information inside of it, and will point to the locations of the layers
+when loading that layer back in.)
+ - save-all script2Saved
+
+"generate checkerboard" (follow with the individual tile size, and the #n of boxes. creates a
+ nxn checkerboard)
+ -generate-checkerboard 200 10
+
+"invisible" (follow with the layer name)
+ -invisible testLayer
+
+"visible"
+ -visible testLayer
+
+ Note: invisible/visible do not require the "current" command
