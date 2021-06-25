@@ -1,6 +1,8 @@
 Authors: Ben-oni Vainqueur and Dominik Ritzenhoff
 
+// *********************************************
 // TEXT FUNCTIONALITY (SCROLL DOWN FOR GUI INFO)
+// *********************************************
 
 Our controller has the following commands. the command will be followed by an example.
 
@@ -61,5 +63,55 @@ when loading that layer back in.)
 
  Note: invisible/visible do not require the "current" command
 
+// *****************
 // GUI FUNCTIONALITY
+// *****************
 
+file => Export
+  - This operation lets you save the top most visible layer in a few different formats
+  (png, jpg, ppm, etc.).
+
+file => Save All
+  - This operation saves the images within the layers as pngs and creates a text file that
+  contains metadata about the project. This text file can layer be loaded into the project
+  and the 'state' can be restored.
+
+file => Open
+  - This lets you pick a text file (as I mentioned within save all) to load into the project.
+
+file => Load Script
+  - This lets you pick a script to execute a few different operations.
+
+Transform => Blur
+  - Provided that you've loaded an image into the layer that you are working on, the Blur operation
+  will take that image and transform it into a blurred version of itself.
+
+Transform => Sharpen
+  - Provided that you've loaded an image into the layer that you are working on, the Sharpen
+  operation will take that image and transform it into a sharpened version of itself.
+
+Transform => Greyscale
+  - Provided that you've loaded an image into the layer that you are working on, the Greyscale
+  operation will take that image and transform it into a greyscale version of itself.
+
+Transform => Sepia
+  - Provided that you've loaded an image into the layer that you are working on, the Sepia
+  operation will take that image and transform it into a sepia version of itself.
+
+Layer => Add Layer
+  - This creates a new layer within the project, and the input just lets you specify the layer's
+  name.
+
+Layer => Delete Layer
+  - This deletes the current working layer, image and all.
+
+Layer => Add Image to Layer
+  - This lets you load an image into the layer provided that it is one of the supported file types.
+
+Layer => Add Checkerboard to Layer
+
+Layer Choices
+  -
+
+Visibility Checkboxes
+  -

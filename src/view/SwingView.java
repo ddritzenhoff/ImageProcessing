@@ -595,7 +595,6 @@ public class SwingView extends JFrame implements ActionListener, IView {
     checkBoxPanel.revalidate();
     checkBoxPanel.repaint();
 
-    //TODO: fix radio buttons for empty list.
     if (radioButtons.size() > 0) {
       radioButtons.get(radioButtons.size() - 1).setSelected(true);
     }
@@ -618,7 +617,6 @@ public class SwingView extends JFrame implements ActionListener, IView {
     checkBoxPanel.validate();
     checkBoxPanel.repaint();
 
-    //TODO: fix radio buttons for empty list.
     if (radioButtons.size() > 0) {
       radioButtons.get(radioButtons.size() - 1).setSelected(true);
     }
@@ -664,9 +662,6 @@ public class SwingView extends JFrame implements ActionListener, IView {
     }
     return null;
     //  errorDisplay.setText(e.getMessage());
-
-    //TODO: write to console
-
   }
 
   @Override
