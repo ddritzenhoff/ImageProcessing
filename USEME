@@ -109,9 +109,13 @@ Layer => Add Image to Layer
   - This lets you load an image into the layer provided that it is one of the supported file types.
 
 Layer => Add Checkerboard to Layer
+  - This lets you add a checkerboard image into the layer and lets you specify the width and
+  the number of boxes.
 
 Layer Choices
-  -
+  - This lets you specify the current working layer, which is important for some of the operations
+  mentioned above (such as deleting)
 
 Visibility Checkboxes
-  -
+  - This lets you specify which layer is visible. A checked box indicates visible and an
+  unchecked box marks invisibility.

@@ -40,12 +40,16 @@ Licensing Agreement (we are allowed to use the images): https://unsplash.com/lic
 
 Edits:
 
-- One of the changes that we made over the last HW was adding a few methods to the IModel interface.
-The reason we did this was because we thought that every model that implemented the interface
-actually needed to use those methods as well, so we justified this action over creating a new
-interface IModel2 that extended IModel and implemented the methods there.
+- One of the changes that we made was creating a new model interface (ISwingModel), added a few
+methods, and extended the IModel interface. We then added a class (SwingModel) which implemented
+this interface. This class represents a GUI representation of a model using Swing and it contains
+all of the previous capabilities of a ProcessingModel, plus additional functionality to streamline
+its use with Swing.
 
-- In a similar vein, we added a method to ILayer in which all of implementing classes actually
-needed to use that method as well.
+- Another change we made is creating the GUI view. Obviously, this was done using Java Swing and
+required an additional controller (SwingController) to handle its inputs and outputs. An interesting
+thing to note is that this view used the emitter pattern, which made us create listeners and
+handlers. This resulted in the addition of a few more interfaces and classes (IViewListener,
+as an example).
 
 
