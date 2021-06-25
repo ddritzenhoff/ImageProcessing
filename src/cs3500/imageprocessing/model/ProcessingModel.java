@@ -97,7 +97,7 @@ public class ProcessingModel implements IModel {
 
   @Override
   public void setWorkingLayer(String layerName) {
-    ImageUtil.requireNonNull(layerName, "setWorkingLayer null layer name");
+    //ImageUtil.requireNonNull(layerName, "setWorkingLayer null layer name");
 
     if (!this.layers.containsKey(layerName)) {
       throw new IllegalArgumentException("layer does not exist");
@@ -195,7 +195,7 @@ public class ProcessingModel implements IModel {
 
   @Override
   public void exportAll(String directoryName) {
-    ImageUtil.saveAll(directoryName,this.layers);
+    ImageUtil.saveAll("res/" + directoryName,this.layers);
   }
 
   /**
@@ -243,7 +243,7 @@ public class ProcessingModel implements IModel {
       }
     }
     Layer.orderedList.addAll(tempList);
-    this.workingLayer = null;
+    this.workingLayer = "none";
 
   }
 

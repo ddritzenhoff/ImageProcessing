@@ -147,7 +147,8 @@ public class ImageUtil {
     try {
 
       System.out.println("res/" + modelFileName);
-      String newTitle = "res/" + modelFileName + "." + "txt";
+      //commenting out res for now
+      String newTitle =   modelFileName + "." + "txt";
       fos = new FileOutputStream(newTitle);
 
     } catch (FileNotFoundException e) {

@@ -69,10 +69,15 @@ public class SwingController implements IProcessingController, IViewListener {
 
   @Override
   public void handleWorkingLayerEvent() {
+    try {
+      String s = this.view.getClickedLayer();
+      view.writeError("Current working layer: " + s );
+      //System.out.println("current working layer: " + s);
+      model.setWorkingLayer(s); }
 
-    String s = this.view.getClickedLayer();
-    System.out.println("current working layer: " + s);
-    model.setWorkingLayer(s);
+    catch(Exception e) {
+      view.writeError("No working layer");
+    }
   }
 
   /**
@@ -98,8 +103,8 @@ public class SwingController implements IProcessingController, IViewListener {
     List<Boolean> arr = view.getVisibility();
     for (int i = 0; i < model.list().size(); i++) {
       model.setVisiblity(model.list().get(i), arr.get(i));
-
     }
+
   }
 
   @Override
@@ -107,17 +112,6 @@ public class SwingController implements IProcessingController, IViewListener {
     view.setVisibility(model.getVisibility());
   }
 
-  @Override
-  public void handleDeleteLayerEvent() {
-    model.deleteLayer();
-
-    String s = this.view.getClickedLayer();
-    view.removeLayer(s);
-    updateLayerList();
-    handleWorkingLayerEvent();
-
-
-  }
 
   @Override
   public void handleLoadScriptEvent() {
@@ -129,28 +123,62 @@ public class SwingController implements IProcessingController, IViewListener {
       IProcessingController processingController1 = new ProcessingController(testModel, rd,
           System.out);
       processingController1.startProcessing();
+      view.writeError("Script ran successfully. Check /res folder.");
     } catch (FileNotFoundException e) {
       view.writeError(e.getMessage());
     }
 
   }
 
+
   @Override
-  public void handleAddLayerEvent() {
-    model.addLayer(view.getText());
-    System.out.println("Layer name " + view.getText() + " created ");
-    updateLayerList();
-    view.addLayer(view.getText());
-    updateLayerList();
-    handleWorkingLayerEvent();
+  public void handleDeleteLayerEvent() {
+    try {
+      model.deleteLayer();
+      String s = this.view.getClickedLayer();
+      view.removeLayer(s);
+      updateLayerList();
+      handleWorkingLayerEvent();
+
+    }
+    catch (Exception e){
+      if(model.list().size() == 0) {
+        view.writeError("Empty Layer List" );
+      } else {
+        view.writeError("Error: Illegal Operation");
+      }
+    }
+
 
   }
 
   @Override
+  public void handleAddLayerEvent() {
+    try {
+      model.addLayer(view.getText());
+      System.out.println("Layer name " + view.getText() + " created ");
+      updateLayerList();
+      view.addLayer(view.getText());
+      updateLayerList();
+      handleWorkingLayerEvent();
+    }
+    catch (Exception e ){
+      view.writeError("Error: Unsupported Operation" );
+    }
+
+  }
+
+
+  @Override
   public void showTopMostVisibleImageLayerEvent() {
-    BufferedImage b;
-    b = model.topLayerImage();
-    view.setImage(b);
+    try {
+      BufferedImage b;
+      b = model.topLayerImage();
+      view.setImage(b);
+    }
+    catch (Exception e ){
+      view.writeError("Error: " + e.getMessage());
+    }
   }
 
   @Override

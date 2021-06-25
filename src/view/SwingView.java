@@ -13,7 +13,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -79,13 +78,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   private JLabel errorDisplay;
 
   private JLabel modelFileDisplay;
-private  JPanel errorPanel;
+  private  JPanel errorPanel;
 
   ButtonGroup rGroup1 = new ButtonGroup();
 
-  /// ta
-  private JLabel layerBoxDisplay;
-  //private JPanel mainPanel;
+
+
+
 
   //TODO:menu: will have all of the layers.
   //TODO: menu will also show the visibility of each layer?
@@ -102,7 +101,6 @@ private  JPanel errorPanel;
     super();
     layerList= new ArrayList<>();
 
-
     radioDisplay = new JLabel();
     script = "";
 
@@ -116,7 +114,7 @@ private  JPanel errorPanel;
 
     JMenuBar menuBar = new JMenuBar();
 
-// creating menu 1
+    // creating menu 1
     JMenu file = new JMenu("File");
     JMenuItem m1 = new JMenuItem("Export");
     JMenuItem m2 = new JMenuItem("Save All");
@@ -139,7 +137,7 @@ private  JPanel errorPanel;
     file.add(m4);
 
     menuBar.add(file);
-// creating menu 2
+    // creating menu 2
     JMenu operation = new JMenu("Transform");
     JMenuItem op1 = new JMenuItem("Blur");
     JMenuItem op2 = new JMenuItem("Sepia");
@@ -164,7 +162,7 @@ private  JPanel errorPanel;
 
 
 
-// creating menu 3
+    // creating menu 3
     JMenu layerOperations = new JMenu("Layer");
     JMenuItem lo1 = new JMenuItem("Add Layer");
     lo1.addActionListener(this);
@@ -251,7 +249,7 @@ private  JPanel errorPanel;
     //file open
     JPanel fileopenPanel = new JPanel();
     fileopenPanel.setLayout(new FlowLayout());
-    fileOpenDisplay = new JLabel("File path will appear here");
+    fileOpenDisplay = new JLabel("Image path will appear here");
     fileopenPanel.add(fileOpenDisplay);
     dialogBoxesPanel.add(fileopenPanel);
 
@@ -261,7 +259,7 @@ private  JPanel errorPanel;
     JPanel filesavePanel = new JPanel();
     filesavePanel.setLayout(new FlowLayout());
     dialogBoxesPanel.add(filesavePanel);
-    fileSaveDisplay = new JLabel("");
+    fileSaveDisplay = new JLabel("File save path will appear here.");
     filesavePanel.add(fileSaveDisplay);
 
 
@@ -440,8 +438,12 @@ private  JPanel errorPanel;
    */
   private void emitWorkingLayerEvent() {
 
+
     for (IViewListener listener : this.viewListners) {
       listener.handleWorkingLayerEvent();
+    }
+    if (layerList.size() ==0) {
+      writeError("no available layers");
     }
   }
 
@@ -514,6 +516,7 @@ private  JPanel errorPanel;
     for (IViewListener listener : this.viewListners ) {
       listener.handleLoadAllEvent();
     }
+
   }
 
 
@@ -671,7 +674,7 @@ private  JPanel errorPanel;
 
 
   public String getClickedLayer() {
-    ;
+
     //JRadioButton j;
     for (int i = 0 ; i < radioButtons.size() ; i++) {
       if(radioButtons.get(i).isSelected()) {
@@ -681,15 +684,12 @@ private  JPanel errorPanel;
     if(radioButtons.size() > 0) {
       radioButtons.get(radioButtons.size()-1).setSelected(true);
       return layerList.get(layerList.size()-1);
+    } else {
+      errorDisplay.setText("no layers available to select.");
     }
-    errorDisplay.setText("no layers available to select.");
-    try {
-    return layerList.get(layerList.size()-1);
-    }
-    catch(Exception e) {
-      errorDisplay.setText(e.getMessage());
-      return "";
-    }
+    return null;
+    //  errorDisplay.setText(e.getMessage());
+
     //TODO: write to console
 
   }
@@ -717,35 +717,34 @@ private  JPanel errorPanel;
     return fileOpenDisplay.getText();
   }
 
+  @Override
   public String getLoadedModelFileDest() {
     return modelFileDisplay.getText();
   }
 
-  public void openFile() {
-
-
-  }
-  //TODO: fix to work with visibility.
-
+  @Override
   public void setImage(BufferedImage bufferedImage) {
+    ImageUtil.requireNonNull(bufferedImage, "setImage");
 
     this.imagePanel.removeAll();
 
-    imageScrollPane.removeAll();
+    this.imageScrollPane.removeAll();
 
 
     JLabel imageLabel = new JLabel(new ImageIcon(bufferedImage));
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
     imageScrollPane.setPreferredSize(new Dimension(500, 600));
-    imagePanel.add(imageScrollPane);
+    this.imagePanel.add(imageScrollPane);
 
 
-    imagePanel.validate();
-    imagePanel.repaint();
+    this.imagePanel.validate();
+    this.imagePanel.repaint();
 
   }
 
+  @Override
   public void setVisibility(List<Boolean> b) {
+    ImageUtil.requireNonNull(b, "setVisibility boolean list");
 
     checkBoxes = new ArrayList<>();
     checkBoxPanel.removeAll();
@@ -778,7 +777,9 @@ private  JPanel errorPanel;
 
   }
 
+  @Override
   public void writeError(String s) {
+    ImageUtil.requireNonNull(s, "writeError");
     errorDisplay.setText(s);
   }
 
