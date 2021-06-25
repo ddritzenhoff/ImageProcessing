@@ -1,7 +1,6 @@
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static org.junit.Assert.assertEquals;
 
-import cs3500.imageprocessing.model.ProcessingModel;
 import cs3500.imageprocessing.model.SwingModel;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

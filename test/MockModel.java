@@ -1,4 +1,4 @@
-import cs3500.imageprocessing.model.IModel;
+
 import cs3500.imageprocessing.model.ISwingModel;
 import cs3500.imageprocessing.model.ITransformation;
 import java.awt.image.BufferedImage;

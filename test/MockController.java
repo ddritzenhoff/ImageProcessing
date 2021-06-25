@@ -1,5 +1,4 @@
 import controller.IProcessingController;
-import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.ISwingModel;
 import java.io.IOException;
 import java.util.Objects;

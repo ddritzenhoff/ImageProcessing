@@ -4,11 +4,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a GUI representation of a model using Swing.
+ * It contains all of the previous capabilities of a ProcessingModel,
+ * plus additional functionality to streamline its use with Swing.
+ */
 public class SwingModel extends ProcessingModel implements ISwingModel {
 
-  public SwingModel(){
+  public SwingModel() {
     super();
   }
+
   @Override
   public List<String> list() {
     return Layer.orderedList;

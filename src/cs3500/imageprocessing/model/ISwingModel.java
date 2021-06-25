@@ -3,6 +3,12 @@ package cs3500.imageprocessing.model;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+
+/**
+ * This interface represents a GUI representation of a model using Swing.
+ * It contains all of the previous capabilities of a IModel, plus additional functionality
+ * to streamline use with Swing.
+ */
 public interface ISwingModel extends IModel {
   /**
    * Returns a list of the layers.

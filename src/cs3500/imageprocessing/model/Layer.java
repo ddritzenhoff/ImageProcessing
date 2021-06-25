@@ -1,10 +1,5 @@
 package cs3500.imageprocessing.model;
 
-import controller.IProcessingController;
-import controller.ProcessingController;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
