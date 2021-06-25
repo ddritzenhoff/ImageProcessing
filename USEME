@@ -1,5 +1,7 @@
 Authors: Ben-oni Vainqueur and Dominik Ritzenhoff
 
+// TEXT FUNCTIONALITY (SCROLL DOWN FOR GUI INFO)
+
 Our controller has the following commands. the command will be followed by an example.
 
 The jar file only works from its current positioning in the root submission folder.
@@ -58,3 +60,6 @@ when loading that layer back in.)
  -visible testLayer
 
  Note: invisible/visible do not require the "current" command
+
+// GUI FUNCTIONALITY
+

@@ -5,6 +5,7 @@ import controller.SwingController;
 import cs3500.imageprocessing.model.IModel;
 import cs3500.imageprocessing.model.ProcessingModel;
 
+import cs3500.imageprocessing.model.SwingModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
