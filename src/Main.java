@@ -46,7 +46,7 @@ public class Main {
     if (args[0].equals("-text")) {
       InputStreamReader reader = new InputStreamReader(System.in);
       OutputStreamWriter writer = new OutputStreamWriter(System.out);
-      IModel model = new ProcessingModel();
+      IModel model = new SwingModel();
       IProcessingController controller = new ProcessingController(model, reader, writer);
       controller.startProcessing();
       return;
@@ -54,7 +54,7 @@ public class Main {
 
     //  } else
     if (args[0].equals("-interactive")) {
-      IModel model = new ProcessingModel();
+      IModel model = new SwingModel();
       IView swingView = new SwingView();
       IProcessingController swingController = new SwingController(model, swingView);
       swingController.startProcessing();

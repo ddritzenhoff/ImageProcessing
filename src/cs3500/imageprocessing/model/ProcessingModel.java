@@ -18,9 +18,9 @@ import java.util.Map;
  */
 public class ProcessingModel implements IModel {
 
-  private Map<String, ILayer> layers;
+  protected Map<String, ILayer> layers;
 
-  private String workingLayer;
+  protected String workingLayer;
 
   /**
    * default constructor of a processing model. Initializes a hash map with no contents. Initializes
@@ -180,17 +180,6 @@ public class ProcessingModel implements IModel {
   }
 
   @Override
-  public List<Boolean> getVisibility() {
-    List<Boolean> temp = new ArrayList<>();
-    for (ILayer l : layers.values()) {
-      temp.add(l.getVisibility());
-    }
-
-    return temp;
-
-  }
-
-  @Override
   public void exportAll(String directoryName) {
     ImageUtil.saveAll("res/" + directoryName, this.layers);
   }
@@ -211,41 +200,4 @@ public class ProcessingModel implements IModel {
     return Layer.orderedList.toString();
   }
 
-  @Override
-  public List<String> list() {
-    return Layer.orderedList;
-  }
-
-  @Override
-  public BufferedImage topLayerImage() {
-    return ImageUtil.bufferedImageTopMostVisibleImage(layers);
-  }
-
-  @Override
-  public void loadModel(String fileDirectory) {
-    Layer.orderedList.clear();
-    this.layers = ImageUtil.readAll(fileDirectory);
-    List<String> tempList;
-    tempList = new ArrayList<>();
-
-    for (ILayer l : layers.values()) {
-      System.out.println(l.loadedOrder());
-      for (int i = 0; i < layers.size(); i++) {
-        if (l.loadedOrder() == i) {
-          System.out.println("layername: " + l.getLayerName() + " " + i);
-          tempList.add(l.getLayerName());
-        }
-      }
-    }
-    Layer.orderedList.addAll(tempList);
-    this.workingLayer = "none";
-
-  }
-
-  @Override
-  public void exportDirectory(String fileDirectory) {
-    BufferedImage bi = topLayerImage();
-    IPixelImage pi = ImageUtil.bufferedImageToIPixelImage(bi);
-    ImageUtil.exportDirectory(pi, fileDirectory);
-  }
 }
