@@ -632,14 +632,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     checkBoxPanel.validate();
     checkBoxPanel.repaint();
+
     //TODO: fix radio buttons for empty list.
     if(radioButtons.size() > 0) {
       radioButtons.get(radioButtons.size()-1).setSelected(true);
     }
 
-
   }
-
 
   /*
   OBSERVERS / RETRIEVERS
