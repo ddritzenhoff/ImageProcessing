@@ -114,42 +114,6 @@ public class Layer implements ILayer {
   }
 
 
-  /**
-   * main method to run our program.
-   * @param args null
-   */
-  public static void main(String[] args) {
-    IModel testModel = new ProcessingModel();
-
-    Readable rd = null;
-
-    Readable rdd = new InputStreamReader(System.in);
-    IProcessingController processingControllerSystemInput = new ProcessingController(testModel, rdd,
-        System.out);
-
-    processingControllerSystemInput.startProcessing();
-
-    try {
-      rd = new InputStreamReader(new FileInputStream("res/script1.txt"));
-      IProcessingController processingController1 = new ProcessingController(testModel, rd,
-          System.out);
-      processingController1.startProcessing();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    try {
-      rd = new InputStreamReader(new FileInputStream("res/script2.txt"));
-      IProcessingController processingController2 = new ProcessingController(testModel, rd,
-          System.out);
-      processingController2.startProcessing();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-  }
-
-
   public void setImage(IPixelImage image) {
     this.image = image;
   }

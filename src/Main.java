@@ -38,6 +38,7 @@ public class Main {
       IProcessingController controller = new ProcessingController(model, rd,
           System.out);
       controller.startProcessing();
+      return;
     }
 
     // } else {
@@ -47,6 +48,7 @@ public class Main {
       IModel model = new ProcessingModel();
       IProcessingController controller = new ProcessingController(model, reader, writer);
       controller.startProcessing();
+      return;
     }
 
     //  } else
@@ -55,6 +57,7 @@ public class Main {
       IView swingView = new SwingView();
       IProcessingController swingController = new SwingController(model, swingView);
       swingController.startProcessing();
+      return;
     } else {
       throw new IllegalArgumentException("invalid argument. Must be -text or -interactive");
     }
