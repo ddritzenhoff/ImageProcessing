@@ -60,15 +60,16 @@ public class Layer implements ILayer {
     this.status = (image != null);
   }
 
-
+  @Override
   public boolean getVisibility() {
     return visibility;
   }
 
 
 
+  @Override
   public IPixelImage getImage() {
-    if(status){
+    if (status) {
       return new PixelImage(image.getPixels());
     } else {
       List<List<IPixel>> tempImage = new ArrayList<>();
@@ -82,11 +83,13 @@ public class Layer implements ILayer {
 
   }
 
+  @Override
   public int getOrder() {
     return orderedList.indexOf(layerName);
     //return order;
   }
 
+  @Override
   public String getLayerName() {
     return this.layerName;
   }
@@ -101,10 +104,12 @@ public class Layer implements ILayer {
 
   }
 
+  @Override
   public Boolean getStatus() {
     return this.status;
   }
 
+  @Override
   public int loadedOrder() {
     return order;
   }
