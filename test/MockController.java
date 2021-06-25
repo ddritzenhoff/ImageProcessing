@@ -5,12 +5,21 @@ import java.util.Objects;
 import view.IView;
 import view.IViewListener;
 
+/**
+ * Represents the mock controller class to test the GUI controller.
+ */
 public class MockController implements IProcessingController, IViewListener {
 
   private final IView mockView;
   private final IModel model;
   private final Appendable out;
 
+  /**
+   * Constructs a MockView object.
+   * @param mockView the mock view class.
+   * @param model the model to be used.
+   * @param out the object to send the function names that were called.
+   */
   public MockController(IView mockView, IModel model, Appendable out) {
     this.mockView = Objects.requireNonNull(mockView);
     this.model = Objects.requireNonNull(model);
@@ -26,12 +35,9 @@ public class MockController implements IProcessingController, IViewListener {
     }
   }
 
-  // TODO: I think that you won't be doing anything within the startProcessing function but
-  //  will definitely do something within the handling methods
-
   @Override
   public void startProcessing() {
-
+    write("start processing");
   }
 
   @Override

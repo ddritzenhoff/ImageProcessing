@@ -222,6 +222,7 @@ public class ProcessingModel implements IModel {
     return ImageUtil.bufferedImageTopMostVisibleImage(layers);
   }
 
+
   public void loadModel(String fileDirectory) {
     //this.layers.clear();
     Layer.orderedList.clear();

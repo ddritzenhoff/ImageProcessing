@@ -5,12 +5,18 @@ import java.util.Objects;
 import view.IView;
 import view.IViewListener;
 
+/**
+ * Represents the mock GUI view class used to test the inputs to the functions.
+ */
 public class MockView implements IView {
 
-  // TODO: you need to fire events on the listener
   private IViewListener listener;
   private final Appendable out;
 
+  /**
+   * Constructs a MockView object.
+   * @param out the string to be written to and can then be parsed within the tests.
+   */
   public MockView(Appendable out) {
     this.out = Objects.requireNonNull(out);
   }
@@ -33,17 +39,6 @@ public class MockView implements IView {
       throw new IllegalStateException("Test should fail, appendable fialed");
     }
   }
-
-//  @Override
-//  public void setText(String text) {
-//    write(text);
-//  }
-//
-//  @Override
-//  public String getLayerName() {
-//    write("getLayerName: ");
-//    return null;
-//  }
 
   @Override
   public void askForFocus() {
@@ -101,12 +96,12 @@ public class MockView implements IView {
 
   @Override
   public void addLayer(String layerName) {
-
+    write("addLayer: " + layerName);
   }
 
   @Override
   public void removeLayer(String layerName) {
-
+    write("removeLayer");
   }
 
   @Override
@@ -114,20 +109,10 @@ public class MockView implements IView {
     return null;
   }
 
-//  @Override
-//  public void addCheckBox(String layerName) {
-//    write("addCheckBox: " + layerName);
-//  }
-//
-//  @Override
-//  public void updateButton() {
-//    write("updateButton");
-//  }
-//
-//  @Override
-//  public void updateCheckBoxes() {
-//    write("updateCheckBoxes");
-//  }
+  @Override
+  public void writeError(String s) {
+    write("writeError: " + s);
+  }
 
   public void fireHandleBlurEvent() {
     this.listener.handleBlurEvent();

@@ -6,12 +6,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import org.junit.Test;
 
+/**
+ * Represents the class used to test the controller and view for the GUI.
+ */
 public class MyWindowTest {
 
   MockView mockView;
   MockController mockController;
-
-  // TODO: now it seems like I need a view and controller appendable
 
   @Test
   public void testHandleBlurEvent() {

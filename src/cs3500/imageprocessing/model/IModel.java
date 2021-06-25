@@ -89,7 +89,10 @@ public interface IModel {
    */
   void generateCheckerboard(int sizeTile, int numSquares);
 
-  // TODO: what does this mean?
+  /**
+   * Returns a list of the layers.
+   * @return Returns all the current layers in their string representations.
+   */
   List<String> list();
 
   /**
