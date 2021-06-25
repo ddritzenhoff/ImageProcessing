@@ -3,6 +3,7 @@ package controller;
 import cs3500.imageprocessing.model.Blur;
 import cs3500.imageprocessing.model.Greyscale;
 import cs3500.imageprocessing.model.IModel;
+import cs3500.imageprocessing.model.ISwingModel;
 import cs3500.imageprocessing.model.ProcessingModel;
 import cs3500.imageprocessing.model.Sepia;
 import cs3500.imageprocessing.model.Sharpen;
@@ -21,7 +22,7 @@ import view.IViewListener;
  */
 public class SwingController implements IProcessingController, IViewListener {
 
-  private final IModel model;
+  private final ISwingModel model;
   private final IView view;
 
   /**
@@ -30,7 +31,7 @@ public class SwingController implements IProcessingController, IViewListener {
    * @param model the model to be worked with.
    * @param view  the gui view.
    */
-  public SwingController(IModel model, IView view) {
+  public SwingController(ISwingModel model, IView view) {
     this.model = Objects.requireNonNull(model);
     this.view = Objects.requireNonNull(view);
     this.view.registerViewEventListener(this);

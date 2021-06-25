@@ -3,6 +3,7 @@ import controller.IProcessingController;
 import controller.ProcessingController;
 import controller.SwingController;
 import cs3500.imageprocessing.model.IModel;
+import cs3500.imageprocessing.model.ISwingModel;
 import cs3500.imageprocessing.model.ProcessingModel;
 
 import cs3500.imageprocessing.model.SwingModel;
@@ -54,7 +55,7 @@ public class Main {
 
     //  } else
     if (args[0].equals("-interactive")) {
-      IModel model = new SwingModel();
+      ISwingModel model = new SwingModel();
       IView swingView = new SwingView();
       IProcessingController swingController = new SwingController(model, swingView);
       swingController.startProcessing();

@@ -1,5 +1,6 @@
 import controller.IProcessingController;
 import cs3500.imageprocessing.model.IModel;
+import cs3500.imageprocessing.model.ISwingModel;
 import java.io.IOException;
 import java.util.Objects;
 import view.IView;
@@ -18,9 +19,9 @@ public class MockController implements IProcessingController, IViewListener {
    * @param model the model to be used.
    * @param out the object to send the function names that were called.
    */
-  public MockController(IView mockView, IModel model, Appendable out) {
+  public MockController(IView mockView, ISwingModel model, Appendable out) {
     IView mockView1 = Objects.requireNonNull(mockView);
-    IModel model1 = Objects.requireNonNull(model);
+    ISwingModel model1 = Objects.requireNonNull(model);
     mockView1.registerViewEventListener(this);
     this.out = Objects.requireNonNull(out);
   }
