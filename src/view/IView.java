@@ -95,12 +95,20 @@ public interface IView {
   String getScript();
 
   /**
-   * writes an error to the views' dialog box.
+   * writes an error or message to the views' dialog box.
    * @param s error message to be written.
    */
   void writeError(String s);
 
+  /**
+   * returns the user inputs box width
+   * @return integer representing a box width
+   */
   int getBoxWidth();
 
+  /**
+   * returns the user input of number of boxes.
+   * @return integer representing the number of boxes.
+   */
   int getNumBoxes();
 }
