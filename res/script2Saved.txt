@@ -1,3 +1,0 @@
-testLayer1 0 false 
-testLayer3 1 true 
-s2Checkerboard 2 true 
