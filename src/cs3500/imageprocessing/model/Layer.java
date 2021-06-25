@@ -98,8 +98,7 @@ public class Layer implements ILayer {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder("");
-    sb.append(getOrder()).append(" ").
-        append(visibility).append(" ").append("\n");
+    sb.append(getOrder()).append(" ").append(visibility).append(" ").append("\n");
     return sb.toString();
 
   }

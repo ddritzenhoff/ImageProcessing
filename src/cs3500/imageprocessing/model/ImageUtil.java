@@ -184,7 +184,7 @@ public class ImageUtil {
    *
    * @param modelFileName file name that corresponds to the
    * @return a map of type String and ILayer, representing the name of each layer, and the specific
-   * layer.
+   *         layer.
    */
   public static Map<String, ILayer> readAll(String modelFileName) {
     Map<String, ILayer> loadedLayers = new HashMap<>();

@@ -10,8 +10,6 @@ import view.IViewListener;
  */
 public class MockController implements IProcessingController, IViewListener {
 
-  private final IView mockView;
-  private final IModel model;
   private final Appendable out;
 
   /**
@@ -21,9 +19,9 @@ public class MockController implements IProcessingController, IViewListener {
    * @param out the object to send the function names that were called.
    */
   public MockController(IView mockView, IModel model, Appendable out) {
-    this.mockView = Objects.requireNonNull(mockView);
-    this.model = Objects.requireNonNull(model);
-    this.mockView.registerViewEventListener(this);
+    IView mockView1 = Objects.requireNonNull(mockView);
+    IModel model1 = Objects.requireNonNull(model);
+    mockView1.registerViewEventListener(this);
     this.out = Objects.requireNonNull(out);
   }
 

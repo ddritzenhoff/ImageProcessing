@@ -15,6 +15,7 @@ public class MockView implements IView {
 
   /**
    * Constructs a MockView object.
+   *
    * @param out the string to be written to and can then be parsed within the tests.
    */
   public MockView(Appendable out) {
@@ -35,7 +36,7 @@ public class MockView implements IView {
   private void write(String message) {
     try {
       this.out.append(message);
-    } catch(IOException e) {
+    } catch (IOException e) {
       throw new IllegalStateException("Test should fail, appendable fialed");
     }
   }

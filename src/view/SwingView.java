@@ -228,7 +228,7 @@ public class SwingView extends JFrame implements ActionListener, IView {
 
     this.add(line_end_panel, BorderLayout.LINE_END);
 
-/////////////// opening file
+    /////////////// opening file
     //file open
     JPanel fileopenPanel = new JPanel();
     fileopenPanel.setLayout(new FlowLayout());
@@ -346,6 +346,8 @@ public class SwingView extends JFrame implements ActionListener, IView {
       case "add-checkerboard":
         emitAddCheckerboardEvent();
         break;
+      default:
+        throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
     }
     this.askForFocus();
 
@@ -599,6 +601,7 @@ public class SwingView extends JFrame implements ActionListener, IView {
     }
   }
 
+  @Override
   public void removeLayer(String layerName) {
     ImageUtil.requireNonNull(layerName, "removeLayer view");
 
@@ -644,7 +647,7 @@ public class SwingView extends JFrame implements ActionListener, IView {
     }
   }
 
-
+  @Override
   public String getClickedLayer() {
 
     //JRadioButton j;
@@ -666,7 +669,7 @@ public class SwingView extends JFrame implements ActionListener, IView {
 
   }
 
-  //return a map of booleans for every single box.
+  @Override
   public List<Boolean> getVisibility() {
     List<Boolean> arr = new ArrayList<>();
     //JRadioButton j;

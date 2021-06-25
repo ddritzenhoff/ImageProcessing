@@ -81,7 +81,7 @@ public class MockModel implements IModel {
 
   @Override
   public void loadModel(String fileDirectory) {
-
+    log.append("loadModel: ").append(fileDirectory);
   }
 
   @Override
@@ -91,6 +91,6 @@ public class MockModel implements IModel {
 
   @Override
   public void exportDirectory(String fileDirectory) {
-
+    log.append("exportDirectory").append(fileDirectory);
   }
 }
