@@ -119,6 +119,11 @@ public class Layer implements ILayer {
 
     Readable rd = null;
 
+    Readable rdd = new InputStreamReader(System.in);
+    IProcessingController processingControllerSystemInput = new ProcessingController(testModel, rdd,
+        System.out);
+
+
     try {
       rd = new InputStreamReader(new FileInputStream("res/script1.txt"));
       IProcessingController processingController1 = new ProcessingController(testModel, rd,

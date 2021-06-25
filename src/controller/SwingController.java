@@ -130,7 +130,7 @@ public class SwingController implements IProcessingController, IViewListener {
           System.out);
       processingController1.startProcessing();
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      view.writeError(e.getMessage());
     }
 
   }

@@ -214,10 +214,12 @@ public class ProcessingModel implements IModel {
     return Layer.orderedList.toString();
   }
 
+  @Override
   public List<String> list() {
     return Layer.orderedList;
   }
 
+  @Override
   public BufferedImage topLayerImage() {
     return ImageUtil.bufferedImageTopMostVisibleImage(layers);
   }

@@ -190,12 +190,12 @@ private  JPanel errorPanel;
 
 
 
+
     //dialog boxes
 
 
     dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Console"));
-    dialogBoxesPanel.setLayout(new BoxLayout(dialogBoxesPanel, BoxLayout.PAGE_AXIS));
-    this.add(dialogBoxesPanel, BorderLayout.PAGE_END);
+    dialogBoxesPanel.setLayout(new GridLayout(3,1));
 
     imagePanel = new JPanel();
     imagePanel.setBorder(BorderFactory.createTitledBorder("Image Panel"));
@@ -251,13 +251,9 @@ private  JPanel errorPanel;
     //file open
     JPanel fileopenPanel = new JPanel();
     fileopenPanel.setLayout(new FlowLayout());
-    dialogBoxesPanel.add(fileopenPanel);
-//    JButton fileOpenButton = new JButton("Add Image to Layer");
-//    fileOpenButton.setActionCommand("add image to layer");
-//    fileOpenButton.addActionListener(this);
-    // fileopenPanel.add(fileOpenButton);
     fileOpenDisplay = new JLabel("File path will appear here");
     fileopenPanel.add(fileOpenDisplay);
+    dialogBoxesPanel.add(fileopenPanel);
 
     ////////////
 
@@ -265,7 +261,6 @@ private  JPanel errorPanel;
     JPanel filesavePanel = new JPanel();
     filesavePanel.setLayout(new FlowLayout());
     dialogBoxesPanel.add(filesavePanel);
-
     fileSaveDisplay = new JLabel("");
     filesavePanel.add(fileSaveDisplay);
 
@@ -276,7 +271,7 @@ private  JPanel errorPanel;
     deleteLayerButton.setActionCommand("delete-layer");
     deleteLayerButton.addActionListener(this);
 
-    add(dialogBoxesPanel, BorderLayout.PAGE_START);
+
 
     page_end_panel = new JPanel(new GridLayout(3,2,10,0));
     page_end_panel.setMaximumSize(new Dimension (200,500));
@@ -285,13 +280,14 @@ private  JPanel errorPanel;
     errorPanel = new JPanel();
     errorPanel.setLayout(new FlowLayout());
     errorDisplay = new JLabel("Error Panel");
+    errorPanel.add(errorDisplay);
     dialogBoxesPanel.add(errorPanel);
 
     //page_end_panel.add(fileOpenButton);
 
     add(page_end_panel,BorderLayout.PAGE_END);
-
-
+    errorDisplay.setText("Running ...");
+    add(dialogBoxesPanel, BorderLayout.PAGE_START);
     this.setVisible(true);
     setFocusable(true);
     requestFocus();
@@ -335,7 +331,6 @@ private  JPanel errorPanel;
 
       case "current working layer":
         emitWorkingLayerEvent();
-        //emitShowTopMostVisibleImageLayerEvent();
         break;
 
       case "add layer":
@@ -782,6 +777,11 @@ private  JPanel errorPanel;
     checkBoxPanel.repaint();
 
   }
+
+  public void writeError(String s) {
+    errorDisplay.setText(s);
+  }
+
 
 
 

@@ -94,4 +94,9 @@ public interface IView {
    */
   String getScript();
 
+  /**
+   * writes an error to the views' dialog box.
+   * @param s error message to be written.
+   */
+  void writeError(String s);
 }
