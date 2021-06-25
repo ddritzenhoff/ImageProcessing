@@ -25,7 +25,9 @@ the functionality of any color transformation (Sepia and Greyscale).
 
   With respect to IModel, this interface makes any implementing model handle basic image
 functions such as adding, removing, or transforming an image. In the same vein, ProcessingModel
-implements IModel and does just this.
+implements IModel and does just this. The ProcessingModel operates on layers, which are a wrapper
+class that encapsulates the data associated with collections IPixelImages, such as order,
+visibility,and the correlated IPixelImage data.
 
   Finally, ImageUtil contains static functions that handle the transformation of various file
 formats into IPixelImages. For now, it only contains the logic to translate a PPM image into an
