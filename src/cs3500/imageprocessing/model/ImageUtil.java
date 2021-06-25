@@ -497,6 +497,11 @@ public class ImageUtil {
     // ImageUtil.saveBufferedImage(name,b,type);
   }
 
+  /**
+   * Gets the top most visible image from all of the layers.
+   * @param layers the layers containing one of the images to be returned.
+   * @return the BufferedImage representation of the top most visible image.
+   */
   public static BufferedImage bufferedImageTopMostVisibleImage(Map<String, ILayer> layers) {
     List<ILayer> visibleLayers = new ArrayList<>();
     for (ILayer layer : layers.values()) {
@@ -526,6 +531,11 @@ public class ImageUtil {
   }
 
 
+  /**
+   * Exports an IPixelImage as an actual file within the file system.
+   * @param image the image to be exported.
+   * @param newFileName the name of the file into which the image will be exported.
+   */
   static void exportDirectory(IPixelImage image, String newFileName) {
     String extension = ImageUtil.getFileExtension(newFileName);
     if (extension.equals("ppm")) {

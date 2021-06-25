@@ -379,8 +379,6 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     this.requestFocus();
   }
 
-
-
   /*
   EMITTERS
    */
