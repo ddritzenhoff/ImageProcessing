@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
  * This class contains utility methods to read a PPM image from file and simply print its contents.
  * Additionally, this class has static utility methods to convert from a PPM to a IPixelImage, and
  * clamp the values of a pixel. This class also has functionality to create, convert, and save
- *  IPixelImages, bufferedImages, and ppm's, as text.
+ * IPixelImages, bufferedImages, and ppm's, as text.
  */
 public class ImageUtil {
 
@@ -132,12 +132,11 @@ public class ImageUtil {
   }
 
   /**
-   * saves the state of the entire model and its corresponding datum in files.
-   * creates a master sheet file that points to the location of the stored IPixelImages.
-   * Also saves the IPixelImages
+   * saves the state of the entire model and its corresponding datum in files. creates a master
+   * sheet file that points to the location of the stored IPixelImages. Also saves the IPixelImages
    *
    * @param modelFileName master file name that will be used when loading the model.
-   * @param layers a map of layers and their corresponding names.
+   * @param layers        a map of layers and their corresponding names.
    */
   public static void saveAll(String modelFileName, Map<String, ILayer> layers) {
 
@@ -148,7 +147,7 @@ public class ImageUtil {
 
       System.out.println("res/" + modelFileName);
       //commenting out res for now
-      String newTitle =   modelFileName + "." + "txt";
+      String newTitle = modelFileName + "." + "txt";
       fos = new FileOutputStream(newTitle);
 
     } catch (FileNotFoundException e) {
@@ -173,19 +172,19 @@ public class ImageUtil {
     //sends all the files in the registry to a destination folder
     for (String s : layers.keySet()) {
       IPixelImage img = layers.get(s).getImage();
-      ImageUtil.pixelImageToTxtFile(s,"res/saveall/", img);
+      ImageUtil.pixelImageToTxtFile(s, "res/saveall/", img);
     }
   }
 
   // from two files.
 
   /**
-   * reconstructs a ProcessingModel with the given modelFileName. Uses the modelFileName, which
-   * then provides the locations and properties of each individual layer. 
+   * reconstructs a ProcessingModel with the given modelFileName. Uses the modelFileName, which then
+   * provides the locations and properties of each individual layer.
    *
    * @param modelFileName file name that corresponds to the
    * @return a map of type String and ILayer, representing the name of each layer, and the specific
-   *         layer.
+   * layer.
    */
   public static Map<String, ILayer> readAll(String modelFileName) {
     Map<String, ILayer> loadedLayers = new HashMap<>();
@@ -212,11 +211,11 @@ public class ImageUtil {
         //     ImageUtil.txtFileToPixelImage(fileName);
         IPixelImage tempImage =
             ImageUtil.txtFileToPixelImage(layerName);
-        ILayer tempLayer = new Layer(visibility,tempImage,order,layerName);
+        ILayer tempLayer = new Layer(visibility, tempImage, order, layerName);
 
         //[order,   visibility,    fileName, fileLocation ]
         //-> model    -> model     -> txtFileToPixelImage
-        loadedLayers.put(layerName,tempLayer);
+        loadedLayers.put(layerName, tempLayer);
         System.out.println(data);
       }
       scanner.close();
@@ -231,9 +230,9 @@ public class ImageUtil {
   /**
    * converts a pixelimage to a txtfile.
    *
-   * @param fileName represents the file name.
+   * @param fileName                represents the file name.
    * @param destinationFileLocation represents the fileLocation.
-   * @param image represents the IPixelImage.
+   * @param image                   represents the IPixelImage.
    */
   public static void pixelImageToTxtFile(String fileName, String destinationFileLocation,
       IPixelImage image) {
@@ -301,9 +300,9 @@ public class ImageUtil {
         throw new IllegalArgumentException("couldnt get rows and cols from this IPixelImageFile.");
 
       }
-      for ( int j = 0 ; j < intCols ; j++ ) {
+      for (int j = 0; j < intCols; j++) {
         List<IPixel> pixelRow = new ArrayList<>();
-        for (int i = 0 ; i < intRows ; i++ ) {
+        for (int i = 0; i < intRows; i++) {
           int r = 0;
           int g = 0;
           int b = 0;
@@ -316,7 +315,7 @@ public class ImageUtil {
               }
             }
           }
-          IPixel newPixel = new Pixel(r,g,b);
+          IPixel newPixel = new Pixel(r, g, b);
           pixelRow.add(newPixel);
         }
         pixelCols.add(pixelRow);
@@ -324,7 +323,7 @@ public class ImageUtil {
       scanner.close();
 
     } catch (FileNotFoundException e) {
-      throw new IllegalArgumentException(layerName + " does not exist.") ;
+      throw new IllegalArgumentException(layerName + " does not exist.");
       //System.out.println("An error occurred.");
       //  e.printStackTrace();
     }
@@ -346,12 +345,12 @@ public class ImageUtil {
       return newBufferedImage;
 
     } catch (IOException e) {
-      throw new IllegalArgumentException(fileLocation + " does not exist.") ;
+      throw new IllegalArgumentException(fileLocation + " does not exist.");
     }
   }
 
   /**
-   * converts a buffered image to a PixelImage.   
+   * converts a buffered image to a PixelImage.
    *
    * @param image a buffered image from the filesystem.
    * @return a new IPixelImage of the BufferedImage image.
@@ -359,10 +358,10 @@ public class ImageUtil {
   public static IPixelImage bufferedImageToIPixelImage(BufferedImage image) {
 
     List<List<IPixel>> row = new ArrayList<>();
-    for (int i = 0 ; i < image.getHeight(); i ++) {
+    for (int i = 0; i < image.getHeight(); i++) {
       List<IPixel> col = new ArrayList<>();
-      for (int j = 0 ; j < image.getWidth() ; j++ ) {
-        Color pixelColor = new Color(image.getRGB(j,i));
+      for (int j = 0; j < image.getWidth(); j++) {
+        Color pixelColor = new Color(image.getRGB(j, i));
         col.add(new Pixel(pixelColor.getRed(), pixelColor.getGreen(), pixelColor.getBlue()));
       }
       row.add(col);
@@ -380,12 +379,12 @@ public class ImageUtil {
 
     int cols = image.getNumPixelsInRow();
     int rows = image.getNumRows(); //BufferedImage.TYPE_4BYTE_ARGB
-    BufferedImage tempBufferedImage = new BufferedImage(cols,rows,1);
-    for (int i = 0 ; i < rows ; i++) {
-      for (int j = 0 ; j < cols ; j++ ) {
-        IPixel current = image.getPixel(i,j);
+    BufferedImage tempBufferedImage = new BufferedImage(cols, rows, 1);
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        IPixel current = image.getPixel(i, j);
         Color currentColor = new Color(current.getR(), current.getG(), current.getB());
-        tempBufferedImage.setRGB(j,i,currentColor.getRGB());
+        tempBufferedImage.setRGB(j, i, currentColor.getRGB());
       }
     }
     return tempBufferedImage;
@@ -396,8 +395,8 @@ public class ImageUtil {
    * saves a buffered image into a image of type .png, .jpg, or .gif.
    *
    * @param fileName a new file name.
-   * @param image the buffered image to be saved
-   * @param type can be a "png", or "jpg", or "gif"
+   * @param image    the buffered image to be saved
+   * @param type     can be a "png", or "jpg", or "gif"
    */
   public static void saveBufferedImage(String fileName, BufferedImage image, String type) {
     File outputfile = new File("res/" + fileName + "." + type);
@@ -448,28 +447,27 @@ public class ImageUtil {
   /**
    * turns a IPixelImage into a ppm, png, or jpg, depending on the filename.
    *
-   * @param image the IPixelImage to be converted
+   * @param image       the IPixelImage to be converted
    * @param newFileName its corresponding file name.
    */
   public static void imageWrapperExport(IPixelImage image, String newFileName) {
 
     String extension = ImageUtil.getFileExtension(newFileName);
     if (extension.equals("ppm")) {
-      newFileName = newFileName.replace("." + extension,"");
+      newFileName = newFileName.replace("." + extension, "");
       image.render("ppm", newFileName);
-    }
-    else  {
-      newFileName = newFileName.replace("." + extension,"");
-      saveBufferedImage(newFileName,ImageUtil.pixelImageToBufferedImage(image),extension);
+    } else {
+      newFileName = newFileName.replace("." + extension, "");
+      saveBufferedImage(newFileName, ImageUtil.pixelImageToBufferedImage(image), extension);
     }
 
   }
 
   /**
-   * this method saves the top most visible image to the file system, with the given name.
-   * this method will throw an exception if no layers are visible.
+   * this method saves the top most visible image to the file system, with the given name. this
+   * method will throw an exception if no layers are visible.
    *
-   * @param name name of the image to be saved
+   * @param name   name of the image to be saved
    * @param layers layers of images from a ProcessingModel
    */
   public static void saveTopMostVisibleImage(String name, Map<String, ILayer> layers) {
@@ -481,7 +479,7 @@ public class ImageUtil {
     }
     ILayer currentMaxLayer = null;
     int currentIntMax = -1;
-    for (ILayer layer: visibleLayers) {
+    for (ILayer layer : visibleLayers) {
       int curr = layer.getOrder();
       if (curr > currentIntMax) {
         currentIntMax = curr;
@@ -491,7 +489,7 @@ public class ImageUtil {
     if (currentMaxLayer == null) {
       throw new IllegalArgumentException("all layers are toggled invisible");
     }
-    ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
+    ImageUtil.imageWrapperExport(currentMaxLayer.getImage(), name);
 
     //BufferedImage b = ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
     // ImageUtil.saveBufferedImage(name,b,type);
@@ -499,6 +497,7 @@ public class ImageUtil {
 
   /**
    * Gets the top most visible image from all of the layers.
+   *
    * @param layers the layers containing one of the images to be returned.
    * @return the BufferedImage representation of the top most visible image.
    */
@@ -511,10 +510,9 @@ public class ImageUtil {
       }
     }
 
-
     ILayer currentMaxLayer = null;
     int currentIntMax = -1;
-    for (ILayer layer: visibleLayers) {
+    for (ILayer layer : visibleLayers) {
       int curr = layer.getOrder();
       if (curr > currentIntMax) {
         currentIntMax = curr;
@@ -522,18 +520,19 @@ public class ImageUtil {
       }
     }
 
-    if (currentMaxLayer == null ) {
-      return new BufferedImage(200,200,2);
+    if (currentMaxLayer == null) {
+      return new BufferedImage(200, 200, 2);
       //throw new IllegalArgumentException("all layers are toggled invisible");
     }
-   return ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
+    return ImageUtil.pixelImageToBufferedImage(currentMaxLayer.getImage());
     //ImageUtil.imageWrapperExport(currentMaxLayer.getImage(),name);
   }
 
 
   /**
    * Exports an IPixelImage as an actual file within the file system.
-   * @param image the image to be exported.
+   *
+   * @param image       the image to be exported.
    * @param newFileName the name of the file into which the image will be exported.
    */
   static void exportDirectory(IPixelImage image, String newFileName) {

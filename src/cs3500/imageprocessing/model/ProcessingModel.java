@@ -5,17 +5,16 @@ import static cs3500.imageprocessing.model.ImageUtil.readAll;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 /**
- * this class represents a specific implementation of a IModel.
- * It centered around having a selected layer, then allowing actions to be performed
- * on that selected layer. these layer names are stored in a hashmap of String,Layer which wraps
- * its respective IPixelImage, order, visibility, and other properties.
+ * this class represents a specific implementation of a IModel. It centered around having a selected
+ * layer, then allowing actions to be performed on that selected layer. these layer names are stored
+ * in a hashmap of String,Layer which wraps its respective IPixelImage, order, visibility, and other
+ * properties.
  */
 public class ProcessingModel implements IModel {
 
@@ -24,8 +23,8 @@ public class ProcessingModel implements IModel {
   private String workingLayer;
 
   /**
-   * default constructor of a processing model. Initializes a hash map with no contents.
-   * Initializes the working layer to null.
+   * default constructor of a processing model. Initializes a hash map with no contents. Initializes
+   * the working layer to null.
    */
   public ProcessingModel() {
     layers = new HashMap<>();
@@ -34,11 +33,11 @@ public class ProcessingModel implements IModel {
   }
 
   /**
-   * constructor to read in a ProcessingModel from a fileDirectory.
-   * uses the constructor below with the readAll method.
+   * constructor to read in a ProcessingModel from a fileDirectory. uses the constructor below with
+   * the readAll method.
    *
-   * @param fileDirectory a string that will point to the file directory which contains a file
-   *                      with the information associated with a ProcessingModel such as the layers
+   * @param fileDirectory a string that will point to the file directory which contains a file with
+   *                      the information associated with a ProcessingModel such as the layers
    *                      status' and IPixelImages' locations.
    */
   public ProcessingModel(String fileDirectory) {
@@ -48,8 +47,8 @@ public class ProcessingModel implements IModel {
   /**
    * constructor to create a processing model from the given layers.
    *
-   * @param layers will be passed in to this constructor from a ImageUtil method that
-   *               retrieves the layers and their respective images from the file system.
+   * @param layers will be passed in to this constructor from a ImageUtil method that retrieves the
+   *               layers and their respective images from the file system.
    */
   public ProcessingModel(Map<String, ILayer> layers) {
     this.layers = layers;
@@ -78,7 +77,6 @@ public class ProcessingModel implements IModel {
     ImageUtil.requireNonNull(imageFileName, "addImageToLayer image file is null");
     ImageUtil.requireNonNull(this.workingLayer,
         "you must create a layer before loading an image into it");
-    //todo: make this work with .ppm
     IPixelImage newImage = imageWrapperImport(imageFileName);
 
     if (layers.get(workingLayer).getStatus()) {
@@ -92,12 +90,10 @@ public class ProcessingModel implements IModel {
         new Layer(currentLayer.getVisibility(),
             newImage, currentLayer.getLayerName()));
 
-    //this.layers.put(imageFileName, newImage);
   }
 
   @Override
   public void setWorkingLayer(String layerName) {
-    //ImageUtil.requireNonNull(layerName, "setWorkingLayer null layer name");
 
     if (!this.layers.containsKey(layerName)) {
       throw new IllegalArgumentException("layer does not exist");
@@ -110,7 +106,7 @@ public class ProcessingModel implements IModel {
 
   @Override
   public void deleteLayer() {
-    ImageUtil.requireNonNull(workingLayer,"delete layer");
+    ImageUtil.requireNonNull(workingLayer, "delete layer");
     if (!layers.containsKey(workingLayer)) {
       throw new IllegalArgumentException("layer doesnt exist.");
     }
@@ -134,7 +130,7 @@ public class ProcessingModel implements IModel {
     // at this point, you now that the working layer exists and doesn't have an image loaded into
     // it yet.
     ILayer currentLayer = layers.get(this.workingLayer);
-    IPixelImage cb = new Checkerboard(sizeTile,numSquares);
+    IPixelImage cb = new Checkerboard(sizeTile, numSquares);
     layers.replace(this.workingLayer,
         new Layer(currentLayer.getVisibility(),
             cb, currentLayer.getLayerName()));
@@ -163,7 +159,7 @@ public class ProcessingModel implements IModel {
   @Override
   public void exportLayer(String newFileName) {
     ImageUtil.requireNonNull(newFileName, "exportLayer null layer name");
-    ImageUtil.saveTopMostVisibleImage(newFileName,this.layers);
+    ImageUtil.saveTopMostVisibleImage(newFileName, this.layers);
 
   }
 
@@ -183,9 +179,10 @@ public class ProcessingModel implements IModel {
     }
   }
 
+  @Override
   public List<Boolean> getVisibility() {
     List<Boolean> temp = new ArrayList<>();
-    for(ILayer l : layers.values() ) {
+    for (ILayer l : layers.values()) {
       temp.add(l.getVisibility());
     }
 
@@ -195,7 +192,7 @@ public class ProcessingModel implements IModel {
 
   @Override
   public void exportAll(String directoryName) {
-    ImageUtil.saveAll("res/" + directoryName,this.layers);
+    ImageUtil.saveAll("res/" + directoryName, this.layers);
   }
 
   /**
@@ -224,20 +221,18 @@ public class ProcessingModel implements IModel {
     return ImageUtil.bufferedImageTopMostVisibleImage(layers);
   }
 
-
+  @Override
   public void loadModel(String fileDirectory) {
-    //this.layers.clear();
     Layer.orderedList.clear();
     this.layers = ImageUtil.readAll(fileDirectory);
-    //Layer.orderedList = new ArrayList<>(layers.size());
     List<String> tempList;
     tempList = new ArrayList<>();
 
-    for(ILayer l : layers.values()) {
+    for (ILayer l : layers.values()) {
       System.out.println(l.loadedOrder());
-      for (int i = 0 ; i < layers.size() ; i++) {
+      for (int i = 0; i < layers.size(); i++) {
         if (l.loadedOrder() == i) {
-          System.out.println("layername: "+ l.getLayerName() + " " + i );
+          System.out.println("layername: " + l.getLayerName() + " " + i);
           tempList.add(l.getLayerName());
         }
       }
@@ -247,22 +242,10 @@ public class ProcessingModel implements IModel {
 
   }
 
-
+  @Override
   public void exportDirectory(String fileDirectory) {
     BufferedImage bi = topLayerImage();
     IPixelImage pi = ImageUtil.bufferedImageToIPixelImage(bi);
-    ImageUtil.exportDirectory(pi,fileDirectory);
-    //imageWrapperExport(pi,fileDirectory);
-    //ImageUtil.saveBufferedImage(bi,fileDirectory,);
-
+    ImageUtil.exportDirectory(pi, fileDirectory);
   }
-
-//  public BufferedImage[] bufferedImages() {
-//    BufferedImage[] BI = {};
-//    BI[2] = ImageUtil.pixelImageToBufferedImage(new IPixelImage());
-//    for(ILayer l : layers.values()) {
-//      l.getImage()
-//    }
-//  }
-
 }

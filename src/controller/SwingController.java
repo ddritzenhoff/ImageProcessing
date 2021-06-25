@@ -71,11 +71,10 @@ public class SwingController implements IProcessingController, IViewListener {
   public void handleWorkingLayerEvent() {
     try {
       String s = this.view.getClickedLayer();
-      view.writeError("Current working layer: " + s );
+      view.writeError("Current working layer: " + s);
       //System.out.println("current working layer: " + s);
-      model.setWorkingLayer(s); }
-
-    catch(Exception e) {
+      model.setWorkingLayer(s);
+    } catch (Exception e) {
       view.writeError("No working layer");
     }
   }
@@ -140,7 +139,6 @@ public class SwingController implements IProcessingController, IViewListener {
   }
 
 
-
   @Override
   public void handleDeleteLayerEvent() {
     try {
@@ -150,10 +148,9 @@ public class SwingController implements IProcessingController, IViewListener {
       updateLayerList();
       handleWorkingLayerEvent();
 
-    }
-    catch (Exception e){
-      if(model.list().size() == 0) {
-        view.writeError("Empty Layer List" );
+    } catch (Exception e) {
+      if (model.list().size() == 0) {
+        view.writeError("Empty Layer List");
       } else {
         view.writeError("Error: Illegal Operation");
       }
@@ -171,9 +168,8 @@ public class SwingController implements IProcessingController, IViewListener {
       view.addLayer(view.getText());
       updateLayerList();
       handleWorkingLayerEvent();
-    }
-    catch (Exception e ){
-      view.writeError("Error: Unsupported Operation" );
+    } catch (Exception e) {
+      view.writeError("Error: Unsupported Operation");
     }
 
   }
@@ -185,8 +181,7 @@ public class SwingController implements IProcessingController, IViewListener {
       BufferedImage b;
       b = model.topLayerImage();
       view.setImage(b);
-    }
-    catch (Exception e ){
+    } catch (Exception e) {
       view.writeError("Error: " + e.getMessage());
     }
   }

@@ -31,85 +31,66 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- * Represents the GUI version of the view. The user may interact with buttons to make changes
- * to the project.
+ * Represents the GUI version of the view. The user may interact with buttons to make changes to the
+ * project.
  */
-public class SwingView  extends JFrame implements ActionListener, IView {
+public class SwingView extends JFrame implements ActionListener, IView {
 
-  private final JButton loadFromModelButton;
-  private final JButton deleteLayerButton;
-  private final JTextField jTextField;
   private String layerName;
   //  private final JLabel jLabel;
 
-  private final JButton  addLayerButton;
   private final List<IViewListener> viewListners;
-  private List<String> layerList;
+  private final List<String> layerList;
 
-  private JPanel imagePanel;
-  private JScrollPane imageScrollPane;
+  private final JPanel imagePanel;
+  private final JScrollPane imageScrollPane;
 
   //Radio panels for layer selection
-  private JPanel radioPanel;
-  private JLabel radioDisplay;
+  private final JPanel radioPanel;
+  private final JLabel radioDisplay;
   private ArrayList<JRadioButton> radioButtons;
 
 
   //check boxes
-  private JPanel checkBoxPanel;
+  private final JPanel checkBoxPanel;
   private List<JCheckBox> checkBoxes;
 
   private String script;
 
-  JPanel line_end_panel;;
+  JPanel line_end_panel;
   JPanel page_end_panel;
-
-  //dialog boxes
-  private JPanel dialogBoxesPanel = new JPanel();
 
 
   //Opening files.
-  private JLabel fileOpenDisplay;
-  private JLabel fileSaveDisplay;
-  private JLabel errorDisplay;
+  private final JLabel fileOpenDisplay;
+  private final JLabel fileSaveDisplay;
+  private final JLabel errorDisplay;
 
-  private JLabel modelFileDisplay;
-  private  JPanel errorPanel;
+  private final JLabel modelFileDisplay;
 
   ButtonGroup rGroup1 = new ButtonGroup();
 
   private int boxWidth;
   private int numBoxes;
 
-
-
-  //TODO:menu: will have all of the layers.
-  //TODO: menu will also show the visibility of each layer?
-  //TODO: show image of topmost visible layer.
-  //TODO: save menu -> look at the given code -> saveas png/ppm/jpg
-  //TODO: load txt -> look at the given code "loading and executing a script from a file"
-  //TODO: load images -> look at the given code
-  //TODO: add layer : layerName text field
-
   /**
    * Constructs a SwingView object.
    */
   public SwingView() {
     super();
-    layerList= new ArrayList<>();
+    layerList = new ArrayList<>();
 
     radioDisplay = new JLabel();
     script = "";
 
     setTitle("OOD Image Processing");
-    setSize( new Dimension(1000,1000));
-    setDefaultCloseOperation( EXIT_ON_CLOSE );
-    setLayout( new FlowLayout() );
-    setLayout(new BorderLayout(10,10));
+    setSize(new Dimension(1000, 1000));
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setLayout(new FlowLayout());
+    setLayout(new BorderLayout(10, 10));
 
     // layerList = new String[]{""};
 
@@ -161,8 +142,6 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     this.setJMenuBar(menuBar);
 
-
-
     // creating menu 3
     JMenu layerOperations = new JMenu("Layer");
     JMenuItem lo1 = new JMenuItem("Add Layer");
@@ -175,15 +154,14 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       }
     });
 
-
     JMenuItem lo4 = new JMenuItem("Add Checkerboard to Layer");
     lo4.addActionListener(this);
     lo4.setActionCommand("add-checkerboard");
     lo4.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-         boxWidth = Integer.parseInt(JOptionPane.showInputDialog("Enter box width: "));
-         numBoxes = Integer.parseInt(JOptionPane.showInputDialog("Enter # of boxes: "));
+        boxWidth = Integer.parseInt(JOptionPane.showInputDialog("Enter box width: "));
+        numBoxes = Integer.parseInt(JOptionPane.showInputDialog("Enter # of boxes: "));
       }
     });
 
@@ -194,23 +172,18 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     lo3.addActionListener(this);
     lo3.setActionCommand("add image to layer");
 
-
     layerOperations.add(lo1);
     layerOperations.add(lo2);
     layerOperations.add(lo3);
     layerOperations.add(lo4);
     menuBar.add(layerOperations);
 
-
-
-
-
-
     //dialog boxes
 
-
+    //dialog boxes
+    JPanel dialogBoxesPanel = new JPanel();
     dialogBoxesPanel.setBorder(BorderFactory.createTitledBorder("Console"));
-    dialogBoxesPanel.setLayout(new GridLayout(3,1));
+    dialogBoxesPanel.setLayout(new GridLayout(3, 1));
 
     imagePanel = new JPanel();
     imagePanel.setBorder(BorderFactory.createTitledBorder("Image Panel"));
@@ -220,21 +193,15 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     imagePanel.setLayout(new GridLayout(1, 0, 10, 10));
     add(imagePanel, BorderLayout.CENTER);
 
-
-
-
     // mainPanel = new JPanel();
     //setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     this.viewListners = new ArrayList<>();
 
-
     //setLayout(new GridLayout(1,1));
 
-
-    loadFromModelButton = new JButton("Load model file");
-    addLayerButton = new JButton("Add Layer");
-
+    JButton loadFromModelButton = new JButton("Load model file");
+    JButton addLayerButton = new JButton("Add Layer");
 
     radioPanel = new JPanel();
     radioPanel.setBorder(BorderFactory.createTitledBorder("Layer Choices"));
@@ -246,13 +213,12 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.PAGE_AXIS));
     checkBoxes = new ArrayList<>();
 
-    line_end_panel = new JPanel(new GridLayout(3,1,50,10));
+    line_end_panel = new JPanel(new GridLayout(3, 1, 50, 10));
     line_end_panel.add(radioPanel);
     line_end_panel.add(checkBoxPanel);
-    line_end_panel.setPreferredSize(new Dimension(200,500));
+    line_end_panel.setPreferredSize(new Dimension(200, 500));
 
-    jTextField = new JTextField(30);
-
+    JTextField jTextField = new JTextField(30);
 
     loadFromModelButton.setActionCommand("load");
     addLayerButton.setActionCommand("add layer");
@@ -279,20 +245,16 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     fileSaveDisplay = new JLabel("File save path will appear here.");
     filesavePanel.add(fileSaveDisplay);
 
+    modelFileDisplay = new JLabel("");
 
-    modelFileDisplay =  new JLabel("");
-
-    deleteLayerButton = new JButton("Delete Layer");
+    JButton deleteLayerButton = new JButton("Delete Layer");
     deleteLayerButton.setActionCommand("delete-layer");
     deleteLayerButton.addActionListener(this);
 
+    page_end_panel = new JPanel(new GridLayout(3, 2, 10, 0));
+    page_end_panel.setMaximumSize(new Dimension(200, 500));
 
-
-    page_end_panel = new JPanel(new GridLayout(3,2,10,0));
-    page_end_panel.setMaximumSize(new Dimension (200,500));
-
-
-    errorPanel = new JPanel();
+    JPanel errorPanel = new JPanel();
     errorPanel.setLayout(new FlowLayout());
     errorDisplay = new JLabel("Error Panel");
     errorPanel.add(errorDisplay);
@@ -300,7 +262,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     //page_end_panel.add(fileOpenButton);
 
-    add(page_end_panel,BorderLayout.PAGE_END);
+    add(page_end_panel, BorderLayout.PAGE_END);
     errorDisplay.setText("Running ...");
     add(dialogBoxesPanel, BorderLayout.PAGE_START);
     this.setVisible(true);
@@ -318,7 +280,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   @Override
   public void actionPerformed(ActionEvent e) {
 
-    switch( e.getActionCommand() ){
+    switch (e.getActionCommand()) {
       case "Blur":
         emitBlurEvent();
         emitShowTopMostVisibleImageLayerEvent();
@@ -357,16 +319,16 @@ public class SwingView  extends JFrame implements ActionListener, IView {
         emitShowTopMostVisibleImageLayerEvent();
         break;
 
-      case "delete-layer" :
+      case "delete-layer":
         emitDeleteLayerEvent();
         emitShowTopMostVisibleImageLayerEvent();
         break;
 
-      case "save-all" :
+      case "save-all":
         emitSaveAllEvent();
         break;
 
-      case "export" :
+      case "export":
         emitExportEvent();
         break;
 
@@ -381,7 +343,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
         emitLoadScriptEvent();
         break;
 
-      case "add-checkerboard" :
+      case "add-checkerboard":
         emitAddCheckerboardEvent();
         break;
     }
@@ -390,12 +352,12 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   } //IView
 
 
-  public void registerViewEventListener(IViewListener listener){
+  public void registerViewEventListener(IViewListener listener) {
     this.viewListners.add(Objects.requireNonNull(listener));
 
   }
 
-  public void askForFocus(){
+  public void askForFocus() {
     this.setFocusable(true);
     this.requestFocus();
   }
@@ -408,7 +370,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
    * emits to every IViewListener in the list of IViewListeners  to handle a sepia event.
    */
   private void emitSepiaEvent() {
-    for ( IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleSepiaEvent();
     }
   }
@@ -417,7 +379,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
    * emits to every IViewListener in the list of IViewListeners to handle a blur event.
    */
   private void emitBlurEvent() {
-    for ( IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleBlurEvent();
     }
   }
@@ -426,62 +388,59 @@ public class SwingView  extends JFrame implements ActionListener, IView {
    * emits to every IViewListener in the list of IViewListeners to handle a GreyScale event.
    */
   private void emitGreyscaleEvent() {
-    for ( IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleGreyscaleEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners
-   * to handle a sharpen event.
+   * emits to every IViewListener in the list of IViewListeners to handle a sharpen event.
    */
   private void emitSharpenEvent() {
-    for ( IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleSharpenEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * visibility change event.
+   * emits to every IViewListener in the list of IViewListeners to handle a visibility change
+   * event.
    */
   private void emitVisibilityEvent() {
-    for ( IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleVisibilityEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * change working layer event.
+   * emits to every IViewListener in the list of IViewListeners to handle a change working layer
+   * event.
    */
   private void emitWorkingLayerEvent() {
-
 
     for (IViewListener listener : this.viewListners) {
       listener.handleWorkingLayerEvent();
     }
-    if (layerList.size() ==0) {
+    if (layerList.size() == 0) {
       writeError("no available layers");
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * added layer event.
+   * emits to every IViewListener in the list of IViewListeners to handle a added layer event.
    */
   private void emitAddLayerEvent() {
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleAddLayerEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * show the top most visible layer event.
+   * emits to every IViewListener in the list of IViewListeners to handle a show the top most
+   * visible layer event.
    */
   private void emitShowTopMostVisibleImageLayerEvent() {
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.showTopMostVisibleImageLayerEvent();
     }
     imagePanel.validate();
@@ -489,19 +448,18 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * delete layer event.
+   * emits to every IViewListener in the list of IViewListeners to handle a delete layer event.
    */
   private void emitDeleteLayerEvent() {
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleDeleteLayerEvent();
     }
   }
 
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * add image to layer event.
+   * emits to every IViewListener in the list of IViewListeners to handle a add image to layer
+   * event.
    */
   private void emitAddImageToLayerEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
@@ -513,14 +471,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       File f = fchooser.getSelectedFile();
       fileOpenDisplay.setText(f.getAbsolutePath());
     }
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleAddImageToLayerEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * load-all event.
+   * emits to every IViewListener in the list of IViewListeners to handle a load-all event.
    */
   private void emitLoadAllEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
@@ -532,7 +489,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       File f = fchooser.getSelectedFile();
       modelFileDisplay.setText(f.getAbsolutePath());
     }
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleLoadAllEvent();
     }
 
@@ -540,8 +497,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * save-all event.
+   * emits to every IViewListener in the list of IViewListeners to handle a save-all event.
    */
   private void emitSaveAllEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
@@ -553,15 +509,15 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       File f = fchooser.getSelectedFile();
       fileSaveDisplay.setText(f.getAbsolutePath());
     }
-    for (IViewListener listener : this.viewListners ){
+    for (IViewListener listener : this.viewListners) {
       listener.handleSaveAllEvent();
     }
   }
 
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * load-script event. This runs the script from the designated file location.
+   * emits to every IViewListener in the list of IViewListeners to handle a load-script event. This
+   * runs the script from the designated file location.
    */
   private void emitLoadScriptEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
@@ -573,14 +529,14 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       File f = fchooser.getSelectedFile();
       script = f.getAbsolutePath();
     }
-    for (IViewListener listener : this.viewListners ){
+    for (IViewListener listener : this.viewListners) {
       listener.handleLoadScriptEvent();
     }
   }
 
   /**
-   * emits to every IViewListener in the list of IViewListeners to handle a
-   * export event. This runs the script from the designated file location.
+   * emits to every IViewListener in the list of IViewListeners to handle a export event. This runs
+   * the script from the designated file location.
    */
   private void emitExportEvent() {
     final JFileChooser fchooser = new JFileChooser(".");
@@ -592,13 +548,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
       File f = fchooser.getSelectedFile();
       fileSaveDisplay.setText(f.getAbsolutePath());
     }
-    for (IViewListener listener : this.viewListners ){
+    for (IViewListener listener : this.viewListners) {
       listener.handleExportEvent();
     }
   }
 
   private void emitAddCheckerboardEvent() {
-    for (IViewListener listener : this.viewListners ) {
+    for (IViewListener listener : this.viewListners) {
       listener.handleAddCheckerboardEvent();
     }
   }
@@ -624,11 +580,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     radioPanel.add(rd);
     rGroup1.add(rd);
 
-
     radioPanel.revalidate();
     radioPanel.repaint();
 
-    JCheckBox newBox =  new JCheckBox(layerName, true);
+    JCheckBox newBox = new JCheckBox(layerName, true);
     newBox.setActionCommand("visibility");
     newBox.addActionListener(this);
     checkBoxes.add(newBox);
@@ -639,13 +594,13 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     checkBoxPanel.repaint();
 
     //TODO: fix radio buttons for empty list.
-    if(radioButtons.size() > 0) {
-      radioButtons.get(radioButtons.size()-1).setSelected(true);
+    if (radioButtons.size() > 0) {
+      radioButtons.get(radioButtons.size() - 1).setSelected(true);
     }
   }
 
   public void removeLayer(String layerName) {
-    ImageUtil.requireNonNull(layerName, "removeLayer view" );
+    ImageUtil.requireNonNull(layerName, "removeLayer view");
 
     rGroup1.remove(radioButtons.get(layerList.indexOf(layerName)));
     radioButtons.remove(layerList.indexOf(layerName));
@@ -661,8 +616,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     checkBoxPanel.repaint();
 
     //TODO: fix radio buttons for empty list.
-    if(radioButtons.size() > 0) {
-      radioButtons.get(radioButtons.size()-1).setSelected(true);
+    if (radioButtons.size() > 0) {
+      radioButtons.get(radioButtons.size() - 1).setSelected(true);
     }
 
   }
@@ -684,26 +639,23 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   @Override
   public void setMenu(List<String> s) {
     layerList.clear();
-    for(String string : s){
+    for (String string : s) {
       layerList.add(string);
     }
   }
 
 
-
-
-
   public String getClickedLayer() {
 
     //JRadioButton j;
-    for (int i = 0 ; i < radioButtons.size() ; i++) {
-      if(radioButtons.get(i).isSelected()) {
+    for (int i = 0; i < radioButtons.size(); i++) {
+      if (radioButtons.get(i).isSelected()) {
         return radioButtons.get(i).getText();
       }
     }
-    if(radioButtons.size() > 0) {
-      radioButtons.get(radioButtons.size()-1).setSelected(true);
-      return layerList.get(layerList.size()-1);
+    if (radioButtons.size() > 0) {
+      radioButtons.get(radioButtons.size() - 1).setSelected(true);
+      return layerList.get(layerList.size() - 1);
     } else {
       errorDisplay.setText("no layers available to select.");
     }
@@ -718,8 +670,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   public List<Boolean> getVisibility() {
     List<Boolean> arr = new ArrayList<>();
     //JRadioButton j;
-    for (int i = 0 ; i < checkBoxes.size() ; i++) {
-      arr.add( checkBoxes.get(i).isSelected());
+    for (int i = 0; i < checkBoxes.size(); i++) {
+      arr.add(checkBoxes.get(i).isSelected());
       System.out.print("idk test" + arr.get(i));
     }
 
@@ -758,12 +710,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
     this.imageScrollPane.removeAll();
 
-
     JLabel imageLabel = new JLabel(new ImageIcon(bufferedImage));
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
     imageScrollPane.setPreferredSize(new Dimension(500, 600));
     this.imagePanel.add(imageScrollPane);
-
 
     this.imagePanel.validate();
     this.imagePanel.repaint();
@@ -781,8 +731,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     radioPanel.removeAll();
     radioDisplay.removeAll();
 
-    for (int i = 0 ; i < b.size() ; i++) {
-      JCheckBox oldBox = new JCheckBox( layerList.get(i),b.get(i));
+    for (int i = 0; i < b.size(); i++) {
+      JCheckBox oldBox = new JCheckBox(layerList.get(i), b.get(i));
       oldBox.setActionCommand("visibility");
       oldBox.addActionListener(this);
       checkBoxes.add(oldBox);
@@ -810,8 +760,6 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     ImageUtil.requireNonNull(s, "writeError");
     errorDisplay.setText(s);
   }
-
-
 
 
 }

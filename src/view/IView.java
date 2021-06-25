@@ -52,21 +52,21 @@ public interface IView {
   /**
    * Returns the visibility status of the layers.
    * @return true if the layer is visible and false otherwise. B/c this applies to multiple layers,
-   * a list is returned with each element corresponding to a layer.
+   *         a list is returned with each element corresponding to a layer.
    */
   List<Boolean> getVisibility();
 
   /**
    * Gets the file path from the save all command.
    * @return the string representation of the path to the file which describes the contents of the
-   * project (images and visibility statuses, for example).
+   *         project (images and visibility statuses, for example).
    */
   String getSaveAllFilePath();
 
   /**
    * Gets the file path to the model to be loaded into the GUI.
    * @return the string representation of the path to the file which contains the model to be
-   * loaded into the GUI.
+   *         loaded into the GUI.
    */
   String getLoadedModelFileDest();
 
@@ -101,8 +101,8 @@ public interface IView {
   void writeError(String s);
 
   /**
-   * returns the user inputs box width
-   * @return integer representing a box width
+   * returns the user inputs box width.
+   * @return integer representing a box width.
    */
   int getBoxWidth();
 
