@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A Mock model used to test whether the parameters are correctly being worked on.
  */
-public class MockModel implements IModel {
+public class MockModel implements ISwingModel {
 
   final StringBuilder log;
 
