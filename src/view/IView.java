@@ -99,4 +99,8 @@ public interface IView {
    * @param s error message to be written.
    */
   void writeError(String s);
+
+  int getBoxWidth();
+
+  int getNumBoxes();
 }

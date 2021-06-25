@@ -28,39 +28,44 @@ public class Main {
    */
   public static void main(String [] args) throws FileNotFoundException {
 
-    if (args.length > 5 || args.length < 4) {
-      throw new IllegalArgumentException("incorrect number of arguments");
-    }
+    System.out.print(args);
+//    IModel model = new ProcessingModel();
+//    IView swingView = new SwingView();
+//    IProcessingController swingController = new SwingController(model, swingView);
+//    swingController.startProcessing();
 
-    if (!validBeginning(args)) {
-      throw new IllegalArgumentException("incorrect commands. First three words should be java -jar Program.jar");
-    }
+//    if (args.length > 5 || args.length < 4) {
+//      throw new IllegalArgumentException("incorrect number of arguments");
+//    }
+
+//    if (!validBeginning(args)) {
+//      throw new IllegalArgumentException("incorrect commands. First three words should be java -jar Program.jar");
+//    }
 
     // at this point, you know that the first three inputs are "java -jar Program.jar"
     // and the size of the string array is 4 or 3.
 
-    if (args.length == 5) {
+    //if (args.length == 5) {
 
-      if (args[3].equals("-script")) {
-        String pathOfScriptFile = Objects.requireNonNull(args[4]);
+      if (args[0].equals("-script")) {
+        String pathOfScriptFile = Objects.requireNonNull(args[1]);
         IModel model = new ProcessingModel();
         Readable rd = new InputStreamReader(new FileInputStream(pathOfScriptFile));
         IProcessingController controller = new ProcessingController(model, rd,
             System.out);
         controller.startProcessing();
-      } else {
-        throw new IllegalArgumentException("invalid argument. Must be -script");
       }
 
-    } else {
-      if (args[3].equals("-text")) {
+   // } else {
+      if (args[0].equals("-text")) {
         InputStreamReader reader = new InputStreamReader(System.in);
         OutputStreamWriter writer = new OutputStreamWriter(System.out);
         IModel model = new ProcessingModel();
         IProcessingController controller = new ProcessingController(model, reader, writer);
-        controller.startProcessing();
+        controller.startProcessing(); }
 
-      } else if (args[3].equals("-interactive")) {
+    //  } else
+        if (args[0].equals("-interactive")) {
         IModel model = new ProcessingModel();
         IView swingView = new SwingView();
         IProcessingController swingController = new SwingController(model, swingView);
@@ -68,7 +73,7 @@ public class Main {
       } else {
         throw new IllegalArgumentException("invalid argument. Must be -text or -interactive");
       }
-    }
+
   }
 
   private static boolean validBeginning(String[] args) {

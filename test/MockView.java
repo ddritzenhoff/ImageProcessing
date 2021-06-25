@@ -114,6 +114,16 @@ public class MockView implements IView {
     write("writeError: " + s);
   }
 
+  @Override
+  public int getBoxWidth() {
+    return 0;
+  }
+
+  @Override
+  public int getNumBoxes() {
+    return 0;
+  }
+
   public void fireHandleBlurEvent() {
     this.listener.handleBlurEvent();
   }

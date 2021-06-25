@@ -111,6 +111,11 @@ public class MockController implements IProcessingController, IViewListener {
   }
 
   @Override
+  public void handleAddCheckerboardEvent() {
+    write("handleAddCheckerboardEvent");
+  }
+
+  @Override
   public void showTopMostVisibleImageLayerEvent() {
     write("showTopMostVisibleImageLayerEvent");
   }

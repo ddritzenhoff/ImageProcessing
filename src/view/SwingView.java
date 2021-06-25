@@ -82,7 +82,8 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
   ButtonGroup rGroup1 = new ButtonGroup();
 
-
+  private int boxWidth;
+  private int numBoxes;
 
 
 
@@ -173,15 +174,31 @@ public class SwingView  extends JFrame implements ActionListener, IView {
         layerName = JOptionPane.showInputDialog("Layer Name:");
       }
     });
+
+
+    JMenuItem lo4 = new JMenuItem("Add Checkerboard to Layer");
+    lo4.addActionListener(this);
+    lo4.setActionCommand("add-checkerboard");
+    lo4.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         boxWidth = Integer.parseInt(JOptionPane.showInputDialog("Enter box width: "));
+         numBoxes = Integer.parseInt(JOptionPane.showInputDialog("Enter # of boxes: "));
+      }
+    });
+
     JMenuItem lo2 = new JMenuItem("Delete Layer");
     lo2.addActionListener(this);
     lo2.setActionCommand("delete-layer");
     JMenuItem lo3 = new JMenuItem("Add Image to Layer");
     lo3.addActionListener(this);
     lo3.setActionCommand("add image to layer");
+
+
     layerOperations.add(lo1);
     layerOperations.add(lo2);
     layerOperations.add(lo3);
+    layerOperations.add(lo4);
     menuBar.add(layerOperations);
 
 
@@ -362,6 +379,10 @@ public class SwingView  extends JFrame implements ActionListener, IView {
 
       case "load-script":
         emitLoadScriptEvent();
+        break;
+
+      case "add-checkerboard" :
+        emitAddCheckerboardEvent();
         break;
     }
     this.askForFocus();
@@ -576,6 +597,12 @@ public class SwingView  extends JFrame implements ActionListener, IView {
     }
   }
 
+  private void emitAddCheckerboardEvent() {
+    for (IViewListener listener : this.viewListners ) {
+      listener.handleAddCheckerboardEvent();
+    }
+  }
+
 
   /*
   UTILITY
@@ -641,7 +668,7 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   }
 
   /*
-  OBSERVERS / RETRIEVERS
+  OBSERVERS / GETTERS
    */
 
   public String getText() {
@@ -651,10 +678,6 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   @Override
   public String getScript() {
     return script;
-  }
-
-  public void setText(String text){
-    this.jTextField.setText(text);
   }
 
 
@@ -717,6 +740,14 @@ public class SwingView  extends JFrame implements ActionListener, IView {
   @Override
   public String getLoadedModelFileDest() {
     return modelFileDisplay.getText();
+  }
+
+  public int getBoxWidth() {
+    return boxWidth;
+  }
+
+  public int getNumBoxes() {
+    return numBoxes;
   }
 
   @Override

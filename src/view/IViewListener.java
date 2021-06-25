@@ -75,8 +75,16 @@ public interface IViewListener {
    */
   void loadVisibility();
 
+
+  /**
+   * Handle the case when the load checkerboard event is triggered.
+   */
+  void handleAddCheckerboardEvent();
+
   /**
    * Handle the case when the top most visible layer event is triggered.
    */
   void showTopMostVisibleImageLayerEvent();
+
+
 }

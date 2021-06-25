@@ -112,6 +112,15 @@ public class SwingController implements IProcessingController, IViewListener {
     view.setVisibility(model.getVisibility());
   }
 
+  /**
+   * Handle the case when the load checkerboard event is triggered.
+   */
+  @Override
+  public void handleAddCheckerboardEvent() {
+    model.generateCheckerboard(view.getBoxWidth(), view.getNumBoxes());
+    showTopMostVisibleImageLayerEvent();
+  }
+
 
   @Override
   public void handleLoadScriptEvent() {
@@ -129,6 +138,7 @@ public class SwingController implements IProcessingController, IViewListener {
     }
 
   }
+
 
 
   @Override
